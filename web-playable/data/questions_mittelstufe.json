@@ -1,0 +1,292 @@
+{
+  "categoryId": "mittelstufe",
+  "displayName": "Mittelstufe – Prophezeiung & Erfüllung",
+  "questions": [
+    {
+      "id": "ms_001",
+      "type": "ordering",
+      "prompt": "Bringe die 8 Stufen von Schöpfung und Wiederschöpfung in die richtige Reihenfolge:",
+      "orderedItems": [
+        "Erwählung eines Hirten",
+        "Erschaffung des Reiches",
+        "Bund mit dem auserwählten Volk",
+        "Abfall des auserwählten Volkes und Zerstörung",
+        "Erwählung eines neuen Hirten",
+        "Gericht und Errettung",
+        "Erschaffung eines neuen Reiches",
+        "Neuer Bund"
+      ],
+      "explanation": "Der Ablauf von Schöpfung und Wiederschöpfung folgt diesen 8 Stufen.",
+      "reference": "Mittelstufe Q1",
+      "difficulty": 3
+    },
+    {
+      "id": "ms_002",
+      "type": "multipleChoice",
+      "prompt": "Was ist das Reich, das im NT erschaffen werden soll?",
+      "options": [
+        "Das neue geistliche Israel – die 12 Stämme (Offb 7, 12, 5)",
+        "Das römische Reich",
+        "Das fleischliche Israel",
+        "Das Reich Babylon"
+      ],
+      "correctIndex": 0,
+      "explanation": "Das neue geistliche Israel: die 12 Stämme, die gegen Satans Nikolaiten gekämpft, überwunden haben und mit dem Blut Jesu erkauft worden sind (Offb 7, Offb 12, Offb 5).",
+      "reference": "Mittelstufe Q2",
+      "difficulty": 2
+    },
+    {
+      "id": "ms_003",
+      "type": "multipleChoice",
+      "prompt": "Was ist die Waffe, mit der die Überwinder im NT gekämpft haben (Offb 12:11)?",
+      "options": [
+        "Blut des Lammes und Wort des Zeugnisses",
+        "Schwert aus Eisen",
+        "Das Gesetz Moses",
+        "Feuer vom Himmel"
+      ],
+      "correctIndex": 0,
+      "explanation": "Die Überwinder kämpfen mit dem Blut des Lammes und dem Wort des Zeugnisses (Offb 12:11) – gegen das Tier mit sieben Köpfen und zehn Hörnern der Schar des Drachen.",
+      "reference": "Mittelstufe Q3",
+      "difficulty": 2
+    },
+    {
+      "id": "ms_004",
+      "type": "multipleChoice",
+      "prompt": "Was ist der Kerninhalt von Jer 1:9-10?",
+      "options": [
+        "Ein Hirte wird erwählt, bekommt das Wort und wird über alle Nationen gestellt, um Altes auszureißen und Neues zu pflanzen",
+        "Das Volk soll nach Babylon ziehen",
+        "Der Tempel soll neu gebaut werden",
+        "Die Priester sollen Opfer bringen"
+      ],
+      "correctIndex": 0,
+      "explanation": "Jer 1:9-10: Ein Hirte wird erwählt und ihm wird das Wort gegeben, sodass er über alle Nationen gestellt wird – er reißt das Alte aus und pflanzt und baut das Neue.",
+      "reference": "Mittelstufe Q5",
+      "difficulty": 3
+    },
+    {
+      "id": "ms_005",
+      "type": "multipleChoice",
+      "prompt": "Womit wird das Götzenbild von Babylon aus Dan 2 gerichtet?",
+      "options": ["Mit einem losgebrochenen Stein", "Mit Feuer vom Himmel", "Mit einer Flut", "Mit einem Schwert"],
+      "correctIndex": 0,
+      "explanation": "Ein losgebrochener Stein richtet das Götzenbild; danach wird das ewige Reich Gottes errichtet. Der König von Babylon wird in Dan 4:17-19 als Baum der Erkenntnis des Guten und Bösen bezeichnet.",
+      "reference": "Mittelstufe Q7",
+      "difficulty": 2
+    },
+    {
+      "id": "ms_006",
+      "type": "matching",
+      "prompt": "Wer wirkte gemäß Gottes Willen (Vaterunser, Mt 6) in welcher Zeit?",
+      "pairs": [
+        { "left": "Zeit des AT", "right": "Mose (2.Mo 25:9)" },
+        { "left": "Erstes Kommen", "right": "Jesus (Joh 5:19)" },
+        { "left": "Wiederkommen", "right": "Überwinder (Offb 1:2)" }
+      ],
+      "explanation": "AT: Mose (2.Mo 25:9), erstes Kommen: Jesus (Joh 5:19), Wiederkommen: der Überwinder (Offb 1:2). Gottes Wille wird beim Wiederkommen vollendet (Offb 21).",
+      "reference": "Mittelstufe Q8",
+      "difficulty": 3
+    },
+    {
+      "id": "ms_007",
+      "type": "multipleChoice",
+      "prompt": "Nach welchem Ereignis findet die Wiederkunft des Herrn aus Mt 24 statt?",
+      "options": [
+        "Nach der Endzeit des vorherigen Himmels, wenn Sonne, Mond und Sterne verfinstert und herabgefallen sind",
+        "Nach dem Bau des dritten Tempels",
+        "Nach tausend Jahren Frieden",
+        "Nach der Sintflut"
+      ],
+      "correctIndex": 0,
+      "explanation": "Nach der Endzeit des vorherigen Himmels (Sonne, Mond, Sterne – das Zelt des auserwählten Volkes – verfinstert und herabgefallen); er kommt mit den Engeln und erntet (Mt 24:29-31).",
+      "reference": "Mittelstufe Q9",
+      "difficulty": 3
+    },
+    {
+      "id": "ms_008",
+      "type": "multipleChoice",
+      "prompt": "In wessen Namen kommt der Geist der Wahrheit aus Joh 14?",
+      "options": ["In Jesu Namen (Joh 14:26)", "Im Namen Moses", "Im Namen Abrahams", "Im eigenen Namen"],
+      "correctIndex": 0,
+      "explanation": "Der Geist der Wahrheit kommt in Jesu Namen (Joh 14:26) und verkündigt, indem er im Hirten des Bundes wohnt (Joh 14:17, Offb 10).",
+      "reference": "Mittelstufe Q10",
+      "difficulty": 2
+    },
+    {
+      "id": "ms_009",
+      "type": "multipleChoice",
+      "prompt": "Welche zwei Arten von Kindern gibt es laut Mt 13 in den heutigen Gemeinden?",
+      "options": [
+        "Söhne des Himmelreichs (guter Same) und Söhne der Hölle (Same des Unkrauts)",
+        "Reiche und Arme",
+        "Priester und Laien",
+        "Juden und Heiden"
+      ],
+      "correctIndex": 0,
+      "explanation": "Samen von zwei verschiedenen Geistern: Söhne des Himmelreichs (guter Same) und Söhne der Hölle (Unkrautsame). Die Endzeit der Gemeinden ist die Zeit der Ernte (Mt 13:38-39).",
+      "reference": "Mittelstufe Q11",
+      "difficulty": 2
+    },
+    {
+      "id": "ms_010",
+      "type": "multipleChoice",
+      "prompt": "Wer ist der Fürsprecher Jesu, der im NT vorkommt?",
+      "options": [
+        "Der Beistand, der heilige Geist, und der verheißene Hirte, der neue Johannes",
+        "Johannes der Täufer",
+        "Petrus",
+        "Paulus"
+      ],
+      "correctIndex": 0,
+      "explanation": "Der Fürsprecher Jesu im NT: der Beistand, der heilige Geist, und der verheißene Hirte, der neue Johannes.",
+      "reference": "Mittelstufe Q16",
+      "difficulty": 2
+    },
+    {
+      "id": "ms_011",
+      "type": "matching",
+      "prompt": "Ordne zu, was Sünde, Gerechtigkeit und Gericht laut Joh 16 bedeuten:",
+      "pairs": [
+        { "left": "Sünde", "right": "Dass man nicht an Jesus glaubt" },
+        { "left": "Gerechtigkeit", "right": "Dass man Jesus nicht sehen kann" },
+        { "left": "Gericht", "right": "Dass die Hirten der Welt gerichtet werden" }
+      ],
+      "explanation": "Der Beistand spricht in Joh 16 von Sünde (nicht an Jesus glauben), Gerechtigkeit (Jesus nicht sehen können) und Gericht (die Hirten der Welt werden gerichtet).",
+      "reference": "Mittelstufe Q17",
+      "difficulty": 3
+    },
+    {
+      "id": "ms_012",
+      "type": "matching",
+      "prompt": "Ordne die drei Berge des NT zu:",
+      "pairs": [
+        { "left": "Berg des Abfalls", "right": "Zelt der sieben goldenen Leuchter (Offb 13)" },
+        { "left": "Berg der Zerstörung", "right": "Babylon (Offb 17)" },
+        { "left": "Berg der Errettung", "right": "Berg Zion (Offb 14)" }
+      ],
+      "explanation": "Abfall: Zelt der sieben goldenen Leuchter (Offb 13); Zerstörung: Babylon (Offb 17); Errettung: Berg Zion (Offb 14).",
+      "reference": "Mittelstufe Q18",
+      "difficulty": 3
+    },
+    {
+      "id": "ms_013",
+      "type": "multipleChoice",
+      "prompt": "Was bedeutet die Auferstehung im NT ihrer wahren biblischen Bedeutung nach?",
+      "options": [
+        "Dass ein toter Geist durch das Wort vom Odem des Lebens wieder lebendig wird und aus Babylon zum Berg Zion geerntet wird",
+        "Dass Knochen aus den Gräbern steigen",
+        "Dass die Erde neu erschaffen wird",
+        "Dass der Tempel wieder aufgebaut wird"
+      ],
+      "correctIndex": 0,
+      "explanation": "Ein toter Geist wird durch das Wort vom Odem des Lebens wieder lebendig und wird aus Babylon (Offb 13, 17, 18) zum Berg Zion (Offb 14) geerntet.",
+      "reference": "Mittelstufe Q19",
+      "difficulty": 3
+    },
+    {
+      "id": "ms_014",
+      "type": "multipleChoice",
+      "prompt": "Was bedeutet es, beim Wiederkommen des Herrn „von Gott zu lernen“ (Joh 6:45)?",
+      "options": [
+        "Von dem Hirten zu lernen, der die Ereignisse aller Kapitel der Offenbarung gesehen und gehört hat (Offb 3:12)",
+        "Die Bibel auswendig zu lernen",
+        "Eine theologische Hochschule zu besuchen",
+        "Träume zu deuten"
+      ],
+      "correctIndex": 0,
+      "explanation": "Man lernt von dem Hirten, der durch Jesus und die Engel die Ereignisse aller Kapitel der Offenbarung gesehen und gehört hat und mit dem Gott gemeinsam ist (Offb 3:12).",
+      "reference": "Mittelstufe Q20",
+      "difficulty": 3
+    },
+    {
+      "id": "ms_015",
+      "type": "multipleChoice",
+      "prompt": "Welches Reich ist mit „Seinem Reich“ in Mt 6:33 gemeint?",
+      "options": [
+        "Die 12 Stämme vom neuen geistlichen Israel beim Wiederkommen (Offb 3:12, 14, 21)",
+        "Das Königreich Davids",
+        "Das römische Reich",
+        "Das fleischliche Israel"
+      ],
+      "correctIndex": 0,
+      "explanation": "Gemeint sind die 12 Stämme vom neuen geistlichen Israel beim Wiederkommen des Herrn (Offb 3:12, Offb 14, Offb 21). Seine Gerechtigkeit: daran zu glauben.",
+      "reference": "Mittelstufe Q21",
+      "difficulty": 3
+    },
+    {
+      "id": "ms_016",
+      "type": "multipleChoice",
+      "prompt": "Warum musste Jesus das Kreuz tragen, damit es Errettung gibt?",
+      "options": [
+        "Weil der heilige Geist nur herabkommt, wenn man durch Jesu Blut Sündenvergebung bekommen hat (Mt 26:26-28, Hebr 10:1-18)",
+        "Weil die Römer es verlangten",
+        "Weil das Gesetz es vorschrieb",
+        "Weil das Volk es wollte"
+      ],
+      "correctIndex": 0,
+      "explanation": "Der heilige Geist kommt nur auf einen herab, wenn man durch Jesu Blut Sündenvergebung bekommen hat (Mt 26:26-28, Hebr 10:1-18).",
+      "reference": "Mittelstufe Q22",
+      "difficulty": 2
+    },
+    {
+      "id": "ms_017",
+      "type": "multipleChoice",
+      "prompt": "Was sind die vier Voraussetzungen, um am Hochzeitsmahl teilnehmen zu können?",
+      "options": [
+        "Lampe, Öl, Hochzeitskleid, versiegelt zu sein",
+        "Gold, Weihrauch, Myrrhe, Salböl",
+        "Glaube, Taufe, Fasten, Gebet",
+        "Brot, Wein, Wasser, Salz"
+      ],
+      "correctIndex": 0,
+      "explanation": "Lampe, Öl, Hochzeitskleid und versiegelt zu sein (Ps 119:105, Mt 25, Mt 22, Offb 7).",
+      "reference": "Mittelstufe Q24",
+      "difficulty": 2
+    },
+    {
+      "id": "ms_018",
+      "type": "matching",
+      "prompt": "Ordne bei der Erfüllung der Offenbarung zu:",
+      "pairs": [
+        { "left": "Ort des Geschehens", "right": "Zelt der goldenen Leuchter (Offb 2-3, 13)" },
+        { "left": "Die Abgefallenen", "right": "Die sieben Boten vom Zelt der sieben goldenen Leuchter (Offb 1:20)" },
+        { "left": "Die Zerstörer", "right": "Das Tier mit sieben Köpfen und zehn Hörnern (Offb 13, 17, 18)" },
+        { "left": "Die Erretter", "right": "Die gegen Satans Nikolaiten gekämpft und überwunden haben (Offb 2-3, 12, 15)" }
+      ],
+      "explanation": "Ort: Zelt der goldenen Leuchter; Abgefallene: die sieben Boten; Zerstörer: das Tier mit 7 Köpfen und 10 Hörnern; Erretter: die Überwinder.",
+      "reference": "Mittelstufe Q25",
+      "difficulty": 4
+    },
+    {
+      "id": "ms_019",
+      "type": "multipleChoice",
+      "prompt": "Wer sind Sonne, Mond und Sterne aus 1.Mo 37:9-11?",
+      "options": [
+        "Die Familienmitglieder vom Zelt des auserwählten Volkes des fleischlichen Israels",
+        "Die Himmelskörper am Firmament",
+        "Die Könige Ägyptens",
+        "Die Engel im Himmel"
+      ],
+      "correctIndex": 0,
+      "explanation": "1.Mo 37: die Familie vom Zelt des fleischlichen Israels; Mt 24/Offb 6: die Familie vom Zelt des geistlichen Israels beim Wiederkommen.",
+      "reference": "Mittelstufe Q15",
+      "difficulty": 3
+    },
+    {
+      "id": "ms_020",
+      "type": "multipleChoice",
+      "prompt": "Wann entfalten Blut und Fleisch Jesu aus Joh 6 ihre Wirkung?",
+      "options": [
+        "Beim Wiederkommen des Herrn – Königtum und Priester werden mit dem Blut erkauft, das Volk wird gewaschen",
+        "Nur beim letzten Abendmahl",
+        "Zur Zeit Moses",
+        "Bei der Sintflut"
+      ],
+      "correctIndex": 0,
+      "explanation": "Beim Wiederkommen des Herrn: Gottes Königtum und Priester werden mit diesem Blut erkauft, und das Volk wird mit dem Blut gewaschen und weiß gemacht.",
+      "reference": "Mittelstufe Q12",
+      "difficulty": 3
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#11162a" />
+  <title>Arcade der Heiligen Schrift</title>
+  <link rel="stylesheet" href="src/style.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+      }
+    }
+  </script>
+</head>
+<body>
+  <canvas id="game-canvas"></canvas>
+
+  <!-- HUD overlay (DOM = crisp text + easy touch targets) -->
+  <div id="hud" class="hidden">
+    <div id="hud-top">
+      <span id="hud-level">Lv 1</span>
+      <span id="hud-progress"></span>
+      <span id="hud-coins">⬤ 0</span>
+      <span id="hud-streak"></span>
+    </div>
+    <div id="hud-prompt"></div>
+    <button id="btn-menu" type="button">← Spielhalle</button>
+  </div>
+
+  <!-- instant feedback popup -->
+  <div id="popup" class="hidden">
+    <div id="popup-title"></div>
+    <div id="popup-body"></div>
+  </div>
+
+  <!-- results modal -->
+  <div id="results" class="hidden">
+    <div id="results-text"></div>
+    <button id="btn-again" type="button">Nochmal spielen</button>
+    <button id="btn-results-menu" type="button">Zur Spielhalle</button>
+  </div>
+
+  <!-- arcade menu -->
+  <div id="menu">
+    <h1>Arcade der Heiligen Schrift</h1>
+    <div id="menu-categories"></div>
+    <div id="menu-games"></div>
+    <div id="menu-stats"></div>
+  </div>
+
+  <div id="loading">Lade Fragen …</div>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

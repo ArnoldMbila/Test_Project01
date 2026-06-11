@@ -1,0 +1,420 @@
+{
+  "categoryId": "oberstufe",
+  "displayName": "Oberstufe – Die Offenbarung",
+  "questions": [
+    {
+      "id": "os_001",
+      "type": "multipleChoice",
+      "prompt": "Warum wurde in Gleichnissen gesprochen?",
+      "options": [
+        "Weil es die Geheimnisse des Himmelreichs sind, die vor den Feinden verborgen werden sollen",
+        "Weil das Volk keine direkten Worte verstand",
+        "Weil es Tradition war",
+        "Weil die Schriftgelehrten es verlangten"
+      ],
+      "correctIndex": 0,
+      "explanation": "Es sind die Geheimnisse des Himmelreichs – verborgen vor den Feinden und zur Erfüllung der Worte der AT-Propheten. Wenn die Stunde kommt, wird offen die Realität verkündigt.",
+      "reference": "Oberstufe Q1",
+      "difficulty": 2
+    },
+    {
+      "id": "os_002",
+      "type": "multipleChoice",
+      "prompt": "Was sind die 4 unterschiedlichen Ackerfelder, auf die der Same gesät wurde?",
+      "options": [
+        "Wegrand, steiniger Acker, dorniger Acker, gute Erde",
+        "Berg, Tal, Fluss, Wüste",
+        "Norden, Süden, Osten, Westen",
+        "Garten, Feld, Weinberg, Wald"
+      ],
+      "correctIndex": 0,
+      "explanation": "Die 4 Ackerfelder: Wegrand, steiniger Acker, dorniger Acker, gute Erde. In Offb 14 sind die gesäten Samen reif geworden und werden geerntet.",
+      "reference": "Oberstufe Q1",
+      "difficulty": 1
+    },
+    {
+      "id": "os_003",
+      "type": "multipleChoice",
+      "prompt": "Was ist der Neue Bund, der in Blut verheißen wurde?",
+      "options": [
+        "Die Offenbarung (die Ereignisse der Offenbarung)",
+        "Die zehn Gebote",
+        "Das Gesetz Moses",
+        "Die Psalmen"
+      ],
+      "correctIndex": 0,
+      "explanation": "Der Neue Bund ist die Offenbarung. Wer ihn hält: Himmelreich; wer ihn nicht hält: Hölle. Die ihn halten, haben das Gesetz Gottes in den Sinn und auf das Herz geschrieben (Versiegelte).",
+      "reference": "Oberstufe Q3",
+      "difficulty": 2
+    },
+    {
+      "id": "os_004",
+      "type": "ordering",
+      "prompt": "Bringe die Abfolge des Werkes Gottes gemäß dem Neuen Bund in die richtige Reihenfolge:",
+      "orderedItems": [
+        "7 Sterne und Zelt",
+        "Abfall",
+        "Zerstörung",
+        "Ernte",
+        "Versiegelung",
+        "12 Stämme",
+        "Hochzeit",
+        "Erste Auferstehung"
+      ],
+      "explanation": "7 Sterne und Zelt → Abfall → Zerstörung → Ernte → Versiegelung → 12 Stämme → Hochzeit → erste Auferstehung.",
+      "reference": "Oberstufe Q5",
+      "difficulty": 4
+    },
+    {
+      "id": "os_005",
+      "type": "multipleChoice",
+      "prompt": "Was für Gruppen sind die Auftretenden der Offenbarung?",
+      "options": [
+        "Abgefallene, Zerstörer, Erretter",
+        "Priester, Könige, Propheten",
+        "Hirten, Schafe, Wölfe",
+        "Engel, Menschen, Tiere"
+      ],
+      "correctIndex": 0,
+      "explanation": "Die Auftretenden der Offenbarung: Abgefallene, Zerstörer, Erretter. Der Krieg ist zwischen Gott und dem Teufel.",
+      "reference": "Oberstufe Q13",
+      "difficulty": 1
+    },
+    {
+      "id": "os_006",
+      "type": "matching",
+      "prompt": "Ordne die drei unbedingt notwendigen Dinge der Offenbarung ihrer Begründung zu:",
+      "pairs": [
+        { "left": "Same Gottes", "right": "Weil man sonst nicht zum Kind Gottes wird" },
+        { "left": "Blut Jesu", "right": "Weil es sonst keine Sündenvergebung gibt" },
+        { "left": "Versiegelung", "right": "Ausführung des Neuen Bundes" }
+      ],
+      "explanation": "Außer Abfall, Zerstörung und Errettung sind notwendig: Same Gottes, Blut Jesu, Versiegelung (vgl. 5.Mo 6:5-9).",
+      "reference": "Oberstufe Q14",
+      "difficulty": 3
+    },
+    {
+      "id": "os_007",
+      "type": "matching",
+      "prompt": "Ordne die 4 speziellen Frauen der Offenbarung ihrem Kapitel und Werk zu:",
+      "pairs": [
+        { "left": "Offb 2", "right": "Das Weib Isebel – ließ die Knechte Gottes Unzucht treiben (gehört zum Teufel)" },
+        { "left": "Offb 12", "right": "Die mit Sonne, Mond und Sternen bekleidete Frau – gebar das Kind (gehört zu Gott)" },
+        { "left": "Offb 17", "right": "Die Hure – gebar Kinder des Teufels (gehört zum Teufel)" },
+        { "left": "Offb 19", "right": "Die Frau des Lammes – bereitet die Hochzeit (gehört zu Gott)" }
+      ],
+      "explanation": "Isebel (Offb 2), die bekleidete Frau (Offb 12), die Hure (Offb 17), die Frau des Lammes (Offb 19).",
+      "reference": "Oberstufe Q9",
+      "difficulty": 4
+    },
+    {
+      "id": "os_008",
+      "type": "ordering",
+      "prompt": "Bringe den Überlieferungsprozess des offenbarten Wortes in die richtige Reihenfolge:",
+      "orderedItems": ["Gott", "Jesus", "Engel", "Johannes", "Knechte"],
+      "explanation": "Gott → Jesus → Engel → Johannes → Knechte. Was Johannes sah und aufschrieb, war eine Vorhersage; bei der Erfüllung hört, sieht und glaubt man durch den Neuen Johannes.",
+      "reference": "Oberstufe Q20",
+      "difficulty": 2
+    },
+    {
+      "id": "os_009",
+      "type": "multipleChoice",
+      "prompt": "Wer öffnet die sieben Siegel des versiegelten Buches?",
+      "options": ["Jesus", "Der Engel", "Johannes", "Die sieben Sterne"],
+      "correctIndex": 0,
+      "explanation": "Jesus öffnet die Siegel. Die Öffnung beginnt in Offb 6, alle sind in Offb 8 geöffnet. Voraussetzung: Überwinden. Das geöffnete Buch wird durch den Engel dem Neuen Johannes gegeben.",
+      "reference": "Oberstufe Q22",
+      "difficulty": 2
+    },
+    {
+      "id": "os_010",
+      "type": "ordering",
+      "prompt": "Bringe die Auftretenden ab Offb 1:9 bis Offb 2-3 in die richtige Reihenfolge:",
+      "orderedItems": ["Jesus", "Sieben Sterne", "Nikolaiten", "Johannes"],
+      "explanation": "Die Reihenfolge der Auftretenden: Jesus, sieben Sterne, Nikolaiten, Johannes.",
+      "reference": "Oberstufe Q21",
+      "difficulty": 3
+    },
+    {
+      "id": "os_011",
+      "type": "multipleChoice",
+      "prompt": "Nach welchem Geschehnis kommen die Schnitter, die Erntezeit und die Ernte?",
+      "options": [
+        "Nach dem Werk des Abfalls und dem Werk der Zerstörung",
+        "Nach der Sintflut",
+        "Nach dem Bau des Tempels",
+        "Nach der ersten Auferstehung"
+      ],
+      "correctIndex": 0,
+      "explanation": "Nach Abfall und Zerstörung (nachdem Sonne, Mond und Sterne aus Offb 6 verfinstert und herabgefallen sind). Orte der Ernte: Mt 24:31, Mt 13:30, Offb 14:14-16.",
+      "reference": "Oberstufe Q51",
+      "difficulty": 2
+    },
+    {
+      "id": "os_012",
+      "type": "multipleChoice",
+      "prompt": "Wo erscheinen die 144.000 der Offenbarung?",
+      "options": ["Auf dem Berg Zion", "In Jerusalem", "Am Jordan", "Auf dem Berg Sinai"],
+      "correctIndex": 0,
+      "explanation": "Die 144.000 (Offb 14, 7, 1, 5) erscheinen zur Erfüllungszeit der Offenbarung (Erntezeit) auf dem Berg Zion – die geernteten Erstlingsfrüchte, die 12 Stämme.",
+      "reference": "Oberstufe Q52",
+      "difficulty": 2
+    },
+    {
+      "id": "os_013",
+      "type": "multipleChoice",
+      "prompt": "Worin unterscheiden sich Offb 13 und Offb 14?",
+      "options": [
+        "Malzeichen vom Tier angenommen vs. vom Lamm versiegelt worden",
+        "Krieg vs. Frieden",
+        "Altes vs. Neues Testament",
+        "Gericht vs. Gnade"
+      ],
+      "correctIndex": 0,
+      "explanation": "Offb 13: das Malzeichen vom Tier annehmen; Offb 14: vom Lamm versiegelt werden. Die 144.000 wurden in Offb 7 versiegelt.",
+      "reference": "Oberstufe Q53",
+      "difficulty": 3
+    },
+    {
+      "id": "os_014",
+      "type": "ordering",
+      "prompt": "Bringe die Schöpfung der 12 Stämme von der Prophezeiung bis zur Erfüllung in die richtige Reihenfolge:",
+      "orderedItems": [
+        "Jer 31 – Vorhersage über das Säen der zwei Arten von Samen",
+        "Mt 13 – Samensäen",
+        "Offb 14 – Ernte",
+        "Offb 7 – Versiegelung und Erschaffung der 12 Stämme"
+      ],
+      "explanation": "Jer 31 (Vorhersage) → Mt 13 (Säen) → Offb 14 (Ernte) → Offb 7 (Versiegelung und Erschaffung der 12 Stämme).",
+      "reference": "Oberstufe Q54",
+      "difficulty": 3
+    },
+    {
+      "id": "os_015",
+      "type": "multipleChoice",
+      "prompt": "Gegen wen haben die Überwinder aus Offb 15 gekämpft und gesiegt?",
+      "options": [
+        "Gegen den Drachen (Offb 12)",
+        "Gegen die Römer",
+        "Gegen die Pharisäer",
+        "Gegen Goliath"
+      ],
+      "correctIndex": 0,
+      "explanation": "Die Überwinder haben gegen den Drachen aus Offb 12 gekämpft und gesiegt.",
+      "reference": "Oberstufe Q55",
+      "difficulty": 2
+    },
+    {
+      "id": "os_016",
+      "type": "multipleChoice",
+      "prompt": "Was wird in Offb 16 aus den sieben goldenen Schalen ausgegossen – und worauf?",
+      "options": [
+        "Gottes Zorn – auf das Zelt aus Offb 13, wo die Abgefallenen und Zerstörer sind",
+        "Wasser des Lebens – auf den Berg Zion",
+        "Öl – auf den Tempel",
+        "Feuer – auf Jerusalem"
+      ],
+      "correctIndex": 0,
+      "explanation": "Die Schalen (geboren in Offb 12 und 15, auserwählt weil sie überwunden haben) gießen Gottes Zorn auf das Zelt aus Offb 13 aus, weil dort die Abgefallenen und Zerstörer sind.",
+      "reference": "Oberstufe Q56",
+      "difficulty": 3
+    },
+    {
+      "id": "os_017",
+      "type": "multipleChoice",
+      "prompt": "Zu welchem Reich gehören das Tier mit sieben Köpfen und zehn Hörnern und die Hure (Offb 17)?",
+      "options": [
+        "Babylon, das Reich der Dämonen",
+        "Das neue geistliche Israel",
+        "Das Reich der Perser",
+        "Das Reich Gottes"
+      ],
+      "correctIndex": 0,
+      "explanation": "Sie gehören zu Babylon, dem Reich der Dämonen. In Offb 13 haben sie das auserwählte Volk des Himmelszeltes zerstört.",
+      "reference": "Oberstufe Q60",
+      "difficulty": 2
+    },
+    {
+      "id": "os_018",
+      "type": "matching",
+      "prompt": "Ordne zu, wer Meer, Schiffe, Steuermänner, Küstenfahrer und Schiffsleute sind (Offb 18):",
+      "pairs": [
+        { "left": "Meer", "right": "Welt" },
+        { "left": "Schiffe", "right": "Gemeinden" },
+        { "left": "Steuermänner", "right": "Hirten" },
+        { "left": "Schiffsleute", "right": "Gemeindemitglieder" }
+      ],
+      "explanation": "Meer = Welt, Schiffe = Gemeinden, Steuermänner = Hirten, Küstenfahrer = Gemeindemitarbeiter, Schiffsleute = Gemeindemitglieder.",
+      "reference": "Oberstufe Q62",
+      "difficulty": 3
+    },
+    {
+      "id": "os_019",
+      "type": "multipleChoice",
+      "prompt": "Wodurch sind die Nationen in Offb 18 gefallen?",
+      "options": ["Durch den Wein der Unzucht", "Durch ein Erdbeben", "Durch Hungersnot", "Durch Krieg mit Rom"],
+      "correctIndex": 0,
+      "explanation": "Die Nationen sind durch den Wein der Unzucht gefallen. Die Hure ist die Mutter von Babylon, Satans Oberhirte; die Könige der Erde sind heidnische Hirten.",
+      "reference": "Oberstufe Q63",
+      "difficulty": 2
+    },
+    {
+      "id": "os_020",
+      "type": "matching",
+      "prompt": "Vergleiche die Hochzeit aus Offb 18 mit der Hochzeit aus Offb 19:",
+      "pairs": [
+        { "left": "Offb 18: Partner", "right": "Mit dem Teufel (bösen Geist) geheiratet" },
+        { "left": "Offb 19: Partner", "right": "Mit Jesus heiraten" },
+        { "left": "Offb 18: Speise", "right": "Wein der Unzucht" },
+        { "left": "Offb 19: Speise", "right": "Verborgen gewesenes Manna" }
+      ],
+      "explanation": "Offb 18: Hochzeit mit dem Teufel, Speise ist der Wein der Unzucht. Offb 19: Hochzeit mit Jesus, Speise ist das verborgen gewesene Manna.",
+      "reference": "Oberstufe Q64",
+      "difficulty": 4
+    },
+    {
+      "id": "os_021",
+      "type": "multipleChoice",
+      "prompt": "Wer sind das weiße Pferd und der Reiter in Offb 19?",
+      "options": [
+        "Weißes Pferd: der Überwinder, der Neue Johannes / Reiter: Jesus",
+        "Weißes Pferd: ein Engel / Reiter: Gott",
+        "Weißes Pferd: Johannes der Täufer / Reiter: Elia",
+        "Weißes Pferd: die Gemeinde / Reiter: Petrus"
+      ],
+      "correctIndex": 0,
+      "explanation": "Weißes Pferd: der Überwinder (der Neue Johannes), Reiter: Jesus. Die weißen Pferde: die 144.000; die Reiter: die Märtyrer. Das in Blut getauchte Gewand: Gottes Wort.",
+      "reference": "Oberstufe Q65",
+      "difficulty": 3
+    },
+    {
+      "id": "os_022",
+      "type": "multipleChoice",
+      "prompt": "Wer hat an der ersten Auferstehung teil und herrscht mit Christus (Offb 20)?",
+      "options": [
+        "Die Geister der Märtyrer und die, die das Malzeichen nicht angenommen haben, sondern versiegelt sind",
+        "Alle Menschen aller Zeiten",
+        "Nur die 12 Jünger",
+        "Die Könige der Erde"
+      ],
+      "correctIndex": 0,
+      "explanation": "Die Geister der Märtyrer und diejenigen, die das Malzeichen vom Tier nicht angenommen haben, sondern mit dem Siegel Gottes versiegelt sind. Nach den tausend Jahren werden Gog und Magog gerichtet.",
+      "reference": "Oberstufe Q67",
+      "difficulty": 3
+    },
+    {
+      "id": "os_023",
+      "type": "multipleChoice",
+      "prompt": "Worin unterscheiden sich der neue Himmel und die neue Erde vom ersten Himmel und der ersten Erde (Offb 21)?",
+      "options": [
+        "Neues Reich und neues Volk vs. traditionelle Denominationen",
+        "Mehr Sterne am Himmel",
+        "Ein neuer Kontinent entsteht",
+        "Es gibt keinen Unterschied"
+      ],
+      "correctIndex": 0,
+      "explanation": "Neues Reich und neues Volk gegenüber den traditionellen Denominationen. Heilige Stadt = Himmelreich; Meer = Welt von Babylon. Tod und Schmerz enden, weil die Lebensschnur wieder verbunden ist.",
+      "reference": "Oberstufe Q69",
+      "difficulty": 3
+    },
+    {
+      "id": "os_024",
+      "type": "multipleChoice",
+      "prompt": "Was ist das Wasser des Lebens wie Kristall, das aus dem Thron hervorkommt (Offb 22)?",
+      "options": [
+        "Das offenbarte Wort Gottes",
+        "Ein Fluss in Jerusalem",
+        "Das Taufwasser",
+        "Der Regen vom Himmel"
+      ],
+      "correctIndex": 0,
+      "explanation": "Das Wasser des Lebens ist das offenbarte Wort Gottes. Darin müssen die Kleider gewaschen werden, um in die heilige Stadt einzuziehen, wo der Baum des Lebens ist.",
+      "reference": "Oberstufe Q73",
+      "difficulty": 2
+    },
+    {
+      "id": "os_025",
+      "type": "multipleChoice",
+      "prompt": "Was geschieht, wenn man der Weissagung dieses Buches etwas hinzufügt oder wegnimmt (Offb 22)?",
+      "options": [
+        "Die Plagen des Buches werden hinzugefügt; der Anteil am Baum des Lebens und an der heiligen Stadt wird weggenommen",
+        "Nichts, solange man es gut meint",
+        "Man muss das Buch neu abschreiben",
+        "Man verliert nur seinen Lohn"
+      ],
+      "correctIndex": 0,
+      "explanation": "Es werden die Plagen hinzugefügt, die im Buch geschrieben sind, und der Anteil am Baum des Lebens und an der heiligen Stadt wird weggenommen.",
+      "reference": "Oberstufe Q74",
+      "difficulty": 2
+    },
+    {
+      "id": "os_026",
+      "type": "matching",
+      "prompt": "Ordne die zwei Arten von Bäumen zu (Offb 22 / Offb 18):",
+      "pairs": [
+        { "left": "Babylon", "right": "Baum der Erkenntnis des Guten und Bösen" },
+        { "left": "Erstlingsfrüchte, 12 Stämme", "right": "Baum des Lebens" },
+        { "left": "Bergtiere", "right": "Zerstörer" },
+        { "left": "Hunde", "right": "Abgefallene" }
+      ],
+      "explanation": "Babylon = Baum des Guten und Bösen; die 12 Stämme = Baum des Lebens. Bergtiere = Zerstörer, Hunde = Abgefallene.",
+      "reference": "Oberstufe Q75",
+      "difficulty": 4
+    },
+    {
+      "id": "os_027",
+      "type": "multipleChoice",
+      "prompt": "Wer sind die eigentlichen Verkörperungen des Lebensbaumes?",
+      "options": ["Gott und Jesus", "Adam und Eva", "Mose und Aaron", "Die zwölf Jünger"],
+      "correctIndex": 0,
+      "explanation": "Gott und Jesus sind die Verkörperungen des Lebensbaumes. Die mit dem Namen Gottes an der Stirn sind die mit dem offenbarten Wort Versiegelten (die geernteten Früchte).",
+      "reference": "Oberstufe Q17",
+      "difficulty": 2
+    },
+    {
+      "id": "os_028",
+      "type": "multipleChoice",
+      "prompt": "Um wessen Offenbarung handelt es sich in Offb 1, und durch wen empfangen die Knechte sie?",
+      "options": [
+        "Jesu Offenbarung – durch den Neuen Johannes",
+        "Moses Offenbarung – durch Aaron",
+        "Gottes Offenbarung – durch Elia",
+        "Des Engels Offenbarung – durch Petrus"
+      ],
+      "correctIndex": 0,
+      "explanation": "Es ist die Offenbarung Jesu. Die Knechte (die versiegelten 144.000 der 12 Stämme und die weiße Schar) empfangen sie durch den Neuen Johannes. Glückselig sind die, die bewahren.",
+      "reference": "Oberstufe Q19",
+      "difficulty": 3
+    },
+    {
+      "id": "os_029",
+      "type": "multipleChoice",
+      "prompt": "Was sind die 3 Geheimnisse der Offenbarung?",
+      "options": [
+        "Die sieben Sterne, das Tier mit sieben Köpfen und zehn Hörnern, die siebte Posaune",
+        "Glaube, Hoffnung, Liebe",
+        "Die drei Plagen",
+        "Vater, Sohn, Geist"
+      ],
+      "correctIndex": 0,
+      "explanation": "Die 3 Geheimnisse: die sieben Sterne, das Tier mit sieben Köpfen und zehn Hörnern, die siebte Posaune. Das eine weitere: der Name an der Stirn der Hure – Babylon.",
+      "reference": "Oberstufe Q9",
+      "difficulty": 4
+    },
+    {
+      "id": "os_030",
+      "type": "multipleChoice",
+      "prompt": "Wer liest, wer hört und wer bewahrt gemäß Offb 1?",
+      "options": [
+        "Der Neue Johannes liest; Völker, Nationen, Sprachen und Könige hören; die 144.000 der 12 Stämme und die weiße Schar bewahren",
+        "Der Priester liest; die Leviten hören; die Ältesten bewahren",
+        "Johannes der Täufer liest; die Jünger hören; die Apostel bewahren",
+        "Mose liest; Israel hört; die Propheten bewahren"
+      ],
+      "correctIndex": 0,
+      "explanation": "Der Neue Johannes liest; die Heiligen (Völker, Nationen, Sprachen, Könige) hören; die 144.000 der 12 Stämme einschließlich des Lesenden und die weiße Schar bewahren.",
+      "reference": "Oberstufe Q18",
+      "difficulty": 3
+    }
+  ]
+}
