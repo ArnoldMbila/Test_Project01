@@ -1,5 +1,9 @@
 # Test_Project01 – Arcade der Heiligen Schrift
 
+> 🎮 **Sofort im Browser spielen (iPad-tauglich, ohne Installation):**
+> siehe [`web-playable/`](web-playable/README.md) – Three.js-Version derselben
+> App, deploybar auf GitHub Pages/Vercel/Netlify oder lokal per `npm start`.
+
 Eine modulare 3D-Arcade-Lernapp für Unity 6 (C#), die Bibelstudium-Fragen aus
 PDF-Testbögen in kurze, ADHS-freundliche Mini-Game-Sessions verwandelt.
 Alle Spielmechaniken, Namen und Inhalte sind Originalentwürfe für dieses

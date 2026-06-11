@@ -1,0 +1,389 @@
+{
+  "categoryId": "grundstufe",
+  "displayName": "Grundstufe – Allgemeinwissen & Gleichnisse",
+  "questions": [
+    {
+      "id": "gs_001",
+      "type": "multipleChoice",
+      "prompt": "Wer hat Himmel und Erde und alles, was darin ist, erschaffen?",
+      "options": ["Gott", "Die Engel", "Mose", "Die Propheten"],
+      "correctIndex": 0,
+      "explanation": "Gott ist der Schöpfer von Himmel und Erde – ein selbstexistierendes Wesen: „Ich bin, der ich bin.“",
+      "reference": "Allgemeinwissen Q1",
+      "difficulty": 1
+    },
+    {
+      "id": "gs_002",
+      "type": "multipleChoice",
+      "prompt": "Was für ein Wesen ist der Teufel?",
+      "options": ["Ein Geschöpf, ein abtrünniger Engel", "Ein selbstexistierendes Wesen", "Ein Mensch", "Ein Tier"],
+      "correctIndex": 0,
+      "explanation": "Der Teufel ist ein Geschöpf – ein abtrünniger Engel, kein selbstexistierendes Wesen wie Gott.",
+      "reference": "Allgemeinwissen Q1",
+      "difficulty": 1
+    },
+    {
+      "id": "gs_003",
+      "type": "multipleChoice",
+      "prompt": "Wie viele Bücher hat das Alte Testament?",
+      "options": ["39 Bücher", "27 Bücher", "66 Bücher", "12 Bücher"],
+      "correctIndex": 0,
+      "explanation": "Das AT hat 39 Bücher, 929 Kapitel und 23.144 Verse.",
+      "reference": "Allgemeinwissen Q2",
+      "difficulty": 1
+    },
+    {
+      "id": "gs_004",
+      "type": "multipleChoice",
+      "prompt": "Wie viele Bücher hat das Neue Testament?",
+      "options": ["27 Bücher", "39 Bücher", "66 Bücher", "7 Bücher"],
+      "correctIndex": 0,
+      "explanation": "Das NT hat 27 Bücher, 260 Kapitel und 7.957 Verse.",
+      "reference": "Allgemeinwissen Q2",
+      "difficulty": 1
+    },
+    {
+      "id": "gs_005",
+      "type": "multipleChoice",
+      "prompt": "Durch ca. wie viele Personen wurde die Bibel aufgeschrieben?",
+      "options": ["ca. 35 Personen", "ca. 12 Personen", "ca. 70 Personen", "ca. 100 Personen"],
+      "correctIndex": 0,
+      "explanation": "Der Autor der Bibel ist Gott; aufgeschrieben wurde sie durch ca. 35 Personen.",
+      "reference": "Allgemeinwissen Q2",
+      "difficulty": 1
+    },
+    {
+      "id": "gs_006",
+      "type": "ordering",
+      "prompt": "Bringe die 7 Leiter, die Gott aufgestellt hat, in die richtige Reihenfolge:",
+      "orderedItems": ["Adam", "Noah", "Abraham", "Mose", "Josua", "Jesus", "Der Überwinder: der neue Johannes"],
+      "explanation": "Die 7 Leiter ab Adam bis zur Zeit der Offenbarung: Adam, Noah, Abraham, Mose, Josua, Jesus, der Überwinder (der neue Johannes).",
+      "reference": "Allgemeinwissen Q3",
+      "difficulty": 2
+    },
+    {
+      "id": "gs_007",
+      "type": "ordering",
+      "prompt": "Bringe die 7 Zeitalter der Bibelgeschichte in die richtige Reihenfolge:",
+      "orderedItems": [
+        "Zeit der Schöpfung",
+        "Zeit des Auszugs aus Ägypten und des Gesetzes",
+        "Zeit der Richter",
+        "Zeit der Könige",
+        "Zeit der Propheten",
+        "Zeit des himmlischen Evangeliums",
+        "Zeit der Wiederschöpfung und der Offenbarung"
+      ],
+      "explanation": "Der Verlauf der Bibelgeschichte gliedert sich in diese 7 Zeitalter.",
+      "reference": "Allgemeinwissen Q3",
+      "difficulty": 2
+    },
+    {
+      "id": "gs_008",
+      "type": "multipleChoice",
+      "prompt": "Wer kam zur Zeit des Auszugs aus Ägypten zu wem und erfüllte die Verheißung?",
+      "options": [
+        "Gott kam zu Mose und erfüllte, was er Abraham verheißen hatte",
+        "Gott kam zu Abraham und erfüllte, was er Adam verheißen hatte",
+        "Gott kam zu Josua und erfüllte, was er Noah verheißen hatte",
+        "Gott kam zu Aaron und erfüllte, was er Isaak verheißen hatte"
+      ],
+      "correctIndex": 0,
+      "explanation": "Zur Zeit des Auszugs kam Gott zu Mose und erfüllte das, was er Abraham verheißen hatte.",
+      "reference": "Allgemeinwissen Q4",
+      "difficulty": 2
+    },
+    {
+      "id": "gs_009",
+      "type": "multipleChoice",
+      "prompt": "Wie nennt man die Zeit Moses gemäß Joh 1:17?",
+      "options": ["Die Zeit des Gesetzes", "Die Zeit des Glaubens an das Evangelium", "Die Zeit der Vollendung des Himmelreichs", "Die Zeit der Richter"],
+      "correctIndex": 0,
+      "explanation": "Moses Zeit ist die Zeit des Gesetzes (Joh 1:17); das erste Kommen die Zeit des Glaubens an das Evangelium (Mt 24:14, Joh 1:12); das Wiederkommen die Zeit der Vollendung des Himmelreichs (Offb 21:6).",
+      "reference": "Allgemeinwissen Q4",
+      "difficulty": 2
+    },
+    {
+      "id": "gs_010",
+      "type": "matching",
+      "prompt": "Ordne zu: Wer bereitet in jedem Zeitalter den Weg, bevor der fürsprechende Hirte kommt?",
+      "pairs": [
+        { "left": "Zeit der Erfüllung der Vorhersagen an Abraham", "right": "Aaron" },
+        { "left": "Zeit der Erfüllung der Vorhersagen der AT-Propheten", "right": "Johannes der Täufer" },
+        { "left": "Zeit der Erfüllung der Vorhersagen des NT", "right": "Die sieben Sterne" }
+      ],
+      "explanation": "Vor dem fürsprechenden Hirten kommt jeweils ein Wegbereiter: Aaron, Johannes der Täufer, die sieben Sterne. Ihre Rolle: den Weg des Herrn zu bereiten.",
+      "reference": "Allgemeinwissen Q5",
+      "difficulty": 3
+    },
+    {
+      "id": "gs_011",
+      "type": "matching",
+      "prompt": "Ordne die AT-Prophezeiung der NT-Erfüllung zu:",
+      "pairs": [
+        { "left": "Jes 7:14 – von einer Jungfrau geboren", "right": "Mt 1:18-23" },
+        { "left": "Hos 11:1 – nach Ägypten gegangen", "right": "Mt 2:13-15" },
+        { "left": "Jes 8:23-9:1 – in Galiläa gewirkt", "right": "Mt 4:13-16" },
+        { "left": "Jes 61:1 – predigt das himmlische Evangelium", "right": "Lk 4:16-21" }
+      ],
+      "explanation": "Was im AT über Jesus prophezeit wurde, hat sich im NT erfüllt.",
+      "reference": "Allgemeinwissen Q5",
+      "difficulty": 3
+    },
+    {
+      "id": "gs_012",
+      "type": "multipleChoice",
+      "prompt": "In welche vier großen Kategorien lassen sich die Inhalte der Bibel einteilen?",
+      "options": [
+        "Geschichte, Lehre, Prophezeiung, Erfüllung",
+        "Gesetz, Psalmen, Propheten, Briefe",
+        "Schöpfung, Fall, Gericht, Errettung",
+        "Glaube, Hoffnung, Liebe, Gnade"
+      ],
+      "correctIndex": 0,
+      "explanation": "Die Inhalte der Bibel: Geschichte, Lehre, Prophezeiung, Erfüllung.",
+      "reference": "Allgemeinwissen Q6",
+      "difficulty": 1
+    },
+    {
+      "id": "gs_013",
+      "type": "multipleChoice",
+      "prompt": "In welche drei Inhalte lassen sich die Vorhersagen der Bibel einteilen?",
+      "options": ["Abfall, Zerstörung, Errettung", "Schöpfung, Bund, Gericht", "Glaube, Werke, Lohn", "Gesetz, Gnade, Wahrheit"],
+      "correctIndex": 0,
+      "explanation": "Die Vorhersagen erfüllen sich nach den drei Inhalten Abfall, Zerstörung und Errettung – kundgetan dem auserwählten Volk, das errettet werden soll.",
+      "reference": "Allgemeinwissen Q6",
+      "difficulty": 1
+    },
+    {
+      "id": "gs_014",
+      "type": "multipleChoice",
+      "prompt": "In welche beiden Reiche wird in der Bibel im Großen unterschieden?",
+      "options": ["Gottes Reich und Satans Reich", "Israel und Ägypten", "Himmel und Meer", "Norden und Süden"],
+      "correctIndex": 0,
+      "explanation": "Geistlich wie fleischlich gibt es zwei Reiche: Gottes Reich und Satans Reich. Der 6.000-jährige Krieg ist der Kampf zwischen Geist und Fleisch, die zu Gott gehören, und Geist und Fleisch, die zu Satan gehören.",
+      "reference": "Allgemeinwissen Q8",
+      "difficulty": 1
+    },
+    {
+      "id": "gs_015",
+      "type": "multipleChoice",
+      "prompt": "Welche der folgenden ist KEINE der 3 Voraussetzungen für Sündenvergebung?",
+      "options": [
+        "Viele gute Werke vorweisen",
+        "Allein das Blut Jesu trinken (Mt 26:28)",
+        "Die Gleichnisse erkennen (Mk 4:10-12)",
+        "Den neuen Bund halten (Hebr 8:10-12)"
+      ],
+      "correctIndex": 0,
+      "explanation": "Die 3 Voraussetzungen: das Blut Jesu trinken (Mt 26:28, Joh 6:53-57), die Gleichnisse erkennen (Mk 4:10-12), den neuen Bund halten (Hebr 8:10-12).",
+      "reference": "Allgemeinwissen Q9",
+      "difficulty": 2
+    },
+    {
+      "id": "gs_016",
+      "type": "matching",
+      "prompt": "Ordne die Art von Israel der jeweiligen Zeit zu:",
+      "pairs": [
+        { "left": "Altes Testament", "right": "Fleischliches Israel" },
+        { "left": "Erstes Kommen", "right": "Geistliches Israel" },
+        { "left": "Wiederkommen", "right": "Neues geistliches Israel" }
+      ],
+      "explanation": "Israel bedeutet Überwinder bzw. Sieger; Beweis ist die Erschaffung von 12 Stämmen. AT: fleischliches Israel, erstes Kommen: geistliches Israel, Wiederkommen: neues geistliches Israel.",
+      "reference": "Allgemeinwissen Q10",
+      "difficulty": 2
+    },
+    {
+      "id": "gs_017",
+      "type": "multipleChoice",
+      "prompt": "Aus welchen beiden Gründen redete Jesus in Gleichnissen?",
+      "options": [
+        "Um die Geheimnisse des Himmelreichs vor den Feinden zu verbergen und um die Worte der AT-Propheten zu erfüllen",
+        "Um leichter verstanden zu werden und um Geschichten zu erzählen",
+        "Um die Pharisäer zu unterhalten und das Volk zu beruhigen",
+        "Um das Gesetz zu erklären und die Römer zu überzeugen"
+      ],
+      "correctIndex": 0,
+      "explanation": "Jesus redete in Gleichnissen, um die Geheimnisse des Himmelreichs vor den Feinden zu verbergen und um die durch die AT-Propheten geredeten Worte zu erfüllen.",
+      "reference": "Grundstufe Q1",
+      "difficulty": 2
+    },
+    {
+      "id": "gs_018",
+      "type": "multipleChoice",
+      "prompt": "Was geschieht mit jemandem, der die Gleichnisse NICHT erkennt?",
+      "options": [
+        "Er wird zu einem Außenstehenden und kann keine Sündenvergebung bekommen",
+        "Er bekommt eine zweite Chance",
+        "Er wird trotzdem errettet",
+        "Nichts – Gleichnisse sind nur Geschichten"
+      ],
+      "correctIndex": 0,
+      "explanation": "Wer die Gleichnisse erkennt, bekommt Sündenvergebung und wird errettet. Wer sie nicht erkennt, wird zum Außenstehenden und kann nicht errettet werden.",
+      "reference": "Grundstufe Q1",
+      "difficulty": 2
+    },
+    {
+      "id": "gs_019",
+      "type": "multipleChoice",
+      "prompt": "Welches der folgenden gehört NICHT zu den sechs Himmelreich-Gleichnissen aus Mt 13?",
+      "options": [
+        "Ein Hirte, der hundert Schafe weidet",
+        "Ein Mensch, der guten Samen auf seinen Acker säte",
+        "Ein Senfkorn, das ein Mensch auf seinen Acker säte",
+        "Ein im Acker verborgener Schatz"
+      ],
+      "correctIndex": 0,
+      "explanation": "Die sechs Himmelreiche in Mt 13: guter Same, Senfkorn, Sauerteig, verborgener Schatz, Kaufmann mit Perlen, Netz im Meer.",
+      "reference": "Grundstufe Q2",
+      "difficulty": 2
+    },
+    {
+      "id": "gs_020",
+      "type": "matching",
+      "prompt": "Ordne dem Gleichnis seine wahre Bedeutung zu:",
+      "pairs": [
+        { "left": "Bauer (Sämann)", "right": "Hirte" },
+        { "left": "Acker", "right": "Menschenherz und Gemeinde" },
+        { "left": "Same", "right": "Wort" },
+        { "left": "Vogel", "right": "Geist" }
+      ],
+      "explanation": "Bauer/Sämann = Hirte; Acker = Menschenherz und Gemeinde; Same = Wort; Vogel = Geist.",
+      "reference": "Grundstufe Q4",
+      "difficulty": 2
+    },
+    {
+      "id": "gs_021",
+      "type": "matching",
+      "prompt": "Ordne dem Gleichnis seine wahre Bedeutung zu:",
+      "pairs": [
+        { "left": "Wahrer Weinstock", "right": "Gottes Hirte" },
+        { "left": "Feldweinstock", "right": "Satans Hirte" },
+        { "left": "Wein", "right": "Wort" },
+        { "left": "Ölbaum", "right": "Zeuge" }
+      ],
+      "explanation": "Wahrer Weinstock = Gottes Hirte, Feldweinstock = Satans Hirte, Wein = Wort, Ölbaum = Zeuge (Öl = Wort des Zeugnisses).",
+      "reference": "Grundstufe Q5",
+      "difficulty": 2
+    },
+    {
+      "id": "gs_022",
+      "type": "matching",
+      "prompt": "Ordne dem Gleichnis seine wahre Bedeutung zu:",
+      "pairs": [
+        { "left": "Feuer", "right": "Verzehrendes und richtendes Wort" },
+        { "left": "Räucherwerk", "right": "Gebet" },
+        { "left": "Rauch", "right": "Klang von aufsteigenden Gebeten" },
+        { "left": "Topf", "right": "Gemeinde" }
+      ],
+      "explanation": "Feuer = verzehrendes/richtendes Wort; Räucherfass/Räucherwerk = Menschenherz/Gebet; Rauch = Klang aufsteigender Gebete; Topf = Gemeinde.",
+      "reference": "Grundstufe Q7",
+      "difficulty": 3
+    },
+    {
+      "id": "gs_023",
+      "type": "matching",
+      "prompt": "Ordne dem Gleichnis seine wahre Bedeutung zu:",
+      "pairs": [
+        { "left": "Licht (Tag)", "right": "Wort des Lebens" },
+        { "left": "Finsternis (Nacht)", "right": "Unwissenheit, wo es kein Wort gibt" },
+        { "left": "Kleid/Gewand", "right": "Wort, Tat" },
+        { "left": "Schatz (Perle, Gold)", "right": "Wort der Wahrheit" }
+      ],
+      "explanation": "Licht = Wort des Lebens; Finsternis = Unwissenheit ohne Wort; Kleid = Wort und Tat; Schatz/Perle/Gold = Wort der Wahrheit.",
+      "reference": "Grundstufe Q8",
+      "difficulty": 2
+    },
+    {
+      "id": "gs_024",
+      "type": "matching",
+      "prompt": "Ordne dem Gleichnis seine wahre Bedeutung zu:",
+      "pairs": [
+        { "left": "Wasser (Regen, Tau)", "right": "Wort" },
+        { "left": "Quelle", "right": "Hirte und Tempel" },
+        { "left": "Meer", "right": "Welt" },
+        { "left": "Netz / Fisch", "right": "Wort / Mensch" }
+      ],
+      "explanation": "Wasser = Wort; Quelle = Hirte und Tempel; Meer = Welt (Schiff/Boot = Gemeinde); Netz = Wort, Fisch = Mensch.",
+      "reference": "Grundstufe Q9",
+      "difficulty": 2
+    },
+    {
+      "id": "gs_025",
+      "type": "multipleChoice",
+      "prompt": "Was bedeuten die vier lebendigen Wesen (Mensch, Ochse, Löwe, Adler)?",
+      "options": ["Vier Erzengel", "Vier Evangelisten", "Vier Könige", "Vier Propheten"],
+      "correctIndex": 0,
+      "explanation": "Die vier lebendigen Wesen stehen für vier Erzengel. Das Tier (Offb 13) = jemand, der Gottes Wort nicht erkennt; Schlange = Zerstörer.",
+      "reference": "Grundstufe Q10",
+      "difficulty": 2
+    },
+    {
+      "id": "gs_026",
+      "type": "matching",
+      "prompt": "Ordne dem Gleichnis seine wahre Bedeutung zu:",
+      "pairs": [
+        { "left": "Kopf/Haupt", "right": "Leiter" },
+        { "left": "Horn", "right": "Machthaber" },
+        { "left": "Schwanz", "right": "Falscher Prophet" },
+        { "left": "Ochse und Schaf", "right": "Gerechter Gläubiger" }
+      ],
+      "explanation": "Kopf = Leiter, Horn = Machthaber, Schwanz = falscher Prophet; Ochse und Schaf = gerechter Gläubiger.",
+      "reference": "Grundstufe Q11",
+      "difficulty": 3
+    },
+    {
+      "id": "gs_027",
+      "type": "matching",
+      "prompt": "Ordne dem Gleichnis seine wahre Bedeutung zu:",
+      "pairs": [
+        { "left": "Sonne, Mond, Sterne", "right": "Hirte, Missionar und Heilige, die zum Himmel gehören" },
+        { "left": "Wolke", "right": "Symbol für die unsichtbare geistliche Welt" },
+        { "left": "Zelt", "right": "Behausung" },
+        { "left": "Weg", "right": "Wort und Hirte, der das Wort hat" }
+      ],
+      "explanation": "Sonne/Mond/Sterne = Hirte, Missionar, Heilige; Wolke = unsichtbare geistliche Welt; Zelt = Behausung; Weg = Wort und Hirte.",
+      "reference": "Grundstufe Q13",
+      "difficulty": 3
+    },
+    {
+      "id": "gs_028",
+      "type": "matching",
+      "prompt": "Ordne dem Gleichnis seine wahre Bedeutung zu:",
+      "pairs": [
+        { "left": "Jerusalem", "right": "Reich des auserwählten Volkes" },
+        { "left": "Babylon", "right": "Heidnisches Reich der Dämonen" },
+        { "left": "Krieg", "right": "Kampf der Lehren" },
+        { "left": "Waffe", "right": "Wort des Zeugnisses" }
+      ],
+      "explanation": "Jerusalem = Reich des auserwählten Volkes; Babylon = heidnisches Reich der Dämonen; Krieg = Kampf der Lehren; Waffe = Wort des Zeugnisses.",
+      "reference": "Grundstufe Q15",
+      "difficulty": 3
+    },
+    {
+      "id": "gs_029",
+      "type": "multipleChoice",
+      "prompt": "Was bedeutet der Schlüssel des Himmelreichs?",
+      "options": [
+        "Weisheit, die Geheimnisse des Himmelreichs zu kennen",
+        "Ein goldener Schlüssel im Tempel",
+        "Die Macht der Könige",
+        "Das Gesetz Moses"
+      ],
+      "correctIndex": 0,
+      "explanation": "Schlüssel des Himmelreichs = Weisheit, die Geheimnisse des Himmelreichs zu kennen; Schlüssel der Hölle = Weisheit, die Geheimnisse Satans zu kennen.",
+      "reference": "Grundstufe Q15",
+      "difficulty": 2
+    },
+    {
+      "id": "gs_030",
+      "type": "multipleChoice",
+      "prompt": "Was bedeuten Bräutigam und Braut im Gleichnis?",
+      "options": ["Geist und Fleisch", "Mann und Frau", "Himmel und Erde", "König und Königin"],
+      "correctIndex": 0,
+      "explanation": "Bräutigam = Geist, Braut = Fleisch. Witwe/Waise = abgefallener Hirte und dessen Gemeindemitglieder.",
+      "reference": "Grundstufe Q14",
+      "difficulty": 2
+    }
+  ]
+}
