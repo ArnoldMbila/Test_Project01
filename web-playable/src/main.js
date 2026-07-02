@@ -137,4 +137,8 @@ async function boot() {
   }
 }
 
-boot();
+boot().catch((e) => {
+  console.error('[boot]', e);
+  el('loading').classList.add('hidden');
+  if (globalThis.__showError) globalThis.__showError(e.message || String(e));
+});

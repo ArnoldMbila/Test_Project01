@@ -14,7 +14,7 @@ export class MiniGame {
   constructor(opts) {
     this.category = opts.category;
     this.onExit = opts.onExit;
-    this.questionsPerSession = opts.questionsPerSession ?? 6;
+    this.questionsPerSession = opts.questionsPerSession || 6;
     this.sessionQuestions = [];
     this.index = -1;
     this.correctCount = 0;

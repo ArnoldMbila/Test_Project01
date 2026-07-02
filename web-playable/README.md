@@ -1,11 +1,14 @@
 # Arcade der Heiligen Schrift – Web-Version (Three.js)
 
 Browser-spielbare 3D-Arcade-Lernapp – **sofort auf dem iPad spielbar, ohne
-Installation und ohne Build-Schritt**. Reines HTML/CSS/JavaScript (ES-Module)
-mit Three.js per CDN. Gleiche Inhalte und Systeme wie die Unity-Version im
-Repo-Root: 80 Fragen, XP/Level, Münzen, Streaks, 8 Mini-Games, persistenter
-Fortschritt. Keine externen Bezahl-Assets; alle Sounds werden per WebAudio
-synthetisiert, alle 3D-Objekte sind Primitives mit Canvas-Text-Labels.
+Installation und ohne Build-Schritt**. Reines HTML/CSS/JavaScript (ES-Module).
+Three.js liegt lokal unter `src/vendor/` (MIT-Lizenz) – **kein CDN, keine
+Import Map** (die erst ab iOS 16.4 unterstützt wird), daher läuft die App auch
+auf älteren iPads und komplett offline nach dem ersten Laden. Gleiche Inhalte
+und Systeme wie die Unity-Version im Repo-Root: 80 Fragen, XP/Level, Münzen,
+Streaks, 8 Mini-Games, persistenter Fortschritt. Keine externen Bezahl-Assets;
+alle Sounds werden per WebAudio synthetisiert, alle 3D-Objekte sind Primitives
+mit Canvas-Text-Labels.
 
 ## Sofort starten
 
@@ -32,7 +35,9 @@ ES-Module und `fetch` brauchen einen Webserver.
 - Repo importieren, als *Root Directory* `web-playable` setzen,
   Framework „Other“, kein Build-Command, Output-Directory `.` – fertig.
 
-Internet wird nur für das Three.js-CDN (jsdelivr) gebraucht.
+Es gibt keine externen Abhängigkeiten zur Laufzeit – Three.js ist Teil des
+Repos. Alle Pfade sind relativ, die App funktioniert daher auch unter
+Unterpfaden wie `…github.io/<repo>/web-playable/`.
 
 ## Steuerung (Touch & Maus)
 
@@ -98,8 +103,13 @@ Auslieferung aller Pfade über einen statischen Server verifiziert.
 Der WebGL-Teil braucht einen echten Browser → Checkliste in
 [../Docs/TEST_CHECKLIST.md](../Docs/TEST_CHECKLIST.md) gilt analog.
 
-## Bekannte Grenzen
+## Browser-Kompatibilität & Fehlersuche
 
-- Three.js kommt vom CDN → erster Start braucht Internet.
+- Benötigt einen Browser mit ES-Modul-Unterstützung (Safari 11+, iPadOS 13+;
+  empfohlen iPadOS 15+ für flüssiges WebGL). Keine Import Maps, kein
+  `Promise.allSettled`, kein `inset`-CSS – bewusst vermieden für ältere Safaris.
+- Tritt trotzdem ein Fehler auf, erscheint er als **rote Box am unteren
+  Bildschirmrand** (globaler Error-Handler) – Text einfach weitergeben,
+  das macht Ferndiagnose ohne Dev-Tools möglich.
 - iOS gibt Audio erst nach der ersten Berührung frei (Standard-Verhalten).
 - Querformat empfohlen; Hochformat funktioniert, zeigt aber weniger Spielfeld.

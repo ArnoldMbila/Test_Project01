@@ -34,16 +34,20 @@ export function registerBank(bank) {
 }
 
 export async function loadAllBanks(baseUrl = '') {
-  const results = await Promise.allSettled(
+  const results = await Promise.all(
     CATEGORY_FILES.map(async (file) => {
-      const res = await fetch(baseUrl + file);
-      if (!res.ok) throw new Error(`${file}: HTTP ${res.status}`);
-      return res.json();
+      try {
+        const res = await fetch(baseUrl + file);
+        if (!res.ok) throw new Error(`${file}: HTTP ${res.status}`);
+        return await res.json();
+      } catch (err) {
+        console.error('[questions] bank failed:', err);
+        return null;
+      }
     })
   );
-  for (const r of results) {
-    if (r.status === 'fulfilled') registerBank(r.value);
-    else console.error('[questions] bank failed:', r.reason);
+  for (const bank of results) {
+    if (bank) registerBank(bank);
   }
   return banks.size;
 }

@@ -2,17 +2,30 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="theme-color" content="#11162a" />
   <title>Arcade der Heiligen Schrift</title>
-  <link rel="stylesheet" href="src/style.css" />
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+  <link rel="stylesheet" href="./src/style.css" />
+  <script>
+    // Non-module error reporter: shows any startup/runtime error on screen so
+    // a blank page on iPad becomes a readable message instead.
+    (function () {
+      function show(msg) {
+        var box = document.getElementById('error-box');
+        if (!box) return;
+        box.style.display = 'block';
+        box.textContent = 'Fehler: ' + msg;
       }
-    }
+      window.addEventListener('error', function (e) {
+        show(e.message || (e.error && e.error.message) || 'Unbekannter Fehler');
+      });
+      window.addEventListener('unhandledrejection', function (e) {
+        var r = e.reason || {};
+        show(r.message || String(r));
+      });
+      window.__showError = show;
+    })();
   </script>
 </head>
 <body>
@@ -52,7 +65,12 @@
   </div>
 
   <div id="loading">Lade Fragen …</div>
+  <div id="error-box"></div>
 
-  <script type="module" src="src/main.js"></script>
+  <script nomodule>
+    document.getElementById('loading').textContent =
+      'Dieser Browser unterstützt keine JavaScript-Module. Bitte iOS/Safari aktualisieren.';
+  </script>
+  <script type="module" src="./src/main.js"></script>
 </body>
 </html>

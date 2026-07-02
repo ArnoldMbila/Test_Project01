@@ -2,7 +2,10 @@
 // tap/click picking, text-label blocks, render loop with an update hook.
 // All visuals are primitives + canvas labels — no external assets.
 
-import * as THREE from 'three';
+// Three.js is vendored locally (MIT) and imported by relative path — no
+// import map (needs iOS 16.4+) and no CDN required, so this runs on any
+// ES-module-capable Safari and fully offline once deployed.
+import * as THREE from '../vendor/three.module.js';
 
 export const three = {
   renderer: null,
@@ -35,6 +38,8 @@ export function initScene(canvas) {
 
   resize();
   addEventListener('resize', resize);
+  // iOS reports stale innerWidth/innerHeight right after rotation
+  addEventListener('orientationchange', () => setTimeout(resize, 300));
 
   canvas.addEventListener('pointerdown', onPointerDown);
 
@@ -155,8 +160,12 @@ export function makeLabel(group, text, pos, worldWidth = 4, fontPx = 44) {
   c2.textAlign = 'center';
   c2.textBaseline = 'middle';
   c2.fillStyle = 'rgba(8,10,20,0.55)';
-  c2.roundRect?.(0, 0, canvas.width, canvas.height, 12);
-  c2.roundRect ? c2.fill() : c2.fillRect(0, 0, canvas.width, canvas.height);
+  if (c2.roundRect) {
+    c2.roundRect(0, 0, canvas.width, canvas.height, 12);
+    c2.fill();
+  } else {
+    c2.fillRect(0, 0, canvas.width, canvas.height);
+  }
   c2.fillStyle = '#fff';
   lines.forEach((l, i) => c2.fillText(l, canvas.width / 2, (i + 0.5) * lineH + 8));
 

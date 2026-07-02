@@ -1,7 +1,7 @@
 // "Takt der Wahrheit" — a pulse ring beats steadily; answering while the ring
 // is tight ("on beat") earns bonus XP. Gentle time limit of 4 bars.
 
-import * as THREE from 'three';
+import * as THREE from '../vendor/three.module.js';
 import { MiniGame } from './base.js';
 import { makeGroup, makeBox, makeAnswerBlock, makeLabel, setColor, setCamera, COLORS, GREEN, RED, disposeGroup } from '../core/scene3d.js';
 import { setPrompt } from '../core/hud.js';

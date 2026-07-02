@@ -15,7 +15,7 @@ const TUNING = {
 };
 
 function storage() {
-  try { return globalThis.localStorage ?? null; } catch { return null; }
+  try { return globalThis.localStorage || null; } catch (e) { return null; }
 }
 
 function freshProfile() {
