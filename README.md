@@ -4,6 +4,11 @@
 > siehe [`web-playable/`](web-playable/README.md) – Three.js-Version derselben
 > App, deploybar auf GitHub Pages/Vercel/Netlify oder lokal per `npm start`.
 
+> ⚔️ **NEU: [`offenbarung-crisis/`](offenbarung-crisis/README.md)** –
+> „APOKALYPSIS CRISIS“, ein RPG-Missions-Lernspiel (FF7-Ever-Crisis-inspiriert)
+> zum Auswendiglernen von **Offenbarung 1–22** (Elberfelder 1905).
+> Einfach `offenbarung-crisis/index.html` im Browser öffnen.
+
 Eine modulare 3D-Arcade-Lernapp für Unity 6 (C#), die Bibelstudium-Fragen aus
 PDF-Testbögen in kurze, ADHS-freundliche Mini-Game-Sessions verwandelt.
 Alle Spielmechaniken, Namen und Inhalte sind Originalentwürfe für dieses

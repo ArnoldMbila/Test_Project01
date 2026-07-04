@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <title>APOKALYPSIS CRISIS – Offenbarung 1–22 Lernspiel</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="stars"></div>
+  <div id="app" class="app"></div>
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- Fragen-Datenbank (eingebettet, funktioniert offline) -->
+  <script src="data/questions.js"></script>
+  <!-- Optional: fest eingebetteter Bibeltext (mit tools/fetch_bibeltext.mjs erzeugen).
+       Fehlt die Datei, lädt die App den Text zur Laufzeit von api.getbible.net. -->
+  <script src="data/bibeltext.js" onerror="void 0"></script>
+  <script src="src/app.js"></script>
+</body>
+</html>
