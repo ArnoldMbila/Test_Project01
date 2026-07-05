@@ -6,6 +6,7 @@ from zoneinfo import ZoneInfo
 
 import anthropic
 
+from gcal import GoogleCalendar
 from storage import Storage
 
 logger = logging.getLogger(__name__)
@@ -136,6 +137,10 @@ TOOLS = [
                         "(Standard: 30)"
                     ),
                 },
+                "duration_minutes": {
+                    "type": "integer",
+                    "description": "Dauer des Termins in Minuten (Standard: 60)",
+                },
             },
             "required": ["title", "starts_at"],
         },
@@ -171,10 +176,12 @@ TOOLS = [
 
 
 class AssistantAgent:
-    def __init__(self, storage: Storage, api_key: str, timezone: str):
+    def __init__(self, storage: Storage, api_key: str, timezone: str,
+                 calendar: GoogleCalendar | None = None):
         self.client = anthropic.Anthropic(api_key=api_key)
         self.storage = storage
         self.tz = ZoneInfo(timezone)
+        self.calendar = calendar
 
     def handle_message(self, chat_id: int, text: str) -> str:
         """Verarbeitet eine Nutzernachricht und gibt die Antwort zurueck.
@@ -291,7 +298,23 @@ class AssistantAgent:
                 i.get("location"),
                 int(i.get("reminder_minutes", 30)),
             )
-            return f"Termin #{appt_id} angelegt fuer {starts_at}."
+            result = f"Termin #{appt_id} angelegt fuer {starts_at}."
+            if self.calendar and self.calendar.is_configured:
+                event_id = self.calendar.create_event(
+                    i["title"],
+                    starts_at,
+                    i.get("location"),
+                    int(i.get("duration_minutes", 60)),
+                )
+                if event_id:
+                    self.storage.set_google_event_id(appt_id, event_id)
+                    result += " In den Google Kalender eingetragen."
+                else:
+                    result += (
+                        " Hinweis: Google-Kalender-Sync ist fehlgeschlagen,"
+                        " der Termin ist nur lokal gespeichert."
+                    )
+            return result
 
         if name == "list_appointments":
             appts = self.storage.list_appointments(
@@ -309,9 +332,15 @@ class AssistantAgent:
             return "\n".join(lines)
 
         if name == "cancel_appointment":
+            appt = self.storage.get_appointment(chat_id, i["appointment_id"])
             ok = self.storage.cancel_appointment(chat_id, i["appointment_id"])
-            return ("Termin abgesagt." if ok
-                    else f"Kein Termin mit ID {i['appointment_id']} gefunden.")
+            if not ok:
+                return f"Kein Termin mit ID {i['appointment_id']} gefunden."
+            if (appt and appt.get("google_event_id")
+                    and self.calendar and self.calendar.is_configured):
+                self.calendar.delete_event(appt["google_event_id"])
+                return "Termin abgesagt und aus dem Google Kalender entfernt."
+            return "Termin abgesagt."
 
         return f"Unbekanntes Tool: {name}"
 

@@ -34,6 +34,7 @@ class Storage:
                     reminder_minutes INTEGER DEFAULT 30,
                     reminded INTEGER DEFAULT 0,
                     cancelled INTEGER DEFAULT 0,
+                    google_event_id TEXT,
                     created_at TEXT NOT NULL
                 );
                 CREATE TABLE IF NOT EXISTS history (
@@ -45,6 +46,13 @@ class Storage:
                 );
                 """
             )
+            # Migration fuer Datenbanken aus aelteren Versionen
+            try:
+                self._conn.execute(
+                    "ALTER TABLE appointments ADD COLUMN google_event_id TEXT"
+                )
+            except sqlite3.OperationalError:
+                pass  # Spalte existiert bereits
             self._conn.commit()
 
     # ------------------------------------------------------------ Aufgaben
@@ -113,6 +121,22 @@ class Storage:
             rows = self._conn.execute(query, params).fetchall()
         return [dict(r) for r in rows]
 
+    def get_appointment(self, chat_id: int, appointment_id: int) -> dict | None:
+        with self._lock:
+            row = self._conn.execute(
+                "SELECT * FROM appointments WHERE id = ? AND chat_id = ?",
+                (appointment_id, chat_id),
+            ).fetchone()
+        return dict(row) if row else None
+
+    def set_google_event_id(self, appointment_id: int, event_id: str) -> None:
+        with self._lock:
+            self._conn.execute(
+                "UPDATE appointments SET google_event_id = ? WHERE id = ?",
+                (event_id, appointment_id),
+            )
+            self._conn.commit()
+
     def cancel_appointment(self, chat_id: int, appointment_id: int) -> bool:
         with self._lock:
             cur = self._conn.execute(
@@ -144,6 +168,16 @@ class Storage:
                 (appointment_id,),
             )
             self._conn.commit()
+
+    def distinct_chat_ids(self) -> list[int]:
+        """Alle Chats, die Aufgaben oder Termine haben (fuer die
+        Morgen-Zusammenfassung)."""
+        with self._lock:
+            rows = self._conn.execute(
+                "SELECT chat_id FROM tasks"
+                " UNION SELECT chat_id FROM appointments"
+            ).fetchall()
+        return [r["chat_id"] for r in rows]
 
     # -------------------------------------------------------- Chat-Verlauf
 

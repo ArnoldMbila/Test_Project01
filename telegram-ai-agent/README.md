@@ -13,6 +13,9 @@ an** und **erinnert dich rechtzeitig** per Telegram-Nachricht.
 | ✅ Aufgaben-Filter | Erkennt To-dos automatisch ("ich muss noch…", weitergeleitete Nachrichten) und speichert sie |
 | 🗓 Termine | Versteht "Zahnarzt Dienstag 14 Uhr", legt den Termin an und rechnet relative Angaben ("morgen") selbst um |
 | ⏰ Erinnerungen | Schickt dir vor jedem Termin automatisch eine Erinnerung (Standard: 30 Min. vorher) |
+| 🎙 Sprachnachrichten | Schick eine Sprachnachricht — sie wird per Whisper transkribiert und wie Text verarbeitet (optional) |
+| 📅 Google Kalender | Termine landen automatisch auch in deinem Google Kalender, Absagen werden dort entfernt (optional) |
+| 🌅 Morgen-Zusammenfassung | Täglich (Standard 07:00) eine Übersicht mit heutigen Terminen und offenen Aufgaben |
 | 🔒 Privat | Nur deine Telegram-User-ID darf den Bot benutzen |
 
 ## So verknüpfst du den Agenten mit deinem Telegram
@@ -62,6 +65,46 @@ senden — fertig! 🎉
 > Für Dauerbetrieb den Bot auf einem Server/Raspberry Pi laufen lassen,
 > z.B. mit `systemd`, `tmux` oder Docker.
 
+## Optionale Funktionen einrichten
+
+### 🎙 Sprachnachrichten (Whisper)
+
+1. OpenAI API-Key erstellen ([platform.openai.com](https://platform.openai.com)).
+2. In `.env` eintragen: `OPENAI_API_KEY=sk-...`
+3. Bot neu starten — Sprachnachrichten werden jetzt transkribiert, als
+   Text angezeigt und ganz normal vom Agenten verarbeitet (inkl.
+   Aufgaben-/Termin-Erkennung: einfach "Erinner mich morgen an XY"
+   einsprechen).
+
+### 📅 Google-Kalender-Sync
+
+1. In der [Google Cloud Console](https://console.cloud.google.com) ein
+   Projekt anlegen und die **Google Calendar API** aktivieren.
+2. Unter *APIs & Dienste → Anmeldedaten* eine **OAuth-Client-ID** vom Typ
+   **Desktop-App** erstellen und das JSON herunterladen.
+3. Die Datei als `google_client_secret.json` in den Projektordner legen
+   (Pfad anpassbar über `GOOGLE_CLIENT_SECRET_FILE`).
+4. Einmalig autorisieren:
+   ```bash
+   python gcal_auth.py
+   ```
+   Es öffnet sich ein Browserfenster zum Google-Login; das Token wird als
+   `google_token.json` gespeichert.
+5. Bot neu starten — ab jetzt werden neue Termine automatisch in deinen
+   Google Kalender eingetragen (Standard: Hauptkalender `primary`,
+   änderbar über `GOOGLE_CALENDAR_ID`) und bei Absage dort entfernt.
+
+### 🌅 Tägliche Morgen-Zusammenfassung
+
+Standardmäßig aktiv um **07:00 Uhr**: Der Bot schickt dir eine Übersicht
+mit den heutigen Terminen und deinen offenen Aufgaben. Uhrzeit ändern oder
+deaktivieren über `.env`:
+
+```env
+MORNING_SUMMARY_TIME=06:30   # andere Uhrzeit
+MORNING_SUMMARY_TIME=        # deaktivieren
+```
+
 ## Benutzung
 
 Einfach schreiben — Beispiele:
@@ -85,12 +128,14 @@ Einfach schreiben — Beispiele:
 ## Architektur
 
 ```
-Telegram  ⇄  bot.py (python-telegram-bot, Polling + Erinnerungs-Job)
-                │
+Telegram  ⇄  bot.py (python-telegram-bot, Polling + Minuten-Job:
+                │    Erinnerungen & Morgen-Zusammenfassung)
+                ├── voice.py (optional: Whisper-Transkription)
                 ▼
              agent.py (Claude Opus 4.8, Tool-Use-Schleife)
                 │  Tools: save_task, list_tasks, complete_task, delete_task,
                 │         create_appointment, list_appointments, cancel_appointment
+                ├── gcal.py (optional: Google-Kalender-Sync)
                 ▼
              storage.py (SQLite: Aufgaben, Termine, Chat-Verlauf)
 ```
@@ -112,9 +157,8 @@ Telegram  ⇄  bot.py (python-telegram-bot, Polling + Erinnerungs-Job)
 | `ALLOWED_USER_IDS` | empfohlen | Deine Telegram-User-ID(s), Komma-getrennt |
 | `TIMEZONE` | – | IANA-Zeitzone, Standard `Europe/Berlin` |
 | `DATABASE_PATH` | – | Pfad zur SQLite-Datei, Standard `assistant.db` |
-
-## Mögliche Erweiterungen
-
-- 🎙 Sprachnachrichten (Whisper-Transkription vorschalten)
-- 📅 Google-Kalender-Sync statt lokaler SQLite-Termine
-- 🌅 Tägliche Morgen-Zusammenfassung (Termine + offene Aufgaben)
+| `OPENAI_API_KEY` | – | Aktiviert Sprachnachrichten (Whisper) |
+| `GOOGLE_CLIENT_SECRET_FILE` | – | OAuth-Client-JSON für den Kalender-Sync |
+| `GOOGLE_TOKEN_FILE` | – | Token-Datei (wird von `gcal_auth.py` erzeugt) |
+| `GOOGLE_CALENDAR_ID` | – | Ziel-Kalender, Standard `primary` |
+| `MORNING_SUMMARY_TIME` | – | Uhrzeit der Tagesübersicht (HH:MM), leer = aus |
