@@ -1,0 +1,6 @@
+.env
+*.db
+__pycache__/
+.venv/
+google_client_secret.json
+google_token.json
