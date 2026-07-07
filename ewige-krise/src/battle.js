@@ -44,7 +44,7 @@ const Battle = (() => {
       def: Math.round(base.def * f), spd: base.spd,
       weak: base.weak, resist: base.resist,
       breakVal: 0, breakMax: base.breakMax, staggered: 0,
-      attacks: base.attacks, charging: null,
+      attacks: base.attacks, charging: null, buffs: [],
       exp: Math.round(base.exp * f), gold: Math.round(base.gold * f),
       atb: Math.random() * 30,
       x: 0, y: 0, homeX: 0, homeY: 0,
@@ -557,6 +557,13 @@ const Battle = (() => {
       ctx.fillText(f.text, f.x, f.y - f.t * 40);
     });
     ctx.globalAlpha = 1;
+
+    // Bildschirm-Mittelpunkte für die Zielwahl (auch für Gefallene)
+    state.heroes.concat(state.enemies).forEach(u => {
+      const spr = SpriteFactory.get(u.sprite, u.scale);
+      u.screenX = u.homeX + spr.w / 2;
+      u.screenY = u.homeY + spr.h / 2;
+    });
 
     // Gegner-Info (Name, LP, Bruch)
     lebendeGegner().forEach(e => zeichneGegnerInfo(e));

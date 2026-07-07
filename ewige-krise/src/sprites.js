@@ -426,5 +426,8 @@ const SpriteFactory = (() => {
     return cache[key];
   }
 
-  return { get };
+  // Rohdaten (Palette + Pixel-Zeilen) — u. a. für die Voxel-Extrusion der 3D-Version
+  function getDef(id) { return DEFS[id]; }
+
+  return { get, getDef };
 })();

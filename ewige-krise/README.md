@@ -8,10 +8,13 @@ prozedural aus Pixel-Maps generiert (keine externen Assets, keine Abhängigkeite
 
 ![Titelbildschirm](screenshots/titel.png)
 ![Kampf](screenshots/kampf.png)
+![3D-Kampf](screenshots/kampf3d.png)
 
 ## Spielen
 
-Einfach `index.html` im Browser öffnen — kein Build, kein Server nötig.
+Einfach `index.html` (2D) oder `3d.html` (3D) im Browser öffnen —
+kein Build, kein Server nötig. Beide Versionen teilen sich denselben
+Spielstand, dieselben Helden und dieselbe Kampflogik.
 
 ```bash
 # optional mit lokalem Server:
@@ -59,20 +62,33 @@ automatisch im `localStorage` gespeichert.
 
 ```
 ewige-krise/
-├── index.html       — Bildschirme (Titel, Gruppe, Kapitel, Kampf, Ergebnis)
-├── style.css        — komplettes Styling
+├── index.html        — 2D-Version (Bildschirme: Titel, Gruppe, Kapitel, Kampf, Ergebnis)
+├── 3d.html           — 3D-Version (gleiche Bildschirme, WebGL-Kampfszene)
+├── style.css         — komplettes Styling (beide Versionen)
+├── vendor/
+│   └── three.min.js  — Three.js r149 (UMD, lokal gebündelt — läuft offline)
 └── src/
-    ├── sprites.js   — Sprite-Engine: Pixel-Maps → Canvas (inkl. Spiegelung, Blitz-Silhouetten)
-    ├── data.js      — Helden, Fähigkeiten, Limits, Gegner, Kapitel, Items
-    ├── battle.js    — ATB-Kampf-Engine, Animationen, Rendering
-    └── main.js      — Bildschirm-Logik, Befehlsmenüs, HUD, Speicherstand
+    ├── sprites.js    — Sprite-Engine: Pixel-Maps → Canvas (inkl. Spiegelung, Blitz-Silhouetten)
+    ├── data.js       — Helden, Fähigkeiten, Limits, Gegner, Kapitel, Items
+    ├── battle.js     — 2D-ATB-Kampf-Engine, Animationen, Canvas-Rendering
+    ├── battle3d.js   — 3D-ATB-Kampf-Engine: Voxel-Figuren, Three.js-Szene, 2D-Overlay
+    └── main.js       — Bildschirm-Logik, Befehlsmenüs, HUD, Speicherstand (beide Engines)
 ```
 
 ## Technik
 
-- Pures HTML/CSS/JavaScript, keine Bibliotheken
+- Pures HTML/CSS/JavaScript; einzige Abhängigkeit ist das lokal
+  gebündelte Three.js für die 3D-Version
 - Sprites: Pixel-Maps (Zeichen → Palettenfarbe), gerendert auf Canvas mit
   `image-rendering: pixelated`; automatisch generierte gespiegelte und
   weiße (Treffer-Blitz-)Varianten
+- **3D-Version:** Dieselben Pixel-Maps werden zu Voxel-Figuren extrudiert
+  (jedes Pixel → 3 Würfel Tiefe als `InstancedMesh`) und in einer
+  Three.js-Diorama-Szene gerendert — mit Kapitel-Himmel als Verlaufstextur,
+  Nebel, Schatten, Kulissen-Felsen, Kameraschwenk und Treffer-Shake.
+  Schadenszahlen, Gegner-Balken und Partikel laufen über ein transparentes
+  2D-Overlay-Canvas; die Zielwahl klickt über projizierte Bildschirmpositionen.
+  Beide Engines implementieren dieselbe API (`Battle.start/stop/befehlAusfuehren`),
+  daher ist `main.js` für 2D und 3D identisch.
 - Kampf-Rendering auf einem 960×540-Canvas, UI als DOM-Overlay
 - Responsive bis hinunter zu Mobilgeräten

@@ -326,9 +326,7 @@
     const my = (ev.clientY - r.top) * (canvas.height / r.height);
     let bester = null, bDist = 1e9;
     zielModus.kandidaten.forEach(u => {
-      const spr = SpriteFactory.get(u.sprite, u.scale);
-      const cx = u.homeX + spr.w / 2, cy = u.homeY + spr.h / 2;
-      const d = Math.hypot(mx - cx, my - cy);
+      const d = Math.hypot(mx - (u.screenX || 0), my - (u.screenY || 0));
       if (d < bDist) { bDist = d; bester = u; }
     });
     const cb = zielModus.cb;

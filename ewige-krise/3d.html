@@ -3,24 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EWIGE KRISE — Rundenbasiertes RPG</title>
+  <title>EWIGE KRISE 3D — Rundenbasiertes RPG</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="modus-3d">
 
   <!-- ============ TITEL ============ -->
   <section id="screen-titel" class="screen aktiv">
     <div class="titel-box">
-      <h1 class="logo">EWIGE<span>KRISE</span></h1>
-      <p class="untertitel">Ein rundenbasiertes Fantasy-RPG · fünf Helden gegen den Drachen</p>
+      <h1 class="logo">EWIGE<span>KRISE 3D</span></h1>
+      <p class="untertitel">Rundenbasiertes Fantasy-RPG · Voxel-Dioramen aus den eigenen Pixel-Sprites</p>
       <div id="titel-parade"></div>
       <div class="titel-knoepfe">
         <button id="btn-start" class="haupt-knopf">Spiel starten</button>
         <button id="btn-reset" class="neben-knopf">Spielstand löschen</button>
       </div>
       <p class="fussnote">
-        <a class="versions-link" href="3d.html">→ Zur 3D-Version</a> ·
-        Alle Sprites prozedural generiert · Fortschritt wird lokal gespeichert
+        <a class="versions-link" href="index.html">→ Zur 2D-Version</a> ·
+        Gleicher Spielstand, gleiche Helden, gleiche Kämpfe
       </p>
     </div>
   </section>
@@ -47,7 +47,8 @@
   <!-- ============ KAMPF ============ -->
   <section id="screen-kampf" class="screen">
     <div id="kampf-wrap">
-      <canvas id="spielfeld" width="960" height="540"></canvas>
+      <!-- Die WebGL-Ebene wird von battle3d.js vor dem Overlay eingefügt -->
+      <canvas id="spielfeld" class="overlay-canvas" width="960" height="540"></canvas>
       <div id="kampf-log"></div>
       <div id="ziel-hinweis" class="versteckt">Ziel anklicken!</div>
       <button id="btn-flucht" title="Kampf abbrechen">✕</button>
@@ -75,9 +76,10 @@
     </div>
   </section>
 
+  <script src="vendor/three.min.js"></script>
   <script src="src/sprites.js"></script>
   <script src="src/data.js"></script>
-  <script src="src/battle.js"></script>
+  <script src="src/battle3d.js"></script>
   <script src="src/main.js"></script>
 </body>
 </html>

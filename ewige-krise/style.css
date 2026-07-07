@@ -117,6 +117,18 @@ h2 { margin-bottom: 18px; letter-spacing: 2px; }
   background: #000;
 }
 
+/* 3D-Modus: WebGL-Ebene unten, transparentes 2D-Overlay darüber */
+#spielfeld3d {
+  width: 100%; display: block; border: 2px solid var(--rand);
+  border-radius: 6px; background: #000;
+}
+.modus-3d #spielfeld.overlay-canvas {
+  position: absolute; top: 0; left: 0; width: 100%;
+  border-color: transparent; background: transparent;
+  image-rendering: auto;
+}
+.versions-link { color: var(--gold-hell); }
+
 #kampf-log {
   position: absolute; top: 10px; left: 12px;
   font-size: 0.78rem; line-height: 1.5; color: #fff;

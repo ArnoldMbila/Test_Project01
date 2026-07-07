@@ -8,7 +8,8 @@
 > „EWIGE KRISE“, ein rundenbasiertes Fantasy-RPG mit ATB-Kampfsystem
 > (Bruch-Leiste, Limits, Elemente, Boss-Aufladungen). Fünf Original-Helden
 > nach eigenen Character-Design-Sheets, alle Sprites prozedural generiert.
-> Einfach `ewige-krise/index.html` im Browser öffnen.
+> `ewige-krise/index.html` (2D) oder `ewige-krise/3d.html` (3D-Voxel-Version
+> mit Three.js) im Browser öffnen – gleicher Spielstand in beiden.
 
 > ⚔️ **[`offenbarung-crisis/`](offenbarung-crisis/README.md)** –
 > „APOKALYPSIS CRISIS“, ein RPG-Missions-Lernspiel (FF7-Ever-Crisis-inspiriert)
