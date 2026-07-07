@@ -4,7 +4,13 @@
 > siehe [`web-playable/`](web-playable/README.md) – Three.js-Version derselben
 > App, deploybar auf GitHub Pages/Vercel/Netlify oder lokal per `npm start`.
 
-> ⚔️ **NEU: [`offenbarung-crisis/`](offenbarung-crisis/README.md)** –
+> 🐉 **NEU: [`ewige-krise/`](ewige-krise/README.md)** –
+> „EWIGE KRISE“, ein rundenbasiertes Fantasy-RPG mit ATB-Kampfsystem
+> (Bruch-Leiste, Limits, Elemente, Boss-Aufladungen). Fünf Original-Helden
+> nach eigenen Character-Design-Sheets, alle Sprites prozedural generiert.
+> Einfach `ewige-krise/index.html` im Browser öffnen.
+
+> ⚔️ **[`offenbarung-crisis/`](offenbarung-crisis/README.md)** –
 > „APOKALYPSIS CRISIS“, ein RPG-Missions-Lernspiel (FF7-Ever-Crisis-inspiriert)
 > zum Auswendiglernen von **Offenbarung 1–22** (Elberfelder 1905).
 > Einfach `offenbarung-crisis/index.html` im Browser öffnen.

@@ -1,0 +1,208 @@
+/* ========= EWIGE KRISE — Styles ========= */
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --gold: #d9a72c;
+  --gold-hell: #ffe98a;
+  --dunkel: #0e0c14;
+  --panel: rgba(14, 12, 26, 0.92);
+  --rand: #4a4260;
+  --text: #e8e4d8;
+}
+
+body {
+  background: radial-gradient(ellipse at 50% 30%, #1e1830 0%, var(--dunkel) 70%);
+  color: var(--text);
+  font-family: "Courier New", ui-monospace, monospace;
+  min-height: 100vh;
+}
+
+.screen { display: none; min-height: 100vh; padding: 24px; }
+.screen.aktiv { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.versteckt { display: none !important; }
+
+h2 { margin-bottom: 18px; letter-spacing: 2px; }
+
+/* ---------- Titel ---------- */
+
+.titel-box { text-align: center; max-width: 720px; }
+
+.logo {
+  font-size: clamp(3rem, 9vw, 5.5rem);
+  letter-spacing: 0.12em;
+  color: var(--gold-hell);
+  text-shadow: 0 0 24px rgba(217, 167, 44, 0.5), 3px 3px 0 #000;
+}
+.logo span { display: block; color: #fff; font-size: 0.62em; letter-spacing: 0.5em; }
+
+.untertitel { margin: 12px 0 24px; opacity: 0.8; }
+
+#titel-parade {
+  display: flex; justify-content: center; gap: 20px;
+  margin: 20px 0 30px; flex-wrap: wrap;
+}
+.parade-sprite {
+  image-rendering: pixelated;
+  filter: drop-shadow(0 6px 6px rgba(0,0,0,0.6));
+  animation: schweben 2.4s ease-in-out infinite;
+}
+.parade-sprite:nth-child(2n) { animation-delay: 0.4s; }
+.parade-sprite:nth-child(3n) { animation-delay: 0.8s; }
+@keyframes schweben { 50% { transform: translateY(-6px); } }
+
+.titel-knoepfe { display: flex; gap: 14px; justify-content: center; margin-top: 8px; }
+.fussnote { margin-top: 26px; font-size: 0.75rem; opacity: 0.45; }
+
+.haupt-knopf, .neben-knopf {
+  font-family: inherit; font-size: 1rem; cursor: pointer;
+  padding: 12px 28px; border-radius: 4px; letter-spacing: 1px;
+}
+.haupt-knopf {
+  background: linear-gradient(180deg, var(--gold-hell), var(--gold));
+  border: 2px solid var(--gold); color: #2a1e04; font-weight: bold;
+}
+.haupt-knopf:hover:not(:disabled) { filter: brightness(1.1); }
+.haupt-knopf:disabled { filter: grayscale(1) brightness(0.6); cursor: not-allowed; }
+.neben-knopf {
+  background: transparent; border: 2px solid var(--rand); color: var(--text);
+}
+.neben-knopf:hover { border-color: var(--gold); }
+
+/* ---------- Gruppenwahl ---------- */
+
+#helden-liste {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 12px; max-width: 1100px; width: 100%;
+}
+.held-karte {
+  display: flex; gap: 14px; align-items: center;
+  background: var(--panel); border: 2px solid var(--rand);
+  border-radius: 6px; padding: 12px; cursor: pointer;
+  transition: border-color 0.15s, transform 0.1s;
+}
+.held-karte:hover { transform: translateY(-2px); }
+.held-karte.gewaehlt { border-color: var(--gold); box-shadow: 0 0 14px rgba(217,167,44,0.35); }
+.held-karte canvas { image-rendering: pixelated; flex-shrink: 0; }
+.held-info .rolle { color: var(--gold-hell); font-size: 0.8rem; margin-left: 6px; }
+.held-info .lvl { color: #8ad0ff; font-size: 0.85rem; }
+.held-info .stats { font-size: 0.72rem; opacity: 0.75; margin: 4px 0; }
+.held-info .besch { font-size: 0.78rem; opacity: 0.6; font-style: italic; }
+
+#gruppe-anzahl { color: var(--gold-hell); font-size: 0.9rem; }
+.leiste { display: flex; gap: 14px; margin-top: 20px; }
+
+/* ---------- Kapitelwahl ---------- */
+
+.gold { color: var(--gold-hell); font-size: 0.9rem; }
+#kapitel-liste { display: flex; flex-direction: column; gap: 12px; width: min(560px, 100%); }
+.kapitel-karte {
+  font-family: inherit; text-align: left; color: var(--text);
+  background: var(--panel); border: 2px solid var(--rand);
+  border-radius: 6px; padding: 16px 20px; cursor: pointer; font-size: 1rem;
+}
+.kapitel-karte:hover:not(:disabled) { border-color: var(--gold); }
+.kapitel-karte span { opacity: 0.7; font-size: 0.85rem; }
+.kapitel-karte .boss-hinweis { color: #ff9a6a; }
+.kapitel-karte.gesperrt { opacity: 0.35; cursor: not-allowed; }
+
+/* ---------- Kampf ---------- */
+
+#screen-kampf.aktiv { padding: 8px; }
+#kampf-wrap { position: relative; width: min(960px, 100%); }
+
+#spielfeld {
+  width: 100%; display: block; border: 2px solid var(--rand);
+  border-radius: 6px; image-rendering: pixelated;
+  background: #000;
+}
+
+#kampf-log {
+  position: absolute; top: 10px; left: 12px;
+  font-size: 0.78rem; line-height: 1.5; color: #fff;
+  text-shadow: 1px 1px 0 #000; opacity: 0.9; pointer-events: none;
+  max-width: 60%;
+}
+
+#ziel-hinweis {
+  position: absolute; top: 12px; left: 50%; transform: translateX(-50%);
+  background: var(--gold); color: #2a1e04; font-weight: bold;
+  padding: 6px 18px; border-radius: 4px; animation: blinken 0.8s infinite;
+}
+@keyframes blinken { 50% { opacity: 0.55; } }
+
+#btn-flucht {
+  position: absolute; top: 8px; right: 8px;
+  background: rgba(0,0,0,0.5); color: #fff; border: 1px solid var(--rand);
+  border-radius: 4px; width: 30px; height: 30px; cursor: pointer;
+}
+
+#kampf-ui {
+  display: flex; gap: 10px; margin-top: 8px; align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+#befehle, #submenu {
+  background: var(--panel); border: 2px solid var(--gold);
+  border-radius: 6px; padding: 10px; min-width: 240px;
+}
+#befehl-name { color: var(--gold-hell); font-weight: bold; margin-bottom: 8px; letter-spacing: 1px; }
+#befehl-liste, #submenu { display: flex; flex-direction: column; gap: 6px; }
+
+.befehl-knopf {
+  font-family: inherit; text-align: left; font-size: 0.9rem;
+  background: rgba(255,255,255,0.06); color: var(--text);
+  border: 1px solid var(--rand); border-radius: 4px;
+  padding: 8px 12px; cursor: pointer;
+}
+.befehl-knopf:hover:not(:disabled) { border-color: var(--gold); background: rgba(217,167,44,0.12); }
+.befehl-knopf:disabled { opacity: 0.35; cursor: not-allowed; }
+.befehl-knopf.limit-knopf:not(:disabled) {
+  border-color: #ff6a3a; color: #ffb03a; font-weight: bold;
+  animation: blinken 1s infinite;
+}
+.befehl-knopf.zurueck { opacity: 0.7; }
+.mp-kosten { float: right; color: #8ab0e0; font-size: 0.8rem; }
+.skill-desc { font-size: 0.7rem; opacity: 0.6; margin-top: 2px; }
+
+/* ---------- Helden-HUD ---------- */
+
+#helden-hud { display: flex; gap: 10px; flex: 1; justify-content: flex-end; flex-wrap: wrap; }
+
+.hud-held {
+  background: var(--panel); border: 2px solid var(--rand);
+  border-radius: 6px; padding: 8px 12px; width: 190px;
+}
+.hud-held.dran { border-color: var(--gold); box-shadow: 0 0 12px rgba(217,167,44,0.45); }
+.hud-held.tot { opacity: 0.4; filter: grayscale(1); }
+.hud-name { font-weight: bold; font-size: 0.82rem; margin-bottom: 5px; letter-spacing: 1px; }
+
+.hud-balken {
+  height: 7px; background: rgba(0,0,0,0.55); border-radius: 3px;
+  overflow: hidden; margin-bottom: 4px;
+}
+.hud-balken > div { height: 100%; transition: width 0.2s; }
+.hud-balken.lp > div { background: linear-gradient(90deg, #3aa04a, #6ae08a); }
+.hud-balken.mp > div { background: linear-gradient(90deg, #2a6ab0, #6ab0e0); }
+.hud-balken.atb > div { background: linear-gradient(90deg, #b0b0c0, #f0f0ff); }
+.hud-balken.limit { height: 5px; }
+.hud-balken.limit > div { background: linear-gradient(90deg, #b04a2a, #ffb03a); }
+.hud-balken.limit > div.voll { animation: blinken 0.6s infinite; }
+.hud-zahlen { font-size: 0.68rem; opacity: 0.75; }
+
+/* ---------- Ergebnis ---------- */
+
+#ergebnis-kopf.sieg { color: var(--gold-hell); text-shadow: 0 0 20px rgba(217,167,44,0.6); font-size: 2.6rem; }
+#ergebnis-kopf.niederlage { color: #e05a4a; font-size: 2.2rem; }
+#ergebnis-inhalt { margin: 18px 0; line-height: 1.9; }
+#ergebnis-inhalt ul { list-style: none; }
+.aufstieg { color: #6ae08a; }
+.frei { color: var(--gold-hell); margin-top: 8px; }
+
+/* ---------- Mobil ---------- */
+
+@media (max-width: 700px) {
+  #kampf-ui { flex-direction: column; }
+  #helden-hud { justify-content: flex-start; }
+  .hud-held { width: calc(50% - 5px); }
+}

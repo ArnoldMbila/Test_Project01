@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EWIGE KRISE — Rundenbasiertes RPG</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============ TITEL ============ -->
+  <section id="screen-titel" class="screen aktiv">
+    <div class="titel-box">
+      <h1 class="logo">EWIGE<span>KRISE</span></h1>
+      <p class="untertitel">Ein rundenbasiertes Fantasy-RPG · fünf Helden gegen den Drachen</p>
+      <div id="titel-parade"></div>
+      <div class="titel-knoepfe">
+        <button id="btn-start" class="haupt-knopf">Spiel starten</button>
+        <button id="btn-reset" class="neben-knopf">Spielstand löschen</button>
+      </div>
+      <p class="fussnote">Alle Sprites prozedural generiert · Fortschritt wird lokal gespeichert</p>
+    </div>
+  </section>
+
+  <!-- ============ GRUPPENWAHL ============ -->
+  <section id="screen-gruppe" class="screen">
+    <h2>Wähle deine Gruppe <span id="gruppe-anzahl"></span></h2>
+    <div id="helden-liste"></div>
+    <div class="leiste">
+      <button id="btn-zurueck-titel" class="neben-knopf">← Titel</button>
+      <button id="btn-weiter-kapitel" class="haupt-knopf">Weiter →</button>
+    </div>
+  </section>
+
+  <!-- ============ KAPITELWAHL ============ -->
+  <section id="screen-kapitel" class="screen">
+    <h2>Wähle ein Kapitel <span id="gold-anzeige" class="gold"></span></h2>
+    <div id="kapitel-liste"></div>
+    <div class="leiste">
+      <button id="btn-zurueck-gruppe" class="neben-knopf">← Gruppe</button>
+    </div>
+  </section>
+
+  <!-- ============ KAMPF ============ -->
+  <section id="screen-kampf" class="screen">
+    <div id="kampf-wrap">
+      <canvas id="spielfeld" width="960" height="540"></canvas>
+      <div id="kampf-log"></div>
+      <div id="ziel-hinweis" class="versteckt">Ziel anklicken!</div>
+      <button id="btn-flucht" title="Kampf abbrechen">✕</button>
+
+      <div id="kampf-ui">
+        <div id="befehle" class="versteckt">
+          <div id="befehl-name"></div>
+          <div id="befehl-liste"></div>
+        </div>
+        <div id="submenu" class="versteckt"></div>
+        <div id="helden-hud"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ ERGEBNIS ============ -->
+  <section id="screen-ergebnis" class="screen">
+    <div class="titel-box">
+      <h2 id="ergebnis-kopf"></h2>
+      <div id="ergebnis-inhalt"></div>
+      <div class="titel-knoepfe">
+        <button id="btn-nochmal" class="haupt-knopf">Noch einmal</button>
+        <button id="btn-zur-kapitelwahl" class="neben-knopf">Zur Kapitelwahl</button>
+      </div>
+    </div>
+  </section>
+
+  <script src="src/sprites.js"></script>
+  <script src="src/data.js"></script>
+  <script src="src/battle.js"></script>
+  <script src="src/main.js"></script>
+</body>
+</html>
