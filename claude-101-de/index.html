@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Claude 101 – gehirnfreundliche, gamifizierte deutsche Lernversion mit Vorlese-Funktion. 14 Lektionen." />
+  <title>Claude 101 · Deutsche Lernversion</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Deko-Hintergrund -->
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+
+  <canvas id="confetti"></canvas>
+
+  <div class="wrap">
+    <!-- HUD / Topbar -->
+    <header class="topbar">
+      <div class="brand" id="brand" title="Zur Übersicht">
+        <span class="logo">🧠</span>
+        <span>Claude&nbsp;101<small>Deutsche Lernversion</small></span>
+      </div>
+
+      <div class="hud">
+        <div class="stat level" title="Level"><span class="ic">🎖️</span><span class="lbl">Lvl</span>&nbsp;<span id="hud-level">1</span></div>
+        <div class="xpbar" title="XP bis zum nächsten Level"><span id="hud-xpbar"></span></div>
+        <div class="stat" title="Erfahrungspunkte"><span class="ic">⚡</span><span id="hud-xp">0</span>&nbsp;<span class="lbl">XP</span></div>
+        <div class="stat streak" title="Tages-Streak"><span class="ic">🔥</span><span id="hud-streak">0</span></div>
+        <div class="stat" title="Abgeschlossene Lektionen"><span class="ic">✅</span><span id="hud-done">0/14</span></div>
+
+        <button class="iconbtn" id="btn-badges" title="Abzeichen">🏅</button>
+        <button class="iconbtn" id="btn-calm" title="Ruhe-Modus (weniger Reize)">🌙</button>
+        <button class="iconbtn" id="btn-reset" title="Fortschritt zurücksetzen">🔄</button>
+      </div>
+    </header>
+
+    <!-- Dynamischer Inhalt -->
+    <main id="app"></main>
+  </div>
+
+  <!-- Abzeichen-Modal -->
+  <div class="modal-back" id="modal-back">
+    <div class="modal">
+      <span class="close-x" id="modal-close">✕</span>
+      <h2>🏅 Deine Abzeichen</h2>
+      <p id="badge-sub" style="color:var(--muted);margin:0"></p>
+      <div class="badge-grid" id="badge-grid"></div>
+    </div>
+  </div>
+
+  <script src="lessons.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
