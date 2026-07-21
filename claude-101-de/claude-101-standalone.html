@@ -1,0 +1,1679 @@
+<style>
+/* =========================================================================
+   Claude 101 – Deutsche Lernversion
+   ADHS-freundlich · gamifiziert · visuell stimulierend
+   ========================================================================= */
+
+:root {
+  --bg: #0e0b1a;
+  --bg-soft: #171331;
+  --card: #1e1940;
+  --card-2: #262051;
+  --text: #f3f0ff;
+  --muted: #b3aad6;
+  --accent: #c58af9;      /* Claude-nahes Lila */
+  --accent-2: #ff9a62;
+  --good: #4ade80;
+  --bad: #fb7185;
+  --gold: #ffd35c;
+  --ring: rgba(197,138,249,.5);
+  --shadow: 0 10px 40px rgba(0,0,0,.45);
+  --radius: 20px;
+  --lesson: var(--accent); /* wird pro Lektion überschrieben */
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(900px 600px at 10% -10%, rgba(197,138,249,.18), transparent 60%),
+    radial-gradient(800px 600px at 110% 0%, rgba(255,154,98,.14), transparent 55%),
+    var(--bg);
+}
+
+/* ------- ruhiger Fokus-Modus (weniger Reize) ------- */
+body.calm {
+  background: var(--bg);
+}
+body.calm .blob { display: none; }
+body.calm * { animation-duration: .001s !important; }
+
+/* schwebende Deko-Blobs */
+.blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: .35;
+  z-index: 0;
+  pointer-events: none;
+  animation: float 14s ease-in-out infinite;
+}
+.blob.b1 { width: 340px; height: 340px; background: #7c3aed; top: -80px; left: -60px; }
+.blob.b2 { width: 300px; height: 300px; background: #f97316; bottom: -80px; right: -40px; animation-delay: -5s; }
+.blob.b3 { width: 220px; height: 220px; background: #22d3ee; top: 40%; right: 20%; animation-delay: -9s; }
+
+@keyframes float {
+  0%,100% { transform: translateY(0) translateX(0); }
+  50%     { transform: translateY(-30px) translateX(20px); }
+}
+
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 18px 18px 90px;
+}
+
+/* ============================ TOPBAR / HUD ============================ */
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 14px;
+  margin: 0 0 18px;
+  background: rgba(20,16,45,.72);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  flex-wrap: wrap;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 800;
+  letter-spacing: .3px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.brand .logo {
+  width: 34px; height: 34px;
+  display: grid; place-items: center;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  font-size: 20px;
+}
+.brand small { display: block; font-weight: 500; color: var(--muted); font-size: 11px; }
+
+.hud {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.stat {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,.07);
+  padding: 7px 11px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 14px;
+  white-space: nowrap;
+}
+.stat .ic { font-size: 15px; }
+.stat.level { background: linear-gradient(135deg, rgba(197,138,249,.25), rgba(255,154,98,.2)); }
+.stat.streak .ic { filter: drop-shadow(0 0 6px #ff7a45); }
+
+/* XP-Balken im HUD */
+.xpbar {
+  width: 130px; height: 9px;
+  background: rgba(255,255,255,.1);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.xpbar > span {
+  display: block; height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  border-radius: 999px;
+  transition: width .6s cubic-bezier(.2,.8,.2,1);
+}
+
+.iconbtn {
+  border: 1px solid rgba(255,255,255,.12);
+  background: var(--card);
+  color: var(--text);
+  width: 40px; height: 40px;
+  border-radius: 12px;
+  font-size: 18px;
+  cursor: pointer;
+  display: grid; place-items: center;
+  transition: transform .15s, background .2s;
+}
+.iconbtn:hover { transform: translateY(-2px); background: var(--card-2); }
+.iconbtn.active { background: linear-gradient(135deg, var(--accent), var(--accent-2)); border-color: transparent; }
+
+/* ============================ HOME / MAP ============================ */
+.hero {
+  text-align: center;
+  padding: 22px 10px 8px;
+}
+.hero h1 {
+  font-size: clamp(28px, 6vw, 46px);
+  margin: 0 0 8px;
+  line-height: 1.05;
+  background: linear-gradient(120deg, #fff, var(--accent) 60%, var(--accent-2));
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero p { color: var(--muted); font-size: 16px; margin: 0 auto; max-width: 560px; }
+.hero .badges-row { margin-top: 14px; display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.chip {
+  font-size: 12.5px; font-weight: 700;
+  background: var(--card); border: 1px solid rgba(255,255,255,.08);
+  padding: 6px 12px; border-radius: 999px; color: var(--muted);
+}
+
+.section-title {
+  display: flex; align-items: center; gap: 10px;
+  margin: 26px 4px 12px; font-size: 15px; font-weight: 800;
+  text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted);
+}
+.section-title::after { content:""; flex:1; height:1px; background: rgba(255,255,255,.08); }
+
+/* Lektions-Karten (Lernpfad) */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 14px;
+}
+.lesson-card {
+  position: relative;
+  text-align: left;
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: var(--radius);
+  padding: 16px;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform .18s cubic-bezier(.2,.8,.2,1), box-shadow .2s, border-color .2s;
+}
+.lesson-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: var(--lc, var(--accent)); }
+.lesson-card::before {
+  content:""; position:absolute; inset:0 auto 0 0; width:6px;
+  background: var(--lc, var(--accent));
+}
+.lesson-card .lc-top { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
+.lesson-card .lc-emoji {
+  width: 46px; height: 46px; flex: 0 0 46px;
+  display:grid; place-items:center; font-size: 26px;
+  border-radius: 14px;
+  background: color-mix(in srgb, var(--lc, var(--accent)) 22%, transparent);
+}
+.lesson-card .lc-num { font-size: 12px; color: var(--muted); font-weight:700; }
+.lesson-card h3 { margin: 2px 0 0; font-size: 17px; line-height: 1.15; }
+.lesson-card .lc-intro { color: var(--muted); font-size: 13.5px; margin: 8px 0 12px; min-height: 38px; }
+.lesson-card .lc-foot { display:flex; align-items:center; justify-content:space-between; font-size:12.5px; color:var(--muted); }
+.lesson-card .lc-progress { height:7px; background: rgba(255,255,255,.1); border-radius:999px; overflow:hidden; margin-top:10px; }
+.lesson-card .lc-progress > span { display:block; height:100%; width:0; background: var(--lc, var(--accent)); border-radius:999px; transition: width .5s; }
+
+.lesson-card .done-badge {
+  position:absolute; top:12px; right:12px;
+  background: var(--good); color:#062c14; font-weight:800; font-size:11px;
+  padding:4px 9px; border-radius:999px; display:none;
+}
+.lesson-card.done .done-badge { display:inline-block; }
+.lesson-card.locked { opacity:.55; cursor:not-allowed; }
+.lesson-card.locked:hover { transform:none; box-shadow:none; }
+.lesson-card .lock-ic { position:absolute; top:12px; right:12px; font-size:18px; }
+
+/* ============================ LEKTION-ANSICHT ============================ */
+.lesson-view { display:none; }
+.lesson-view.active { display:block; animation: fadeIn .35s ease; }
+@keyframes fadeIn { from { opacity:0; transform: translateY(10px);} to {opacity:1; transform:none;} }
+
+.lv-head {
+  display:flex; align-items:center; gap:14px;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--lesson) 30%, var(--card)), var(--card));
+  border:1px solid rgba(255,255,255,.09);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-bottom: 14px;
+}
+.lv-head .lv-emoji { font-size: 40px; }
+.lv-head h2 { margin:0; font-size: clamp(20px,4.5vw,28px); }
+.lv-head .lv-sub { color: var(--muted); font-size: 13px; margin-top:3px; }
+
+/* Fortschritt in Lektion */
+.steps {
+  display:flex; gap:6px; margin-bottom: 16px;
+}
+.steps .dot {
+  flex:1; height:8px; border-radius:999px;
+  background: rgba(255,255,255,.12);
+  transition: background .3s;
+}
+.steps .dot.on { background: var(--lesson); box-shadow: 0 0 10px var(--lesson); }
+.steps .dot.current { background: var(--accent-2); }
+
+/* Inhalts-Karte (ein Häppchen im Fokus) */
+.chunk {
+  background: var(--card);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius: var(--radius);
+  padding: 22px;
+  box-shadow: var(--shadow);
+  animation: pop .3s ease;
+}
+@keyframes pop { from { opacity:0; transform: scale(.98);} to {opacity:1; transform:none;} }
+.chunk .kicker { font-size:12px; letter-spacing:1.5px; text-transform:uppercase; color: var(--lesson); font-weight:800; }
+.chunk h3 { margin: 6px 0 12px; font-size: 22px; line-height:1.2; }
+.chunk p.body { font-size: 17.5px; line-height: 1.7; color: #ece7ff; margin: 0 0 16px; }
+.chunk .merke {
+  display:flex; gap:10px; align-items:flex-start;
+  background: color-mix(in srgb, var(--lesson) 16%, transparent);
+  border-left: 4px solid var(--lesson);
+  padding: 12px 14px; border-radius: 12px;
+  font-size: 15px;
+}
+.chunk .merke b { color: var(--lesson); }
+
+/* Lese-Steuerung */
+.speak-row { display:flex; align-items:center; gap:8px; margin: 16px 0 4px; flex-wrap:wrap; }
+.speak-btn {
+  display:inline-flex; align-items:center; gap:8px;
+  border:none; cursor:pointer;
+  background: linear-gradient(135deg, var(--lesson), var(--accent-2));
+  color:#1a1030; font-weight:800; font-size:15px;
+  padding: 11px 16px; border-radius: 14px;
+  transition: transform .12s, filter .2s;
+  box-shadow: 0 6px 18px color-mix(in srgb, var(--lesson) 40%, transparent);
+}
+.speak-btn:hover { transform: translateY(-2px); }
+.speak-btn.speaking { animation: pulse 1s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{ filter:brightness(1);} 50%{ filter:brightness(1.2);} }
+.mini-btn {
+  border:1px solid rgba(255,255,255,.14); background: var(--card-2); color:var(--text);
+  padding: 10px 12px; border-radius: 12px; cursor:pointer; font-weight:700; font-size:14px;
+}
+.mini-btn:hover { background:#2f2963; }
+.rate-ctrl { display:flex; align-items:center; gap:6px; font-size:13px; color:var(--muted); }
+.rate-ctrl input { accent-color: var(--accent); }
+
+/* Navigation unten */
+.nav-row { display:flex; align-items:center; gap:12px; margin-top: 18px; }
+.btn {
+  border:none; cursor:pointer; font-weight:800; font-size:16px;
+  padding: 14px 22px; border-radius: 16px;
+  transition: transform .12s, filter .2s, background .2s;
+}
+.btn.primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color:#1a1030; margin-left:auto; box-shadow: 0 8px 22px rgba(197,138,249,.35); }
+.btn.primary:hover { transform: translateY(-2px); }
+.btn.ghost { background: var(--card); color:var(--text); border:1px solid rgba(255,255,255,.12); }
+.btn.ghost:hover { background: var(--card-2); }
+.btn:disabled { opacity:.4; cursor:not-allowed; transform:none; }
+
+/* ============================ QUIZ ============================ */
+.quiz .q-count { color: var(--muted); font-weight:700; font-size:13px; letter-spacing:1px; text-transform:uppercase; }
+.quiz h3 { font-size: 21px; margin: 8px 0 16px; line-height:1.3; }
+.options { display:flex; flex-direction:column; gap:10px; }
+.option {
+  text-align:left; cursor:pointer;
+  background: var(--card-2); color:var(--text);
+  border:2px solid rgba(255,255,255,.1);
+  border-radius: 14px; padding: 15px 16px; font-size:16px; font-weight:600;
+  transition: transform .1s, border-color .2s, background .2s;
+}
+.option:hover:not(:disabled) { transform: translateX(4px); border-color: var(--accent); }
+.option.correct { border-color: var(--good); background: color-mix(in srgb, var(--good) 22%, var(--card-2)); }
+.option.wrong { border-color: var(--bad); background: color-mix(in srgb, var(--bad) 20%, var(--card-2)); }
+.option:disabled { cursor: default; }
+.feedback {
+  margin-top: 14px; padding: 14px 16px; border-radius: 14px; font-size:15px; line-height:1.5;
+  display:none;
+}
+.feedback.show { display:block; animation: pop .3s ease; }
+.feedback.ok { background: color-mix(in srgb, var(--good) 16%, transparent); border-left:4px solid var(--good); }
+.feedback.no { background: color-mix(in srgb, var(--bad) 16%, transparent); border-left:4px solid var(--bad); }
+
+/* Lektion abgeschlossen */
+.complete {
+  text-align:center; padding: 30px 20px;
+  background: var(--card); border:1px solid rgba(255,255,255,.1);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+}
+.complete .big { font-size: 64px; animation: bounce 1s ease infinite; }
+@keyframes bounce { 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-12px);} }
+.complete h2 { margin: 8px 0; font-size: 28px; }
+.complete p { color: var(--muted); }
+.reward { display:inline-flex; gap:8px; align-items:center; background: linear-gradient(135deg, rgba(255,211,92,.25), rgba(255,154,98,.2)); border:1px solid var(--gold); color: var(--gold); font-weight:800; padding:10px 16px; border-radius:999px; margin:12px 0; }
+
+/* ============================ BADGE-MODAL ============================ */
+.modal-back {
+  position: fixed; inset:0; z-index:60;
+  background: rgba(6,4,14,.7); backdrop-filter: blur(4px);
+  display:none; align-items:center; justify-content:center; padding:20px;
+}
+.modal-back.show { display:flex; animation: fadeIn .25s; }
+.modal {
+  background: var(--card); border:1px solid rgba(255,255,255,.12);
+  border-radius: 24px; padding: 26px; max-width: 460px; width:100%;
+  box-shadow: var(--shadow);
+}
+.modal h2 { margin:0 0 6px; }
+.modal .close-x { float:right; cursor:pointer; color:var(--muted); font-size:22px; line-height:1; }
+.badge-grid { display:grid; grid-template-columns: repeat(auto-fill,minmax(80px,1fr)); gap:12px; margin-top:16px; }
+.badge {
+  text-align:center; padding:12px 6px; border-radius:16px;
+  background: var(--card-2); border:1px solid rgba(255,255,255,.08);
+  font-size:12px; color:var(--muted);
+}
+.badge .b-ic { font-size:30px; display:block; filter: grayscale(1) opacity(.4); }
+.badge.earned { border-color: var(--gold); }
+.badge.earned .b-ic { filter:none; }
+.badge.earned { color: var(--text); }
+
+/* Toast */
+.toast-wrap { position:fixed; bottom:22px; left:50%; transform:translateX(-50%); z-index:80; display:flex; flex-direction:column; gap:8px; align-items:center; }
+.toast {
+  background: linear-gradient(135deg, var(--accent), var(--accent-2)); color:#1a1030;
+  font-weight:800; padding:12px 20px; border-radius:999px; box-shadow: var(--shadow);
+  animation: toastIn .3s ease, toastOut .3s ease 2.4s forwards;
+}
+@keyframes toastIn { from{ opacity:0; transform: translateY(14px);} to{opacity:1; transform:none;} }
+@keyframes toastOut { to { opacity:0; transform: translateY(14px); } }
+
+/* Konfetti */
+#confetti { position:fixed; inset:0; pointer-events:none; z-index:70; }
+
+/* Footer */
+.foot { text-align:center; color:var(--muted); font-size:12.5px; margin-top:34px; line-height:1.6; }
+.foot a { color: var(--accent); }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+@media (max-width: 560px) {
+  .hud .stat span.lbl { display:none; }
+  .xpbar { width: 90px; }
+  .chunk p.body { font-size: 16.5px; }
+  .btn { padding: 13px 18px; font-size:15px; }
+}
+
+</style>
+
+<!-- Deko-Hintergrund -->
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
+
+  <canvas id="confetti"></canvas>
+
+  <div class="wrap">
+    <!-- HUD / Topbar -->
+    <header class="topbar">
+      <div class="brand" id="brand" title="Zur Übersicht">
+        <span class="logo">🧠</span>
+        <span>Claude&nbsp;101<small>Deutsche Lernversion</small></span>
+      </div>
+
+      <div class="hud">
+        <div class="stat level" title="Level"><span class="ic">🎖️</span><span class="lbl">Lvl</span>&nbsp;<span id="hud-level">1</span></div>
+        <div class="xpbar" title="XP bis zum nächsten Level"><span id="hud-xpbar"></span></div>
+        <div class="stat" title="Erfahrungspunkte"><span class="ic">⚡</span><span id="hud-xp">0</span>&nbsp;<span class="lbl">XP</span></div>
+        <div class="stat streak" title="Tages-Streak"><span class="ic">🔥</span><span id="hud-streak">0</span></div>
+        <div class="stat" title="Abgeschlossene Lektionen"><span class="ic">✅</span><span id="hud-done">0/14</span></div>
+
+        <button class="iconbtn" id="btn-badges" title="Abzeichen">🏅</button>
+        <button class="iconbtn" id="btn-calm" title="Ruhe-Modus (weniger Reize)">🌙</button>
+        <button class="iconbtn" id="btn-reset" title="Fortschritt zurücksetzen">🔄</button>
+      </div>
+    </header>
+
+    <!-- Dynamischer Inhalt -->
+    <main id="app"></main>
+  </div>
+
+  <!-- Abzeichen-Modal -->
+  <div class="modal-back" id="modal-back">
+    <div class="modal">
+      <span class="close-x" id="modal-close">✕</span>
+      <h2>🏅 Deine Abzeichen</h2>
+      <p id="badge-sub" style="color:var(--muted);margin:0"></p>
+      <div class="badge-grid" id="badge-grid"></div>
+    </div>
+  </div>
+
+<script>
+/*
+ * Claude 101 – Deutsche Lernversion
+ * Inhaltsdaten für alle 14 Lektionen.
+ * Als globale Variable geladen, damit die App auch per file:// (ohne Server) läuft.
+ *
+ * Struktur je Lektion:
+ *   id, emoji, titel, dauer (Min.), farbe (Akzent),
+ *   intro (Kurzteaser),
+ *   chunks: [{ titel, text, merke? }]  -> ADHS-freundliche Häppchen
+ *   quiz:   [{ frage, optionen[], richtig(Index), erklaerung }]
+ */
+
+window.LESSONS = [
+  /* ------------------------------------------------------------------ */
+  {
+    id: 1,
+    emoji: "👋",
+    titel: "Willkommen bei Claude",
+    dauer: 5,
+    farbe: "#ff6b6b",
+    intro: "Was ist Claude, wer steckt dahinter – und was nimmst du aus diesem Kurs mit?",
+    chunks: [
+      {
+        titel: "Was ist Claude?",
+        text: "Claude ist ein KI-Assistent von Anthropic. Du schreibst ihm in ganz normaler Sprache – wie einer klugen Kollegin – und Claude antwortet: erklärt, schreibt, fasst zusammen, programmiert oder denkt mit dir mit.",
+        merke: "Claude = KI-Assistent, den du in Alltagssprache bedienst."
+      },
+      {
+        titel: "Wer ist Anthropic?",
+        text: "Anthropic ist das Unternehmen hinter Claude, gegründet 2021. Das Ziel: KI entwickeln, die sicher, ehrlich und für Menschen nützlich ist. Sicherheit steht bei jeder Entscheidung mit an erster Stelle.",
+        merke: "Anthropic baut Claude mit Fokus auf Sicherheit & Nützlichkeit."
+      },
+      {
+        titel: "Was du hier lernst",
+        text: "In 14 kurzen Lektionen lernst du: wie Claude funktioniert, wie du ihn erreichst, wie du gute Anweisungen (Prompts) schreibst, was Projekte & Artifacts sind – und wie du verantwortungsvoll damit arbeitest.",
+        merke: "14 Lektionen – vom ersten Chat bis zu Profi-Prompts."
+      },
+      {
+        titel: "Kein Vorwissen nötig",
+        text: "Du brauchst keine Technik-Kenntnisse und musst nicht programmieren können. Neugier reicht. Jede Lektion ist ein kleines Häppchen – du kannst jederzeit pausieren und weitermachen.",
+        merke: "Null Vorwissen – nur Neugier."
+      }
+    ],
+    quiz: [
+      {
+        frage: "Wer entwickelt Claude?",
+        optionen: ["Anthropic", "Ein Musikstreaming-Dienst", "Du selbst", "Niemand"],
+        richtig: 0,
+        erklaerung: "Claude wird von Anthropic entwickelt – einem Unternehmen mit Fokus auf sichere KI."
+      },
+      {
+        frage: "Was brauchst du, um mit Claude zu starten?",
+        optionen: ["Einen Doktortitel", "Programmierkenntnisse", "Nur Neugier und Alltagssprache", "Spezielle Hardware"],
+        richtig: 2,
+        erklaerung: "Du bedienst Claude in normaler Sprache – kein Vorwissen nötig."
+      }
+    ]
+  },
+
+  /* ------------------------------------------------------------------ */
+  {
+    id: 2,
+    emoji: "🧠",
+    titel: "Was ist ein Sprachmodell?",
+    dauer: 6,
+    farbe: "#f7b731",
+    intro: "Wie 'denkt' Claude eigentlich? Ein Blick unter die Haube – ohne Mathe-Stress.",
+    chunks: [
+      {
+        titel: "Ein großes Sprachmodell (LLM)",
+        text: "Claude ist ein 'Large Language Model'. Es wurde mit riesigen Mengen Text trainiert und hat dabei Muster der Sprache gelernt: welches Wort typischerweise auf welches folgt, wie Argumente aufgebaut sind, wie man erklärt.",
+        merke: "LLM = Modell, das Sprachmuster aus sehr viel Text gelernt hat."
+      },
+      {
+        titel: "Vorhersage, kein Nachschlagen",
+        text: "Claude schlägt Antworten nicht in einer Datenbank nach. Es sagt Schritt für Schritt das wahrscheinlich passendste nächste Wort voraus. Aus dieser Vorhersage entstehen zusammenhängende, sinnvolle Antworten.",
+        merke: "Claude erzeugt Text, statt ihn abzurufen."
+      },
+      {
+        titel: "Tokens – die Bausteine",
+        text: "Text wird intern in kleine Stücke zerlegt, sogenannte Tokens. Ein Token ist oft ein kurzes Wort oder Wortteil. Claude liest und schreibt in Tokens – wichtig später beim Thema Kontextfenster.",
+        merke: "Token = kleiner Textbaustein (Wort oder Wortteil)."
+      },
+      {
+        titel: "Warum das für dich zählt",
+        text: "Weil Claude vorhersagt statt nachschlägt, kann es kreativ und flexibel sein – aber auch mal danebenliegen. Deshalb lohnt es sich, wichtige Fakten gegenzuprüfen (mehr dazu in Lektion 13).",
+        merke: "Flexibel & kreativ – aber Fakten prüfen."
+      }
+    ],
+    quiz: [
+      {
+        frage: "Wie entstehen Claudes Antworten grob gesagt?",
+        optionen: ["Durch Nachschlagen in einer festen Datenbank", "Durch Vorhersage des nächsten passenden Wortes", "Durch Zufall", "Durch menschliche Mitarbeiter im Hintergrund"],
+        richtig: 1,
+        erklaerung: "Claude sagt Schritt für Schritt das wahrscheinlichste nächste Wort voraus."
+      },
+      {
+        frage: "Was ist ein Token?",
+        optionen: ["Eine Bezahlmünze", "Ein kleiner Textbaustein", "Ein Passwort", "Ein Fehlercode"],
+        richtig: 1,
+        erklaerung: "Tokens sind kleine Stücke (Wörter/Wortteile), in denen Claude Text verarbeitet."
+      }
+    ]
+  },
+
+  /* ------------------------------------------------------------------ */
+  {
+    id: 3,
+    emoji: "🚪",
+    titel: "So erreichst du Claude",
+    dauer: 5,
+    farbe: "#26de81",
+    intro: "Web, App, API oder Terminal – vier Wege zu Claude. Welcher passt zu dir?",
+    chunks: [
+      {
+        titel: "Claude.ai im Browser",
+        text: "Der einfachste Weg: die Website claude.ai. Anmelden, Nachricht tippen, loslegen. Perfekt für Fragen, Texte, Ideen und den Alltag – ganz ohne Installation.",
+        merke: "claude.ai = der schnellste Einstieg im Browser."
+      },
+      {
+        titel: "Die Apps",
+        text: "Es gibt Claude auch als App für Handy (iOS/Android) und Desktop (Mac/Windows). So hast du Claude unterwegs dabei oder direkt griffbereit auf dem Rechner.",
+        merke: "Apps für Handy & Desktop – Claude immer dabei."
+      },
+      {
+        titel: "Die API – für Entwickler",
+        text: "Über die API können Programmierer Claude in eigene Software, Apps oder Automatisierungen einbauen. Damit wird Claude Teil ganzer Arbeitsabläufe – ohne dass jemand tippen muss.",
+        merke: "API = Claude in eigene Programme einbauen."
+      },
+      {
+        titel: "Claude Code – im Terminal",
+        text: "Für Programmierarbeit gibt es Claude Code: ein Assistent, der direkt in der Entwicklungsumgebung / im Terminal Code liest, schreibt und ändert. Für diesen Kurs reicht claude.ai völlig aus.",
+        merke: "Claude Code = Programmier-Assistent im Terminal."
+      }
+    ],
+    quiz: [
+      {
+        frage: "Was ist der einfachste Einstieg für Einsteiger?",
+        optionen: ["Die API", "Claude Code im Terminal", "Die Website claude.ai", "Ein selbst gebauter Server"],
+        richtig: 2,
+        erklaerung: "claude.ai im Browser braucht keine Installation – ideal zum Starten."
+      },
+      {
+        frage: "Wofür ist die API gedacht?",
+        optionen: ["Zum Chatten im Browser", "Um Claude in eigene Software einzubauen", "Um Passwörter zu speichern", "Um Videos zu schneiden"],
+        richtig: 1,
+        erklaerung: "Mit der API integrieren Entwickler Claude in eigene Anwendungen."
+      }
+    ]
+  },
+
+  /* ------------------------------------------------------------------ */
+  {
+    id: 4,
+    emoji: "💬",
+    titel: "Dein erstes Gespräch",
+    dauer: 6,
+    farbe: "#45aaf2",
+    intro: "Das Chat-Fenster verstehen: Nachrichten, Antworten und der rote Faden.",
+    chunks: [
+      {
+        titel: "Nachricht rein, Antwort raus",
+        text: "Du schreibst eine Nachricht ins Feld und drückst Enter. Claude antwortet. Du kannst nachfragen, um Verbesserungen bitten oder das Thema wechseln – ganz wie in einem echten Gespräch.",
+        merke: "Chat = Hin und Her, wie mit einem Menschen."
+      },
+      {
+        titel: "Der rote Faden (Kontext)",
+        text: "Innerhalb eines Gesprächs merkt sich Claude, was vorher gesagt wurde. Du kannst dich also auf frühere Nachrichten beziehen: 'Mach das kürzer' oder 'Erklär den zweiten Punkt genauer'.",
+        merke: "Innerhalb eines Chats erinnert sich Claude an den Verlauf."
+      },
+      {
+        titel: "Neues Gespräch = neuer Start",
+        text: "Startest du ein neues Gespräch, beginnt Claude ohne Erinnerung an den vorherigen Chat. Praktisch, wenn du das Thema komplett wechseln willst und keine Vermischung möchtest.",
+        merke: "Neuer Chat = weißes Blatt, kein alter Kontext."
+      },
+      {
+        titel: "Nachhaken lohnt sich",
+        text: "Die erste Antwort ist selten das Ende. Bitte um Beispiele, einen anderen Ton, eine Tabelle oder eine kürzere Version. Genau dieses Nachschärfen macht Claude so nützlich.",
+        merke: "Iterieren statt aufgeben – nachschärfen bringt bessere Ergebnisse."
+      }
+    ],
+    quiz: [
+      {
+        frage: "Erinnert sich Claude innerhalb eines Gesprächs an das Vorherige?",
+        optionen: ["Ja, an den bisherigen Verlauf des Chats", "Nein, nie", "Nur an die allererste Nachricht", "Nur wenn du zahlst"],
+        richtig: 0,
+        erklaerung: "Innerhalb eines Gesprächs nutzt Claude den bisherigen Verlauf als Kontext."
+      },
+      {
+        frage: "Was passiert in einem neuen Gespräch?",
+        optionen: ["Der alte Chat wird fortgesetzt", "Claude startet ohne Erinnerung an den vorherigen Chat", "Alle Chats werden gelöscht", "Nichts"],
+        richtig: 1,
+        erklaerung: "Ein neues Gespräch beginnt ohne den Kontext des vorherigen."
+      }
+    ]
+  },
+
+  /* ------------------------------------------------------------------ */
+  {
+    id: 5,
+    emoji: "✍️",
+    titel: "Die Kunst des Promptens",
+    dauer: 7,
+    farbe: "#a55eea",
+    intro: "Ein Prompt ist deine Anweisung an Claude. Klar formuliert = bessere Antwort.",
+    chunks: [
+      {
+        titel: "Was ist ein Prompt?",
+        text: "Ein Prompt ist einfach das, was du Claude schreibst – deine Frage oder Aufgabe. Je klarer der Prompt, desto besser die Antwort. Prompten ist eine Fähigkeit, die man üben kann.",
+        merke: "Prompt = deine Anweisung an Claude."
+      },
+      {
+        titel: "Sei konkret",
+        text: "Statt 'Schreib was über Hunde' lieber: 'Schreib 3 kurze Tipps für die Stubenreinheit eines Welpen, freundlich und für Anfänger.' Konkrete Angaben zu Ziel, Länge und Ton wirken Wunder.",
+        merke: "Konkret schlägt vage – nenne Ziel, Länge, Ton."
+      },
+      {
+        titel: "Sag, wer die Zielgruppe ist",
+        text: "'Erklär mir Zinsen' vs. 'Erklär mir Zinsen so, als wäre ich 10 Jahre alt.' Wenn Claude weiß, für wen die Antwort ist, trifft es Sprache und Tiefe viel besser.",
+        merke: "Zielgruppe nennen → passender Ton & Tiefe."
+      },
+      {
+        titel: "Format vorgeben",
+        text: "Du kannst das Ausgabeformat bestimmen: 'als Aufzählung', 'als Tabelle', 'in maximal 5 Sätzen', 'als E-Mail'. Claude hält sich gern an klare Formatwünsche.",
+        merke: "Format ansagen: Liste, Tabelle, E-Mail, Länge …"
+      }
+    ],
+    quiz: [
+      {
+        frage: "Welcher Prompt ist besser?",
+        optionen: ["'Schreib was über Reisen'", "'Nenne 3 günstige Reisetipps für Studierende, je 1 Satz'", "'Reisen'", "'Mach irgendwas'"],
+        richtig: 1,
+        erklaerung: "Konkrete Angaben zu Anzahl, Zielgruppe und Länge führen zu besseren Antworten."
+      },
+      {
+        frage: "Warum die Zielgruppe angeben?",
+        optionen: ["Damit Claude Ton und Tiefe passend wählt", "Damit es länger dauert", "Aus Höflichkeit", "Das ändert nichts"],
+        richtig: 0,
+        erklaerung: "Mit bekannter Zielgruppe trifft Claude Sprache und Detailtiefe besser."
+      }
+    ]
+  },
+
+  /* ------------------------------------------------------------------ */
+  {
+    id: 6,
+    emoji: "🎯",
+    titel: "Prompt Engineering",
+    dauer: 8,
+    farbe: "#fd9644",
+    intro: "Drei Profi-Techniken: Kontext geben, Beispiele zeigen, Rolle zuweisen.",
+    chunks: [
+      {
+        titel: "Kontext mitgeben",
+        text: "Gib Claude die Hintergrundinfos, die es braucht: 'Ich schreibe für einen Backblog, Zielgruppe Hobbybäcker.' Je mehr relevanter Kontext, desto passgenauer die Antwort.",
+        merke: "Kontext = Hintergrundinfos, die die Antwort schärfen."
+      },
+      {
+        titel: "Beispiele zeigen (Few-Shot)",
+        text: "Zeig Claude ein Beispiel für das gewünschte Ergebnis: 'Formuliere so wie in diesem Beispiel …'. Ein oder zwei Muster helfen Claude, Stil und Format genau zu treffen.",
+        merke: "Few-Shot = mit Beispielen den Stil vorgeben."
+      },
+      {
+        titel: "Eine Rolle zuweisen",
+        text: "'Agiere als erfahrener Lektor' oder 'als geduldiger Mathe-Nachhilfelehrer'. Eine Rolle lenkt Perspektive, Ton und Fachtiefe der Antwort.",
+        merke: "Rolle zuweisen → Perspektive & Ton steuern."
+      },
+      {
+        titel: "Schritt für Schritt denken lassen",
+        text: "Bei kniffligen Aufgaben hilft: 'Denk das Schritt für Schritt durch.' Claude arbeitet dann strukturierter und macht weniger Flüchtigkeitsfehler.",
+        merke: "'Schritt für Schritt' = strukturierteres Denken."
+      }
+    ],
+    quiz: [
+      {
+        frage: "Was bedeutet 'Few-Shot'?",
+        optionen: ["Mehrere Fotos schicken", "Claude Beispiele für das gewünschte Ergebnis zeigen", "Nur ein Wort schreiben", "Schnell antworten"],
+        richtig: 1,
+        erklaerung: "Few-Shot heißt: Du gibst ein paar Beispiele vor, an denen sich Claude orientiert."
+      },
+      {
+        frage: "Warum eine Rolle zuweisen ('agiere als …')?",
+        optionen: ["Es sieht nett aus", "Um Perspektive, Ton und Fachtiefe zu steuern", "Es ist Pflicht", "Damit Claude langsamer wird"],
+        richtig: 1,
+        erklaerung: "Eine Rolle lenkt Blickwinkel und Sprachniveau der Antwort."
+      }
+    ]
+  },
+
+  /* ------------------------------------------------------------------ */
+  {
+    id: 7,
+    emoji: "🪟",
+    titel: "Das Kontextfenster",
+    dauer: 7,
+    farbe: "#4b7bec",
+    intro: "Wie viel kann Claude auf einmal 'im Kopf' behalten? Das erklärt das Kontextfenster.",
+    chunks: [
+      {
+        titel: "Was ist das Kontextfenster?",
+        text: "Das Kontextfenster ist die Menge an Text, die Claude in einem Gespräch gleichzeitig berücksichtigen kann – deine Nachrichten plus die Antworten. Gemessen wird es in Tokens.",
+        merke: "Kontextfenster = Arbeitsspeicher des Gesprächs (in Tokens)."
+      },
+      {
+        titel: "Sehr groß, aber nicht unendlich",
+        text: "Moderne Claude-Modelle haben ein sehr großes Kontextfenster – ganze Dokumente passen hinein. Trotzdem gibt es eine Grenze: Irgendwann rückt sehr Altes aus dem Blickfeld.",
+        merke: "Groß, aber begrenzt – sehr Altes kann herausfallen."
+      },
+      {
+        titel: "Tipp bei langen Chats",
+        text: "Wird ein Gespräch riesig, kann Frühes ungenauer werden. Fasse dann Wichtiges kurz zusammen und gib es Claude erneut, oder starte einen frischen, fokussierten Chat.",
+        merke: "Bei Mammut-Chats: Wichtiges zusammenfassen oder neu starten."
+      },
+      {
+        titel: "Warum das nützlich ist",
+        text: "Dank großem Kontextfenster kannst du lange Texte, Berichte oder Verträge auf einmal einfügen und Claude alles zusammen analysieren lassen – ohne es in Häppchen zu zerlegen.",
+        merke: "Großes Fenster = ganze Dokumente auf einmal analysieren."
+      }
+    ],
+    quiz: [
+      {
+        frage: "Was beschreibt das Kontextfenster?",
+        optionen: ["Die Bildschirmgröße", "Wie viel Text Claude gleichzeitig berücksichtigen kann", "Die Internetgeschwindigkeit", "Die Anzahl der Nutzer"],
+        richtig: 1,
+        erklaerung: "Das Kontextfenster ist die Textmenge, die Claude gleichzeitig einbeziehen kann."
+      },
+      {
+        frage: "Was tun, wenn ein Gespräch extrem lang wird?",
+        optionen: ["Nichts, ist egal", "Wichtiges zusammenfassen oder neu starten", "Den Computer neu starten", "Lauter schreiben"],
+        richtig: 1,
+        erklaerung: "Bei sehr langen Chats hilft es, Kernpunkte zusammenzufassen oder frisch zu beginnen."
+      }
+    ]
+  },
+
+  /* ------------------------------------------------------------------ */
+  {
+    id: 8,
+    emoji: "📎",
+    titel: "Dateien & Dokumente",
+    dauer: 6,
+    farbe: "#2bcbba",
+    intro: "PDFs, Bilder, Tabellen: Claude kann Dateien lesen und mit dir darüber arbeiten.",
+    chunks: [
+      {
+        titel: "Dateien hochladen",
+        text: "Du kannst Dokumente direkt ins Gespräch hochladen – etwa PDFs, Textdateien oder Bilder. Claude liest den Inhalt und du kannst Fragen dazu stellen.",
+        merke: "Datei hochladen → Claude liest & du fragst."
+      },
+      {
+        titel: "Zusammenfassen & auswerten",
+        text: "Lade einen langen Bericht hoch und bitte: 'Fasse die 5 wichtigsten Punkte zusammen' oder 'Was sind die Risiken?'. Claude spart dir das mühsame Selbstlesen.",
+        merke: "Lange Dokumente → auf Knopfdruck zusammengefasst."
+      },
+      {
+        titel: "Bilder verstehen",
+        text: "Claude kann Bilder analysieren: ein Foto beschreiben, einen Screenshot erklären, ein Diagramm auswerten oder Text aus einem Bild herauslesen.",
+        merke: "Claude 'sieht' Bilder – beschreiben, erklären, auslesen."
+      },
+      {
+        titel: "Sinnvoll kombinieren",
+        text: "Kombiniere Datei + klare Aufgabe: 'Hier ist meine Tabelle – finde Ausreißer und erklär sie in einfachen Worten.' So wird aus Rohdaten schnell eine verständliche Antwort.",
+        merke: "Datei + klare Aufgabe = starke Ergebnisse."
+      }
+    ],
+    quiz: [
+      {
+        frage: "Was kann Claude mit einem hochgeladenen PDF tun?",
+        optionen: ["Nichts", "Inhalt lesen und z. B. zusammenfassen", "Es nur speichern", "Es ausdrucken"],
+        richtig: 1,
+        erklaerung: "Claude liest den Inhalt und kann ihn zusammenfassen oder auswerten."
+      },
+      {
+        frage: "Kann Claude Bilder analysieren?",
+        optionen: ["Ja – beschreiben, erklären, Text auslesen", "Nein, nur Text", "Nur schwarz-weiße Bilder", "Nur mit Spezialgerät"],
+        richtig: 0,
+        erklaerung: "Claude kann Bilder beschreiben, erklären und enthaltenen Text erkennen."
+      }
+    ]
+  },
+
+  /* ------------------------------------------------------------------ */
+  {
+    id: 9,
+    emoji: "🗂️",
+    titel: "Projects (Projekte)",
+    dauer: 6,
+    farbe: "#eb3b5a",
+    intro: "Bündle Wissen und Anweisungen an einem Ort – für wiederkehrende Aufgaben.",
+    chunks: [
+      {
+        titel: "Was ist ein Projekt?",
+        text: "Ein Projekt ist ein eigener Arbeitsbereich in Claude, in dem du Dateien, Kontext und dauerhafte Anweisungen sammelst. Alle Chats im Projekt greifen darauf zu.",
+        merke: "Projekt = Arbeitsbereich mit gemeinsamem Wissen."
+      },
+      {
+        titel: "Wissen einmal hinterlegen",
+        text: "Lade z. B. deine Markenrichtlinien oder Produktinfos einmal ins Projekt. Danach kennt Claude in jedem Chat des Projekts diesen Hintergrund – du musst ihn nicht ständig wiederholen.",
+        merke: "Einmal hinterlegen, immer wieder nutzen."
+      },
+      {
+        titel: "Dauerhafte Anweisungen",
+        text: "Du kannst feste Regeln setzen: 'Antworte immer auf Deutsch, freundlich, in kurzen Absätzen.' Diese gelten dann für das ganze Projekt.",
+        merke: "Projekt-Anweisungen = Regeln für alle Chats darin."
+      },
+      {
+        titel: "Ideal für Wiederkehrendes",
+        text: "Projekte lohnen sich, wenn du eine Aufgabe oft machst – Kundenmails, Content für einen Kanal, Auswertungen. Der gemeinsame Kontext spart jedes Mal Zeit.",
+        merke: "Perfekt für Aufgaben, die du regelmäßig wiederholst."
+      }
+    ],
+    quiz: [
+      {
+        frage: "Wozu dient ein Projekt in Claude?",
+        optionen: ["Dateien, Kontext & Anweisungen an einem Ort bündeln", "Videos zu rendern", "Das Internet schneller zu machen", "Nichts Bestimmtes"],
+        richtig: 0,
+        erklaerung: "Projekte bündeln gemeinsames Wissen und Regeln für mehrere Chats."
+      },
+      {
+        frage: "Vorteil dauerhafter Projekt-Anweisungen?",
+        optionen: ["Man muss Regeln nicht in jedem Chat wiederholen", "Sie kosten extra", "Sie löschen Chats", "Kein Vorteil"],
+        richtig: 0,
+        erklaerung: "Einmal gesetzt, gelten die Anweisungen für alle Chats im Projekt."
+      }
+    ]
+  },
+
+  /* ------------------------------------------------------------------ */
+  {
+    id: 10,
+    emoji: "🎨",
+    titel: "Artifacts",
+    dauer: 6,
+    farbe: "#f368e0",
+    intro: "Wenn Claude nicht nur redet, sondern etwas Fertiges baut – im eigenen Fenster.",
+    chunks: [
+      {
+        titel: "Was sind Artifacts?",
+        text: "Artifacts sind eigenständige Ergebnisse, die Claude in einem separaten Fenster erstellt: ein längeres Dokument, Code, eine Tabelle oder sogar eine kleine interaktive Web-Seite.",
+        merke: "Artifact = fertiges Werk im eigenen Fenster."
+      },
+      {
+        titel: "Warum praktisch?",
+        text: "Das Artifact steht neben dem Chat, bleibt übersichtlich und lässt sich leicht kopieren oder weiterverwenden. Der Chat bleibt fürs Gespräch, das Artifact fürs Ergebnis.",
+        merke: "Chat = Gespräch, Artifact = sauberes Endergebnis."
+      },
+      {
+        titel: "Live weiterentwickeln",
+        text: "Du kannst Artifacts iterativ verbessern: 'Mach die Überschrift größer', 'Füge einen Abschnitt hinzu'. Claude aktualisiert das Artifact, statt alles neu zu schreiben.",
+        merke: "Artifacts wachsen mit – Schritt für Schritt verfeinern."
+      },
+      {
+        titel: "Typische Beispiele",
+        text: "Ein Bewerbungsschreiben, ein Code-Schnipsel, eine Checkliste, ein einfacher Rechner als Web-Seite – all das kann als Artifact entstehen und direkt genutzt werden.",
+        merke: "Dokumente, Code, Tools – als nutzbares Artifact."
+      }
+    ],
+    quiz: [
+      {
+        frage: "Was ist ein Artifact?",
+        optionen: ["Ein Virus", "Ein eigenständiges Ergebnis in einem separaten Fenster", "Ein Abo", "Ein Fehler"],
+        richtig: 1,
+        erklaerung: "Artifacts sind fertige Werke (Doku, Code, Web-Seite) in einem eigenen Fenster."
+      },
+      {
+        frage: "Wie verbesserst du ein Artifact?",
+        optionen: ["Gar nicht", "Alles neu tippen", "Claude um gezielte Änderungen bitten", "Neu anmelden"],
+        richtig: 2,
+        erklaerung: "Du bittest um konkrete Änderungen – Claude aktualisiert das Artifact."
+      }
+    ]
+  },
+
+  /* ------------------------------------------------------------------ */
+  {
+    id: 11,
+    emoji: "⚙️",
+    titel: "Claudes Modelle",
+    dauer: 6,
+    farbe: "#3867d6",
+    intro: "Opus, Sonnet, Haiku: verschiedene Modelle für verschiedene Bedürfnisse.",
+    chunks: [
+      {
+        titel: "Eine Familie von Modellen",
+        text: "Claude gibt es in mehreren Varianten. Sie unterscheiden sich vor allem in der Balance aus Leistungsstärke und Geschwindigkeit. Namensfamilien: Opus, Sonnet, Haiku.",
+        merke: "Claude ist eine Modell-Familie: Opus, Sonnet, Haiku."
+      },
+      {
+        titel: "Opus – der Kraftprotz",
+        text: "Opus-Modelle sind besonders leistungsstark und gut für komplexe, anspruchsvolle Aufgaben: tiefes Nachdenken, kniffliges Programmieren, sorgfältige Analysen.",
+        merke: "Opus = maximale Leistung für schwere Aufgaben."
+      },
+      {
+        titel: "Sonnet – die Balance",
+        text: "Sonnet-Modelle bieten eine starke Mischung aus Können und Tempo. Für die meisten Alltags- und Arbeitsaufgaben eine ausgezeichnete Wahl.",
+        merke: "Sonnet = guter Allrounder aus Leistung & Tempo."
+      },
+      {
+        titel: "Haiku – der Flinke",
+        text: "Haiku-Modelle sind auf Geschwindigkeit optimiert – ideal, wenn schnelle, leichte Antworten wichtiger sind als maximale Tiefe. Wähle das Modell je nach Aufgabe.",
+        merke: "Haiku = schnell & leichtgewichtig."
+      }
+    ],
+    quiz: [
+      {
+        frage: "Welches Modell ist für sehr komplexe, anspruchsvolle Aufgaben gedacht?",
+        optionen: ["Haiku", "Opus", "Keines", "Alle gleich"],
+        richtig: 1,
+        erklaerung: "Opus ist besonders leistungsstark für schwierige Aufgaben."
+      },
+      {
+        frage: "Was zeichnet Haiku aus?",
+        optionen: ["Es ist besonders schnell und leichtgewichtig", "Es ist am langsamsten", "Es kann nichts", "Es ist ein Gedicht"],
+        richtig: 0,
+        erklaerung: "Haiku ist auf Geschwindigkeit optimiert – ideal für schnelle Antworten."
+      }
+    ]
+  },
+
+  /* ------------------------------------------------------------------ */
+  {
+    id: 12,
+    emoji: "🛡️",
+    titel: "Sicherheit & verantwortungsvolle KI",
+    dauer: 7,
+    farbe: "#0fb9b1",
+    intro: "Warum Claude bewusst hilfreich, ehrlich und harmlos sein soll.",
+    chunks: [
+      {
+        titel: "Anthropics Mission",
+        text: "Anthropic will KI entwickeln, die dem Menschen nützt und dabei sicher bleibt. Sicherheit ist kein nachträglicher Anstrich, sondern von Anfang an eingebaut.",
+        merke: "Sicherheit ist bei Claude von Anfang an eingebaut."
+      },
+      {
+        titel: "Constitutional AI",
+        text: "Claude wird mit einem Satz von Prinzipien ('Verfassung') trainiert, an denen es sein Verhalten ausrichtet. So lernt es, hilfreich zu sein und zugleich Schädliches zu vermeiden.",
+        merke: "Constitutional AI = Training an klaren Prinzipien."
+      },
+      {
+        titel: "Hilfreich, ehrlich, harmlos",
+        text: "Das Leitbild lautet: hilfreich (nützliche Antworten), ehrlich (keine Täuschung, Unsicherheit zugeben) und harmlos (keine gefährlichen Anleitungen). Deshalb lehnt Claude manche Bitten ab.",
+        merke: "Leitbild: hilfreich, ehrlich, harmlos."
+      },
+      {
+        titel: "Deine Verantwortung",
+        text: "Auch du trägst Verantwortung: Prüfe wichtige Fakten, teile keine sensiblen Daten leichtfertig und nutze Claude fair. KI ist ein Werkzeug – du triffst die Entscheidungen.",
+        merke: "Du entscheidest – Claude ist ein Werkzeug, kein Ersatz."
+      }
+    ],
+    quiz: [
+      {
+        frage: "Wofür steht das Leitbild von Claude?",
+        optionen: ["Schnell, laut, bunt", "Hilfreich, ehrlich, harmlos", "Teuer, geheim, komplex", "Nichts davon"],
+        richtig: 1,
+        erklaerung: "Claude soll hilfreich, ehrlich und harmlos sein."
+      },
+      {
+        frage: "Was ist 'Constitutional AI'?",
+        optionen: ["Ein Rechtsstudium", "Training an einem Satz klarer Prinzipien", "Ein Gesetz", "Ein Passwort"],
+        richtig: 1,
+        erklaerung: "Claude richtet sein Verhalten an einer 'Verfassung' aus Prinzipien aus."
+      }
+    ]
+  },
+
+  /* ------------------------------------------------------------------ */
+  {
+    id: 13,
+    emoji: "⚠️",
+    titel: "Grenzen & Halluzinationen",
+    dauer: 7,
+    farbe: "#fa8231",
+    intro: "Claude ist stark – aber nicht unfehlbar. Was du wissen und prüfen solltest.",
+    chunks: [
+      {
+        titel: "Was sind Halluzinationen?",
+        text: "Manchmal formuliert Claude etwas überzeugend, das aber falsch ist – das nennt man Halluzination. Weil Claude Text vorhersagt, kann es plausibel klingenden Unsinn erzeugen.",
+        merke: "Halluzination = überzeugend klingende, falsche Aussage."
+      },
+      {
+        titel: "Fakten gegenprüfen",
+        text: "Bei wichtigen Zahlen, Zitaten, Namen oder rechtlichen/medizinischen Themen gilt: gegenprüfen. Bitte Claude um Quellen und verlasse dich nicht blind auf eine einzelne Antwort.",
+        merke: "Wichtige Fakten immer unabhängig prüfen."
+      },
+      {
+        titel: "Wissensstand & Aktualität",
+        text: "Claudes Wissen hat einen Trainings-Stichtag. Sehr aktuelle Ereignisse kennt es evtl. nicht. Für Tagesaktuelles sind zusätzliche, aktuelle Quellen nötig.",
+        merke: "Nicht immer tagesaktuell – bei Neuem extra prüfen."
+      },
+      {
+        titel: "Kein Ersatz für Fachleute",
+        text: "Bei Gesundheit, Recht oder Finanzen liefert Claude Orientierung, ersetzt aber keine Fachperson. Nutze es als Startpunkt, nicht als letzte Instanz.",
+        merke: "Orientierung ja – Fachperson bleibt Fachperson."
+      }
+    ],
+    quiz: [
+      {
+        frage: "Was ist eine Halluzination bei KI?",
+        optionen: ["Ein Bild", "Eine überzeugend klingende, aber falsche Aussage", "Ein Traum", "Ein Fehlercode"],
+        richtig: 1,
+        erklaerung: "Claude kann plausibel klingende, aber falsche Aussagen erzeugen."
+      },
+      {
+        frage: "Wie gehst du mit wichtigen Fakten um?",
+        optionen: ["Blind vertrauen", "Unabhängig gegenprüfen", "Ignorieren", "Sofort teilen"],
+        richtig: 1,
+        erklaerung: "Wichtige Fakten solltest du immer unabhängig überprüfen."
+      }
+    ]
+  },
+
+  /* ------------------------------------------------------------------ */
+  {
+    id: 14,
+    emoji: "🚀",
+    titel: "Best Practices & nächste Schritte",
+    dauer: 6,
+    farbe: "#20bf6b",
+    intro: "Alles zusammengeführt: deine Merksätze für starke Ergebnisse – und wie's weitergeht.",
+    chunks: [
+      {
+        titel: "Klar & konkret bleiben",
+        text: "Der wichtigste Hebel: klare, konkrete Prompts mit Ziel, Zielgruppe, Ton und Format. Investiere ein paar Sekunden in einen guten Prompt – es zahlt sich sofort aus.",
+        merke: "Klarheit im Prompt = Qualität in der Antwort."
+      },
+      {
+        titel: "Iterieren statt aufgeben",
+        text: "Sieh die erste Antwort als Entwurf. Nachschärfen, umformulieren, Beispiele geben – so kommst du Schritt für Schritt zum perfekten Ergebnis.",
+        merke: "Iterieren ist normal – und macht den Unterschied."
+      },
+      {
+        titel: "Prüfen & verantwortungsvoll nutzen",
+        text: "Behalte kritische Fakten im Blick, schütze sensible Daten und triff Entscheidungen selbst. Claude unterstützt dich – die Verantwortung bleibt bei dir.",
+        merke: "Vertrauen ja, prüfen trotzdem."
+      },
+      {
+        titel: "So geht's weiter",
+        text: "Übe im Alltag: eine E-Mail entwerfen, einen Text kürzen, etwas erklären lassen. Probiere Projekte und Artifacts aus. Mit jeder Nutzung wirst du besser – du hast jetzt das Fundament!",
+        merke: "Üben, üben, üben – du hast das Fundament gelegt! 🎉"
+      }
+    ],
+    quiz: [
+      {
+        frage: "Was ist der wichtigste Hebel für gute Antworten?",
+        optionen: ["Glück", "Klare, konkrete Prompts", "Lange warten", "Viele Emojis"],
+        richtig: 1,
+        erklaerung: "Klarheit und Konkretheit im Prompt bestimmen maßgeblich die Qualität."
+      },
+      {
+        frage: "Wie solltest du die erste Antwort betrachten?",
+        optionen: ["Als endgültig", "Als Entwurf, den du weiter verfeinerst", "Als Fehler", "Als Werbung"],
+        richtig: 1,
+        erklaerung: "Iterieren – die erste Antwort ist ein Entwurf, den du nachschärfst."
+      }
+    ]
+  }
+];
+
+</script>
+<script>
+/* =========================================================================
+   Claude 101 – Deutsche Lernversion · App-Logik
+   Gamification, Vorlese-Funktion (Web Speech API), Fortschritt (localStorage)
+   ========================================================================= */
+(function () {
+  "use strict";
+
+  const LESSONS = window.LESSONS || [];
+  const STORE_KEY = "claude101_de_v1";
+  const XP_PER_CHUNK = 10;
+  const XP_PER_QUIZ = 25;
+  const XP_LESSON_BONUS = 50;
+  const XP_PER_LEVEL = 200;
+
+  /* ---------------------------- Zustand ---------------------------- */
+  const defaultState = {
+    xp: 0,
+    completed: {},          // lessonId -> true
+    lessonProgress: {},     // lessonId -> höchster erreichter Schritt-Index
+    badges: {},             // badgeId -> true
+    streakDays: 0,
+    lastDay: null,
+    calm: false,
+    rate: 1
+  };
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(STORE_KEY);
+      if (raw) return Object.assign({}, defaultState, JSON.parse(raw));
+    } catch (e) { /* ignore */ }
+    return Object.assign({}, defaultState);
+  }
+  function save() {
+    try { localStorage.setItem(STORE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+  let state = load();
+
+  /* ---------------------------- Streak ---------------------------- */
+  (function updateStreak() {
+    const today = new Date().toISOString().slice(0, 10);
+    if (state.lastDay === today) return;
+    const yesterday = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
+    if (state.lastDay === yesterday) state.streakDays += 1;
+    else state.streakDays = 1;
+    state.lastDay = today;
+    save();
+  })();
+
+  /* ---------------------------- Badges ---------------------------- */
+  const BADGES = [
+    { id: "start",   ic: "🌱", name: "Erste Schritte",   test: () => Object.keys(state.completed).length >= 1 },
+    { id: "three",   ic: "⭐", name: "Auf Kurs",          test: () => Object.keys(state.completed).length >= 3 },
+    { id: "half",    ic: "🔥", name: "Halbzeit",          test: () => Object.keys(state.completed).length >= 7 },
+    { id: "ten",     ic: "💎", name: "Fast am Ziel",      test: () => Object.keys(state.completed).length >= 10 },
+    { id: "all",     ic: "🏆", name: "Claude-Profi",      test: () => Object.keys(state.completed).length >= 14 },
+    { id: "level5",  ic: "🚀", name: "Level 5",           test: () => level() >= 5 },
+    { id: "streak3", ic: "📅", name: "3-Tage-Streak",     test: () => state.streakDays >= 3 },
+    { id: "listen",  ic: "🎧", name: "Zuhörer:in",        test: () => state._listened },
+  ];
+
+  function level() { return Math.floor(state.xp / XP_PER_LEVEL) + 1; }
+  function xpInLevel() { return state.xp % XP_PER_LEVEL; }
+
+  function checkBadges() {
+    let newOnes = [];
+    BADGES.forEach(b => {
+      if (!state.badges[b.id] && b.test()) {
+        state.badges[b.id] = true;
+        newOnes.push(b);
+      }
+    });
+    if (newOnes.length) { save(); newOnes.forEach(b => toast(`${b.ic} Abzeichen: ${b.name}!`)); }
+  }
+
+  function addXP(amount) {
+    const before = level();
+    state.xp += amount;
+    save();
+    renderHUD();
+    if (level() > before) {
+      confetti();
+      toast(`🎉 Level ${level()} erreicht!`);
+    }
+    checkBadges();
+  }
+
+  /* ---------------------------- DOM-Helfer ---------------------------- */
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const el = (tag, cls, html) => {
+    const n = document.createElement(tag);
+    if (cls) n.className = cls;
+    if (html != null) n.innerHTML = html;
+    return n;
+  };
+  const app = $("#app");
+
+  /* ============================ VORLESEN (TTS) ============================ */
+  const TTS = {
+    supported: "speechSynthesis" in window,
+    voice: null,
+    current: null,
+    pickVoice() {
+      if (!this.supported) return;
+      const voices = speechSynthesis.getVoices();
+      // Bevorzuge eine deutsche Stimme
+      this.voice = voices.find(v => /de[-_]/i.test(v.lang)) ||
+                   voices.find(v => /german|deutsch/i.test(v.name)) || null;
+    },
+    speak(text, btn) {
+      if (!this.supported) { toast("Vorlesen wird von diesem Browser nicht unterstützt."); return; }
+      this.stop();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "de-DE";
+      u.rate = state.rate || 1;
+      if (this.voice) u.voice = this.voice;
+      this.current = { u, btn };
+      if (btn) btn.classList.add("speaking");
+      u.onend = u.onerror = () => { if (btn) btn.classList.remove("speaking"); this.current = null; };
+      speechSynthesis.speak(u);
+      if (!state._listened) { state._listened = true; save(); checkBadges(); }
+    },
+    stop() {
+      if (!this.supported) return;
+      speechSynthesis.cancel();
+      document.querySelectorAll(".speaking").forEach(b => b.classList.remove("speaking"));
+      this.current = null;
+    }
+  };
+  if (TTS.supported) {
+    TTS.pickVoice();
+    speechSynthesis.onvoiceschanged = () => TTS.pickVoice();
+  }
+
+  /* ============================ HUD / TOPBAR ============================ */
+  function renderHUD() {
+    $("#hud-level").textContent = level();
+    $("#hud-xp").textContent = state.xp;
+    $("#hud-streak").textContent = state.streakDays;
+    const pct = (xpInLevel() / XP_PER_LEVEL) * 100;
+    $("#hud-xpbar").style.width = pct + "%";
+    const doneCount = Object.keys(state.completed).length;
+    $("#hud-done").textContent = doneCount + "/14";
+  }
+
+  /* ============================ HOME / LERNPFAD ============================ */
+  function renderHome() {
+    TTS.stop();
+    document.title = "Claude 101 · Deutsche Lernversion";
+    app.innerHTML = "";
+
+    const hero = el("div", "hero");
+    hero.innerHTML = `
+      <h1>Claude 101 – auf Deutsch lernen</h1>
+      <p>Verstehe Claude in 14 kurzen, gehirnfreundlichen Lektionen – mit Vorlese-Funktion, XP, Abzeichen und Mini-Quiz. 🧠✨</p>
+      <div class="badges-row">
+        <span class="chip">🎧 Vorlesen</span>
+        <span class="chip">🎮 Gamifiziert</span>
+        <span class="chip">🧩 Kleine Häppchen</span>
+        <span class="chip">📈 Fortschritt gespeichert</span>
+      </div>`;
+    app.appendChild(hero);
+
+    const st = el("div", "section-title", "Dein Lernpfad");
+    app.appendChild(st);
+
+    const grid = el("div", "grid");
+    LESSONS.forEach((lsn, i) => {
+      const prevDone = i === 0 || state.completed[LESSONS[i - 1].id];
+      const done = !!state.completed[lsn.id];
+      const totalSteps = lsn.chunks.length + lsn.quiz.length;
+      const prog = Math.min(state.lessonProgress[lsn.id] || 0, totalSteps);
+      const pct = done ? 100 : Math.round((prog / totalSteps) * 100);
+
+      const card = el("button", "lesson-card" + (done ? " done" : "") + (prevDone ? "" : " locked"));
+      card.style.setProperty("--lc", lsn.farbe);
+      card.innerHTML = `
+        <span class="done-badge">✓ Fertig</span>
+        ${prevDone ? "" : '<span class="lock-ic">🔒</span>'}
+        <div class="lc-top">
+          <div class="lc-emoji">${lsn.emoji}</div>
+          <div>
+            <div class="lc-num">Lektion ${lsn.id} · ${lsn.dauer} Min</div>
+            <h3>${lsn.titel}</h3>
+          </div>
+        </div>
+        <div class="lc-intro">${lsn.intro}</div>
+        <div class="lc-foot">
+          <span>${lsn.chunks.length} Häppchen · ${lsn.quiz.length} Quiz</span>
+          <span>${pct}%</span>
+        </div>
+        <div class="lc-progress"><span style="width:${pct}%"></span></div>`;
+      if (prevDone) card.addEventListener("click", () => openLesson(lsn.id));
+      else card.addEventListener("click", () => toast("🔒 Schließe zuerst die vorherige Lektion ab."));
+      grid.appendChild(card);
+    });
+    app.appendChild(grid);
+
+    const foot = el("div", "foot", `
+      Inoffizielle, deutschsprachige Lernversion zu Anthropics Claude-101-Themen · gebaut zum eigenständigen Üben.<br>
+      Fortschritt wird lokal in deinem Browser gespeichert.`);
+    app.appendChild(foot);
+
+    renderHUD();
+    checkBadges();
+  }
+
+  /* ============================ LEKTION-ANSICHT ============================ */
+  const view = {}; // laufender Zustand der offenen Lektion
+
+  function openLesson(id) {
+    TTS.stop();
+    const lsn = LESSONS.find(l => l.id === id);
+    if (!lsn) return;
+    view.lsn = lsn;
+    view.step = 0;                                   // 0..chunks-1 = Inhalt, dann Quiz
+    view.total = lsn.chunks.length + lsn.quiz.length;
+    view.gained = {};                                // welche Schritte in dieser Sitzung schon XP gaben
+    view.quizAnswered = {};                          // quizIndex -> bool korrekt
+    document.title = `L${lsn.id}: ${lsn.titel} · Claude 101`;
+    document.documentElement.style.setProperty("--lesson", lsn.farbe);
+    window.scrollTo(0, 0);
+    renderStep();
+  }
+
+  function stepDots(activeIdx) {
+    const wrap = el("div", "steps");
+    for (let i = 0; i < view.total; i++) {
+      const d = el("div", "dot" + (i < activeIdx ? " on" : i === activeIdx ? " current" : ""));
+      wrap.appendChild(d);
+    }
+    return wrap;
+  }
+
+  function lessonHead() {
+    const l = view.lsn;
+    const head = el("div", "lv-head");
+    head.innerHTML = `
+      <div class="lv-emoji">${l.emoji}</div>
+      <div>
+        <h2>${l.titel}</h2>
+        <div class="lv-sub">Lektion ${l.id} von 14 · ${l.dauer} Min · Schritt ${view.step + 1}/${view.total}</div>
+      </div>`;
+    return head;
+  }
+
+  function renderStep() {
+    TTS.stop();
+    const l = view.lsn;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    app.innerHTML = "";
+
+    const back = el("button", "mini-btn", "← Übersicht");
+    back.style.marginBottom = "12px";
+    back.addEventListener("click", renderHome);
+    app.appendChild(back);
+
+    app.appendChild(lessonHead());
+    app.appendChild(stepDots(view.step));
+
+    if (view.step < l.chunks.length) renderChunk();
+    else renderQuiz(view.step - l.chunks.length);
+
+    renderHUD();
+  }
+
+  function renderChunk() {
+    const l = view.lsn;
+    const idx = view.step;
+    const c = l.chunks[idx];
+
+    const card = el("div", "chunk");
+    card.innerHTML = `
+      <div class="kicker">Häppchen ${idx + 1} / ${l.chunks.length}</div>
+      <h3>${c.titel}</h3>
+      <p class="body">${c.text}</p>
+      ${c.merke ? `<div class="merke"><span>💡</span><div><b>Merke:</b> ${c.merke}</div></div>` : ""}
+    `;
+
+    // Vorlese-Steuerung
+    const speakRow = el("div", "speak-row");
+    const readText = `${c.titel}. ${c.text} ${c.merke ? "Merke: " + c.merke : ""}`;
+    const speakBtn = el("button", "speak-btn", "🔊 Vorlesen");
+    speakBtn.addEventListener("click", () => {
+      if (speakBtn.classList.contains("speaking")) { TTS.stop(); }
+      else { TTS.speak(readText, speakBtn); }
+    });
+    const stopBtn = el("button", "mini-btn", "⏹ Stopp");
+    stopBtn.addEventListener("click", () => TTS.stop());
+
+    const rate = el("label", "rate-ctrl");
+    rate.innerHTML = `🐢<input type="range" min="0.6" max="1.4" step="0.1" value="${state.rate}">🐇`;
+    rate.querySelector("input").addEventListener("input", e => {
+      state.rate = parseFloat(e.target.value); save();
+    });
+
+    speakRow.appendChild(speakBtn);
+    speakRow.appendChild(stopBtn);
+    speakRow.appendChild(rate);
+    card.appendChild(speakRow);
+    app.appendChild(card);
+
+    // XP fürs Lesen dieses Häppchens (einmal)
+    grantStepXP(idx, XP_PER_CHUNK);
+
+    // Navigation
+    const nav = el("div", "nav-row");
+    if (idx > 0) {
+      const prev = el("button", "btn ghost", "← Zurück");
+      prev.addEventListener("click", () => { view.step--; renderStep(); });
+      nav.appendChild(prev);
+    }
+    const next = el("button", "btn primary", idx < l.chunks.length - 1 ? "Weiter →" : "Zum Quiz →");
+    next.addEventListener("click", () => { view.step++; renderStep(); });
+    nav.appendChild(next);
+    app.appendChild(nav);
+  }
+
+  function grantStepXP(stepIdx, amount) {
+    const key = view.lsn.id + ":" + stepIdx;
+    const reached = state.lessonProgress[view.lsn.id] || 0;
+    if (stepIdx >= reached && !view.gained[key]) {
+      view.gained[key] = true;
+      state.lessonProgress[view.lsn.id] = Math.max(reached, stepIdx + 1);
+      save();
+      addXP(amount);
+      floatXP(amount);
+    }
+  }
+
+  /* ---------------------------- QUIZ ---------------------------- */
+  function renderQuiz(qIdx) {
+    const l = view.lsn;
+    const q = l.quiz[qIdx];
+
+    const card = el("div", "chunk quiz");
+    card.innerHTML = `
+      <div class="q-count">🧩 Quiz ${qIdx + 1} / ${l.quiz.length}</div>
+      <h3>${q.frage}</h3>`;
+
+    const opts = el("div", "options");
+    // Vorlese-Knopf für die Frage
+    const speakRow = el("div", "speak-row");
+    const speakBtn = el("button", "speak-btn", "🔊 Frage vorlesen");
+    speakBtn.addEventListener("click", () => {
+      if (speakBtn.classList.contains("speaking")) TTS.stop();
+      else TTS.speak(q.frage + ". " + q.optionen.map((o, i) => `Option ${i + 1}: ${o}.`).join(" "), speakBtn);
+    });
+    speakRow.appendChild(speakBtn);
+
+    const feedback = el("div", "feedback");
+
+    q.optionen.forEach((optText, i) => {
+      const b = el("button", "option", optText);
+      b.addEventListener("click", () => {
+        if (view.quizAnswered[qIdx] !== undefined) return; // schon beantwortet
+        const correct = i === q.richtig;
+        Array.from(opts.children).forEach((cb, ci) => {
+          cb.disabled = true;
+          if (ci === q.richtig) cb.classList.add("correct");
+        });
+        if (!correct) b.classList.add("wrong");
+        view.quizAnswered[qIdx] = correct;
+
+        feedback.className = "feedback show " + (correct ? "ok" : "no");
+        feedback.innerHTML = (correct ? "✅ <b>Richtig!</b> " : "❌ <b>Nicht ganz.</b> ") + q.erklaerung;
+
+        if (correct) {
+          grantStepXP(l.chunks.length + qIdx, XP_PER_QUIZ);
+          confettiSmall();
+        } else {
+          toast("Kein Problem – lies die Erklärung. 💪");
+        }
+        // Weiter-Button aktivieren
+        nextBtn.disabled = false;
+      });
+      opts.appendChild(b);
+    });
+
+    card.appendChild(speakRow);
+    card.appendChild(opts);
+    card.appendChild(feedback);
+    app.appendChild(card);
+
+    const nav = el("div", "nav-row");
+    const prev = el("button", "btn ghost", "← Zurück");
+    prev.addEventListener("click", () => { view.step--; renderStep(); });
+    nav.appendChild(prev);
+
+    const isLast = qIdx === l.quiz.length - 1;
+    const nextBtn = el("button", "btn primary", isLast ? "Lektion abschließen 🎉" : "Nächste Frage →");
+    nextBtn.disabled = true;
+    nextBtn.addEventListener("click", () => {
+      if (isLast) finishLesson();
+      else { view.step++; renderStep(); }
+    });
+    nav.appendChild(nextBtn);
+    app.appendChild(nav);
+  }
+
+  /* ---------------------------- ABSCHLUSS ---------------------------- */
+  function finishLesson() {
+    TTS.stop();
+    const l = view.lsn;
+    const firstTime = !state.completed[l.id];
+    state.completed[l.id] = true;
+    state.lessonProgress[l.id] = view.total;
+    save();
+
+    if (firstTime) { addXP(XP_LESSON_BONUS); confetti(); }
+    checkBadges();
+
+    const correctCount = Object.values(view.quizAnswered).filter(Boolean).length;
+    const nextLesson = LESSONS.find(x => x.id === l.id + 1);
+
+    app.innerHTML = "";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    const done = el("div", "complete");
+    done.innerHTML = `
+      <div class="big">${l.id === 14 ? "🏆" : "🎉"}</div>
+      <h2>Lektion ${l.id} geschafft!</h2>
+      <p>„${l.titel}“ ist erledigt.</p>
+      <div class="reward">⭐ +${firstTime ? XP_LESSON_BONUS : 0} XP Bonus · ${correctCount}/${l.quiz.length} Quiz richtig</div>
+      <p style="margin-top:6px">${l.id === 14
+        ? "Du hast <b>alle 14 Lektionen</b> abgeschlossen. Du bist jetzt Claude-101-Profi! 🚀"
+        : "Weiter so – der Schwung ist auf deiner Seite. 💜"}</p>`;
+    app.appendChild(done);
+
+    const nav = el("div", "nav-row");
+    nav.style.justifyContent = "center";
+    nav.style.marginTop = "20px";
+    const home = el("button", "btn ghost", "← Zur Übersicht");
+    home.addEventListener("click", renderHome);
+    nav.appendChild(home);
+    if (nextLesson) {
+      const next = el("button", "btn primary", `Weiter: ${nextLesson.emoji} ${nextLesson.titel} →`);
+      next.style.marginLeft = "0";
+      next.addEventListener("click", () => openLesson(nextLesson.id));
+      nav.appendChild(next);
+    } else {
+      const badges = el("button", "btn primary", "🏅 Meine Abzeichen");
+      badges.style.marginLeft = "0";
+      badges.addEventListener("click", openBadges);
+      nav.appendChild(badges);
+    }
+    app.appendChild(nav);
+    renderHUD();
+  }
+
+  /* ============================ BADGE-MODAL ============================ */
+  function openBadges() {
+    const back = $("#modal-back");
+    const grid = $("#badge-grid");
+    grid.innerHTML = "";
+    BADGES.forEach(b => {
+      const earned = !!state.badges[b.id];
+      const node = el("div", "badge" + (earned ? " earned" : ""));
+      node.innerHTML = `<span class="b-ic">${b.ic}</span>${b.name}`;
+      grid.appendChild(node);
+    });
+    const earnedCount = BADGES.filter(b => state.badges[b.id]).length;
+    $("#badge-sub").textContent = `${earnedCount} / ${BADGES.length} freigeschaltet · Level ${level()} · ${state.xp} XP`;
+    back.classList.add("show");
+  }
+
+  /* ============================ TOAST / KONFETTI ============================ */
+  let toastWrap;
+  function toast(msg) {
+    if (!toastWrap) { toastWrap = el("div", "toast-wrap"); document.body.appendChild(toastWrap); }
+    const t = el("div", "toast", msg);
+    toastWrap.appendChild(t);
+    setTimeout(() => t.remove(), 2900);
+  }
+
+  function floatXP(amount) {
+    const t = el("div", "toast", `+${amount} XP`);
+    if (!toastWrap) { toastWrap = el("div", "toast-wrap"); document.body.appendChild(toastWrap); }
+    toastWrap.appendChild(t);
+    setTimeout(() => t.remove(), 2900);
+  }
+
+  const cvs = $("#confetti");
+  const ctx = cvs.getContext("2d");
+  function sizeCanvas() { cvs.width = innerWidth; cvs.height = innerHeight; }
+  addEventListener("resize", sizeCanvas); sizeCanvas();
+
+  function confettiBurst(count) {
+    if (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const colors = ["#c58af9", "#ff9a62", "#4ade80", "#ffd35c", "#45aaf2", "#f368e0"];
+    const parts = [];
+    for (let i = 0; i < count; i++) {
+      parts.push({
+        x: innerWidth / 2, y: innerHeight / 3,
+        vx: (Math.random() - 0.5) * 12,
+        vy: Math.random() * -12 - 4,
+        g: 0.3 + Math.random() * 0.2,
+        s: 5 + Math.random() * 7,
+        c: colors[(Math.random() * colors.length) | 0],
+        rot: Math.random() * 6, vr: (Math.random() - 0.5) * 0.4,
+        life: 90 + Math.random() * 40
+      });
+    }
+    let frame = 0;
+    function tick() {
+      ctx.clearRect(0, 0, cvs.width, cvs.height);
+      let alive = false;
+      parts.forEach(p => {
+        if (p.life <= 0) return;
+        alive = true;
+        p.vy += p.g; p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.life--;
+        ctx.save();
+        ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+        ctx.fillStyle = p.c;
+        ctx.fillRect(-p.s / 2, -p.s / 2, p.s, p.s * 0.6);
+        ctx.restore();
+      });
+      frame++;
+      if (alive && frame < 160) requestAnimationFrame(tick);
+      else ctx.clearRect(0, 0, cvs.width, cvs.height);
+    }
+    tick();
+  }
+  function confetti() { confettiBurst(140); }
+  function confettiSmall() { confettiBurst(50); }
+
+  /* ============================ TOPBAR-KNÖPFE ============================ */
+  $("#brand").addEventListener("click", renderHome);
+  $("#btn-badges").addEventListener("click", openBadges);
+  $("#modal-close").addEventListener("click", () => $("#modal-back").classList.remove("show"));
+  $("#modal-back").addEventListener("click", e => { if (e.target.id === "modal-back") e.currentTarget.classList.remove("show"); });
+
+  const calmBtn = $("#btn-calm");
+  function applyCalm() { document.body.classList.toggle("calm", state.calm); calmBtn.classList.toggle("active", state.calm); }
+  calmBtn.addEventListener("click", () => { state.calm = !state.calm; save(); applyCalm(); toast(state.calm ? "🌙 Ruhe-Modus an" : "✨ Effekte an"); });
+  applyCalm();
+
+  $("#btn-reset").addEventListener("click", () => {
+    if (confirm("Gesamten Fortschritt wirklich zurücksetzen?")) {
+      localStorage.removeItem(STORE_KEY);
+      state = load();
+      state.lastDay = new Date().toISOString().slice(0, 10);
+      state.streakDays = 1;
+      save();
+      applyCalm();
+      renderHome();
+      toast("Fortschritt zurückgesetzt.");
+    }
+  });
+
+  // Vorlesen stoppen, wenn Tab in den Hintergrund geht
+  document.addEventListener("visibilitychange", () => { if (document.hidden) TTS.stop(); });
+
+  /* ---------------------------- Start ---------------------------- */
+  if (!LESSONS.length) {
+    app.innerHTML = "<p style='padding:40px;text-align:center'>Lektionsdaten konnten nicht geladen werden.</p>";
+  } else {
+    renderHome();
+  }
+})();
+
+</script>
