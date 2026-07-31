@@ -11,13 +11,40 @@ Ein ADHS- und legasthenie-freundlicher Teleprompter für Videoaufnahmen – läu
 - **Antippen** der Textfläche = Start / Pause.
 - **▶ Start** startet mit 3-2-1-Countdown.
 - 🐢 / 🐇 = langsamer / schneller · **A− / A+** = Schriftgröße.
-- 🎯 Fokus-Modus · ⛶ Vollbild · ⚙️ Einstellungen (Text einfügen, Optionen).
-- Ziehen (nach oben/unten) auf der Textfläche = manuell an die richtige Stelle scrollen.
+- 🔑 = Stichwort-Modus (Roter Faden) · 🔊 = Vorlesen an/aus · 🎯 Fokus-Modus · ⛶ Vollbild · ⚙️ Einstellungen.
+- Im Stichwort-Modus zusätzlich: 🧵 = Roter-Faden-Übersicht · ＋ = Stichwörter zeigen.
+- Ziehen (nach oben/unten) auf der Textfläche = manuell an die richtige Stelle scrollen (im normalen Modus).
 
 ### Tastatur (mit Bluetooth-Tastatur am iPad)
 `Leertaste` Start/Pause · `↑`/`↓` Tempo · `←`/`→` springen · `R` Anfang · `F` Vollbild · `+`/`−` Schrift.
 
-## ADHS- & Legasthenie-Hilfen
+## Highlights
+
+### 🔑 Stichwort-Modus (Roter Faden)
+- 🔑 antippen schaltet vom Fließtext auf einen **Karten-Leitfaden** um: pro Abschnitt nur die **eine Highlight-Kernaussage** – dein roter Faden zum freien Sprechen statt Ablesen.
+- Kernaussage und Schlüsselwörter werden **automatisch** aus deinem Text abgeleitet, plus eine klare Überschrift je Karte (z. B. „1. Grund", „Kernbotschaft").
+- **🧵 Roter Faden – Übersicht:** zeigt alle Kernaussagen in Reihenfolge, verbunden an einem Faden. Tippe eine an, um dort weiterzumachen – ideal für Struktur und Orientierung.
+- **＋ Stichwörter** (Button oder Einstellungen) blendet bei Bedarf zusätzliche Schlüsselwörter unter der Kernaussage ein.
+- Bedienung: **tippen** (rechts = weiter, links = zurück), **wischen**, Pfeil-Buttons oder Tastatur `←`/`→`. Fortschritts-Punkte zeigen, wo du bist.
+- Pro Karte: **👁️ Volltext** (zur Sicherheit einblenden) und **🔊 Anhören** (Abschnitt vorlesen lassen).
+- Direkt starten: Link mit `#leitfaden` (Karten) bzw. `#thread` (Übersicht) am Ende.
+- Tastatur im Leitfaden: `T` Übersicht · `C` Stichwörter · `K` zurück zum Fließtext.
+
+### 🔊 Vorlesen (Sprachausgabe)
+- 🔊 antippen (oder in den Einstellungen „Text vorlesen") aktiviert die Sprachausgabe.
+- Beim Start wird der Text **Satz für Satz vorgelesen**, und der Fokus/das Lese-Lineal springt automatisch auf den gerade gesprochenen Satz – ideal zum Mitlesen.
+- Die **Stimme** ist wählbar (deutsche Stimmen zuerst); das **Tempo (WpM)** steuert auch die Vorlese-Geschwindigkeit.
+- Nutzt die Sprachausgabe des Geräts – auf dem iPad direkt in Safari, ohne Zusatz-App.
+
+### 📑 Mehrere Skripte
+- Beliebig viele Skripte anlegen, benennen, kopieren, löschen und **umschalten** (Einstellungen → Skripte).
+- Der aktive Skript-Name steht oben links; alle Skripte werden lokal gespeichert.
+
+### 🎙️ Atempausen & Absatz-Pausen
+- „Atempause zwischen Absätzen" (0–6 Sek.) einstellen: Bei jeder neuen Passage pausiert der Prompter kurz mit einer **Atem-Animation** zum Durchatmen.
+- Manuelle Pause an beliebiger Stelle: eine Zeile mit nur `[pause]` oder `///` in den Text einfügen.
+
+## Weitere ADHS- & Legasthenie-Hilfen
 - **Bionic Reading** – Wortanfänge fett, die Augen finden schneller Halt.
 - **Fokus-Modus** – alles außer der aktuellen Zeile wird gedimmt.
 - **Lese-Lineal** – leuchtendes Band markiert die aktive Zeile.
