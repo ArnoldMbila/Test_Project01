@@ -192,6 +192,34 @@
   .dots i.on{background:linear-gradient(135deg,var(--accent2),var(--accent));width:26px;border-radius:99px}
   body.creambg .dots i{background:rgba(0,0,0,.18)}
   .kswipe{position:absolute;top:8px;right:14px;color:var(--muted);font-size:12px;font-weight:600;opacity:.75}
+  /* red-thread highlight statement */
+  .keyeb{font-size:clamp(13px,1.6vw,16px);font-weight:800;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--accent2);display:inline-flex;align-items:center;gap:.5em}
+  .keyeb::before{content:"";width:26px;height:3px;border-radius:9px;background:linear-gradient(90deg,var(--accent2),var(--accent))}
+  .khighlight{font-size:clamp(24px,calc(4.3vw * var(--card-mult,1)),52px);font-weight:850;line-height:1.18;
+    letter-spacing:-.01em;text-wrap:balance;}
+  .khighlight .hl{background:linear-gradient(180deg,transparent 62%, rgba(255,227,110,.38) 62%);padding:0 .04em}
+  body.creambg .khighlight .hl{background:linear-gradient(180deg,transparent 62%, rgba(124,92,255,.28) 62%)}
+  .card .chips{display:none} body.showchips .card .chips{display:flex}
+  /* Roter Faden overview */
+  #thread{position:absolute;inset:0;z-index:6;display:none;flex-direction:column;
+    padding:calc(60px + var(--safe-t)) clamp(14px,5vw,80px) 20px;background:linear-gradient(180deg,var(--bg),var(--bg2));overflow:auto}
+  body.threadview #thread{display:flex}
+  #thread h2{margin:0 0 4px;font-size:clamp(20px,3vw,28px);font-weight:900}
+  #thread .tsub{color:var(--muted);font-size:14px;margin:0 0 18px}
+  .tline{position:relative;padding-left:44px}
+  .tline::before{content:"";position:absolute;left:18px;top:6px;bottom:6px;width:3px;border-radius:9px;
+    background:linear-gradient(180deg,var(--accent2),var(--accent),var(--good))}
+  .titem{position:relative;margin:0 0 16px;cursor:pointer;transition:transform .1s}
+  .titem:active{transform:scale(.99)}
+  .titem .tnum{position:absolute;left:-38px;top:2px;width:34px;height:34px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;font-weight:900;font-size:15px;color:#04121a;
+    background:linear-gradient(135deg,var(--accent2),var(--accent));box-shadow:0 4px 14px rgba(124,92,255,.4);border:3px solid var(--bg)}
+  .titem .teyeb{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--accent2);margin-bottom:2px}
+  .titem .ttext{font-size:clamp(16px,2.2vw,22px);font-weight:700;line-height:1.3}
+  .titem.cur .ttext{color:#fff} .titem.cur{filter:none}
+  .titem:not(.cur) .ttext{color:var(--muted)}
+  body.creambg .titem .tnum{border-color:var(--bg)}
   /* keyword-only / crawl-only bar buttons */
   body.keyword .crawlonly{display:none!important}
   .kwonly{display:none!important} body.keyword .kwonly{display:inline-flex!important}
@@ -226,6 +254,12 @@
       <div class="dots" id="dots"></div>
     </div>
 
+    <div id="thread">
+      <h2>🧵 Roter Faden</h2>
+      <p class="tsub">Deine Kernaussagen in Reihenfolge – tippe eine an, um dort frei weiterzusprechen.</p>
+      <div class="tline" id="threadList"></div>
+    </div>
+
     <div id="breath"><div class="ring">🫁</div><div class="btxt">Atempause</div><div class="bcount"></div></div>
     <div id="count"><b id="countNum">3</b></div>
   </div>
@@ -236,6 +270,8 @@
     <button class="btn big kwonly" id="prevCard" title="Zurück">◀</button>
     <button class="btn primary" id="playBtn">▶ Start</button>
     <button class="btn big kwonly" id="nextCard" title="Weiter">▶</button>
+    <button class="btn icon kwonly" id="threadBtn" title="Roter Faden – Übersicht">🧵</button>
+    <button class="btn icon kwonly" id="chipsBtn" title="Stichwörter zusätzlich zeigen">＋</button>
     <button class="btn big crawlonly" id="fastBtn" title="Schneller">🐇</button>
     <button class="btn icon crawlonly" id="speakBtn" title="Vorlesen an/aus">🔊</button>
     <div class="speedbox">
@@ -299,7 +335,8 @@
 
     <div class="group">
       <h3>Fokus &amp; ADHS-Hilfen</h3>
-      <div class="row"><div><label>🔑 Stichwort-Modus (Leitfaden)</label><div class="desc">Nur Schlüsselwörter pro Abschnitt – frei sprechen statt ablesen</div></div><div class="tg" id="tgKw"></div></div>
+      <div class="row"><div><label>🔑 Stichwort-Modus (Leitfaden)</label><div class="desc">Nur die Kernaussage pro Abschnitt – roter Faden zum freien Sprechen</div></div><div class="tg" id="tgKw"></div></div>
+      <div class="row"><div><label>＋ Stichwörter zusätzlich zeigen</label><div class="desc">Blendet im Leitfaden unter der Kernaussage die Schlüsselwörter ein</div></div><div class="tg" id="tgChips"></div></div>
       <div class="row"><div><label>Fokus-Modus</label><div class="desc">Alles außer der aktuellen Zeile wird gedimmt</div></div><div class="tg on" id="tgFocus"></div></div>
       <div class="row"><div><label>Lese-Lineal</label><div class="desc">Leuchtendes Band markiert die Lese-Zeile</div></div><div class="tg on" id="tgRuler"></div></div>
       <div class="row"><div><label>Belohnungen &amp; Konfetti</label><div class="desc">Dopamin-Boosts bei Fortschritt 🎉</div></div><div class="tg on" id="tgCheer"></div></div>
@@ -379,7 +416,7 @@ Vielen Dank für eure Zeit. Ich freue mich darauf, euch persönlich kennenzulern
     activeId: null,
     wpm:140, font:100, line:1.5, letter:0, word:0.06,
     dys:false, bionic:true, focus:true, ruler:true, cheer:true, mirror:false, bg:"dark",
-    tts:false, voice:"", breath:0, keyword:false,
+    tts:false, voice:"", breath:0, keyword:false, chips:false,
   };
   state.activeId = state.scripts[0].id;
   migrateAndLoad();
@@ -500,15 +537,31 @@ Vielen Dank für eure Zeit. Ich freue mich darauf, euch persönlich kennenzulern
     const w=(block.match(/\S+/g)||[]).slice(0,4).join(" ");
     return w.length>42? w.slice(0,42)+"…" : w;
   }
+  function firstStatement(block){
+    const flat=block.replace(/\n+/g," ").trim();
+    let base=flat; const ci=flat.indexOf(":");
+    if(ci>-1 && ci<42) base=flat.slice(ci+1).trim(); // "Der erste Grund: ..."
+    const sents=splitSentences(base);
+    for(const s of sents){ const wc=(s.match(/\S+/g)||[]).length; if(wc>=5 && !/[?？]["»)]*\s*$/.test(s)) return s.trim(); }
+    return (sents[0]||base).trim();
+  }
+  // wrap the most salient keyword inside the highlight sentence with <span class="hl">
+  function markHighlight(sentence, keywords){
+    let html=escapeHtml(sentence);
+    const kw=(keywords||[]).slice().sort((a,b)=>b.length-a.length)[0];
+    if(kw){ const esc=escapeHtml(kw); const idx=html.indexOf(esc);
+      if(idx>-1) html=html.slice(0,idx)+'<span class="hl">'+esc+'</span>'+html.slice(idx+esc.length); }
+    return html;
+  }
   function buildCards(){
     const raw=activeScript().text.replace(/\r/g,"");
     const blocks=raw.split(/\n\s*\n/).map(p=>p.trim()).filter(b=>b && !isPauseMarker(b));
-    cards=blocks.map((block,i)=>{
+    cards=blocks.map((block)=>{
       const flat=block.replace(/\n+/g," ");
       const afterColon=flat.includes(":")? flat.slice(flat.indexOf(":")+1):flat;
       let kw=extractKeywords(afterColon,5);
       if(kw.length<2) kw=extractKeywords(flat,5);
-      return {title:cardTitle(flat), chips:kw, full:flat};
+      return {title:cardTitle(flat), chips:kw, highlight:firstStatement(block), full:flat};
     });
     curCard=Math.min(curCard, Math.max(0,cards.length-1));
     renderCards();
@@ -519,7 +572,8 @@ Vielen Dank für eure Zeit. Ich freue mich darauf, euch persönlich kennenzulern
       const el=document.createElement("div"); el.className="card";
       const chips=c.chips.map(k=>'<span class="chip2">'+escapeHtml(k)+'</span>').join("");
       el.innerHTML='<div class="badge">'+(i+1)+'</div>'+
-        '<div class="ktitle">'+escapeHtml(c.title)+'</div>'+
+        '<div class="keyeb">'+escapeHtml(c.title)+'</div>'+
+        '<div class="khighlight">'+markHighlight(c.highlight, c.chips)+'</div>'+
         (chips?'<div class="chips">'+chips+'</div>':'')+
         '<div class="kfoot">'+
           '<button class="kmini" data-act="full">👁️ Volltext</button>'+
@@ -554,8 +608,24 @@ Vielen Dank für eure Zeit. Ich freue mich darauf, euch persönlich kennenzulern
     $("#kwBtn").classList.toggle("on",v); const t=$("#tgKw"); if(t)t.classList.toggle("on",v);
     playBtn.style.display = v ? "none" : "";
     if(v){ if(!cards.length) buildCards(); showCard(curCard||0,true); }
-    else { progressBar.style.width="0%"; updateTimeEstimate(pos>0?pos/maxPos:0); setPos(pos); }
+    else { body.classList.remove("threadview"); progressBar.style.width="0%"; updateTimeEstimate(pos>0?pos/maxPos:0); setPos(pos); }
     save();
+  }
+  function setChips(v){ state.chips=v; body.classList.toggle("showchips",v); const b=$("#chipsBtn"); if(b)b.classList.toggle("on",v); const t=$("#tgChips"); if(t)t.classList.toggle("on",v); save(); }
+  // Roter Faden overview
+  const threadList=$("#threadList");
+  function buildThread(){
+    threadList.innerHTML="";
+    cards.forEach((c,i)=>{
+      const it=document.createElement("div"); it.className="titem"+(i===curCard?" cur":"");
+      it.innerHTML='<div class="tnum">'+(i+1)+'</div><div class="teyeb">'+escapeHtml(c.title)+'</div><div class="ttext">'+escapeHtml(c.highlight)+'</div>';
+      it.addEventListener("click",()=>{ showCard(i); toggleThread(false); });
+      threadList.appendChild(it);
+    });
+  }
+  function toggleThread(v){ const on = v==null ? !body.classList.contains("threadview") : v;
+    if(on){ buildThread(); body.classList.add("threadview"); } else { body.classList.remove("threadview"); }
+    $("#threadBtn").classList.toggle("on",on);
   }
 
   // ---------- scroll engine (crawl mode) ----------
@@ -771,6 +841,8 @@ Vielen Dank für eure Zeit. Ich freue mich darauf, euch persönlich kennenzulern
     wpmVal.textContent=state.wpm; fontVal.textContent=state.font+"%";
     $("#speakBtn").classList.toggle("on",state.tts);
     $("#kwBtn").classList.toggle("on",state.keyword);
+    body.classList.toggle("showchips",state.chips);
+    $("#chipsBtn").classList.toggle("on",state.chips);
     requestAnimationFrame(()=>{ measure(); setPos(pos); });
   }
 
@@ -803,10 +875,13 @@ Vielen Dank für eure Zeit. Ich freue mich darauf, euch persönlich kennenzulern
   $("#kwBtn").onclick=()=>setKeyword(!state.keyword);
   $("#prevCard").onclick=(e)=>{ e.stopPropagation(); prevCard(); };
   $("#nextCard").onclick=(e)=>{ e.stopPropagation(); nextCard(); };
+  $("#threadBtn").onclick=(e)=>{ e.stopPropagation(); toggleThread(); };
+  $("#chipsBtn").onclick=(e)=>{ e.stopPropagation(); setChips(!state.chips); };
   function setTts(v){ const was=playing; if(was)pause(); state.tts=hasTTS?v:false; applyStyles(); syncToggles(); save(); if(was&&pos>1){ /* stay */ } }
   function flashChip(){ const c=$("#wpmChip"); c.style.color="var(--accent2)"; setTimeout(()=>c.style.color="",250); }
 
   viewport.addEventListener("click",(e)=>{ if(e.target.closest("#bar")||e.target.closest("#settings"))return; if(countEl.style.display==="flex")return; if(breathing)return;
+    if(body.classList.contains("threadview"))return;
     if(state.keyword){ if(e.target.closest(".kmini")||e.target.closest(".dots"))return; (e.clientX < viewport.clientWidth*0.35 ? prevCard() : nextCard()); return; }
     toggle(); });
 
@@ -834,7 +909,7 @@ Vielen Dank für eure Zeit. Ich freue mich darauf, euch persönlich kennenzulern
   $("#resetBtn").onclick=()=>{ if(!confirm("Alle Skripte und Einstellungen zurücksetzen?"))return;
     localStorage.removeItem(KEY);
     state.scripts=[{id:uid(),name:"Digistore24-Bewerbung",text:DEFAULT_TEXT}]; state.activeId=state.scripts[0].id;
-    Object.assign(state,{wpm:140,font:100,line:1.5,letter:0,word:0.06,dys:false,bionic:true,focus:true,ruler:true,cheer:true,mirror:false,bg:"dark",tts:false,voice:"",breath:0,keyword:false});
+    Object.assign(state,{wpm:140,font:100,line:1.5,letter:0,word:0.06,dys:false,bionic:true,focus:true,ruler:true,cheer:true,mirror:false,bg:"dark",tts:false,voice:"",breath:0,keyword:false,chips:false});
     refreshScriptSel(); txtArea.value=activeScript().text; buildScript(); applyStyles(); syncToggles(); save(); };
 
   function bindToggle(id,key,cls,after){ const el=$(id); el.onclick=()=>{ state[key]=!state[key]; el.classList.toggle("on",state[key]); if(cls)body.classList.toggle(cls,state[key]); if(after)after(); applyStyles(); save(); }; }
@@ -846,6 +921,7 @@ Vielen Dank für eure Zeit. Ich freue mich darauf, euch persönlich kennenzulern
   bindToggle("#tgMirror","mirror","mirror");
   $("#tgTts").onclick=()=>{ setTts(!state.tts); };
   $("#tgKw").onclick=()=>{ setKeyword(!state.keyword); };
+  $("#tgChips").onclick=()=>{ setChips(!state.chips); };
   voiceSel.onchange=()=>{ state.voice=voiceSel.value; save(); };
 
   function bindRange(id,key,after){ const el=$(id); el.oninput=()=>{ state[key]=parseFloat(el.value); if(id==="#rBreath")updateBreathLbl(); applyStyles(); if(after)after(); save(); }; }
@@ -860,6 +936,7 @@ Vielen Dank für eure Zeit. Ich freue mich darauf, euch persönlich kennenzulern
     $("#tgCheer").classList.toggle("on",state.cheer); $("#tgMirror").classList.toggle("on",state.mirror);
     $("#tgTts").classList.toggle("on",state.tts);
     $("#tgKw").classList.toggle("on",state.keyword);
+    $("#tgChips").classList.toggle("on",state.chips);
     $("#rLine").value=state.line; $("#rLetter").value=state.letter; $("#rWord").value=state.word; $("#rBreath").value=state.breath;
     updateBreathLbl();
     document.querySelectorAll(".seg").forEach(x=>x.classList.toggle("sel",x.dataset.bg===state.bg));
@@ -871,9 +948,12 @@ Vielen Dank für eure Zeit. Ich freue mich darauf, euch persönlich kennenzulern
     if(settings.classList.contains("open"))return;
     if(e.target.tagName==="TEXTAREA"||e.target.tagName==="SELECT"||e.target.tagName==="INPUT")return;
     if(state.keyword){
+      if(body.classList.contains("threadview")){ if(e.key==="Escape"||e.key==="t"||e.key==="T"){ toggleThread(false);} return; }
       switch(e.key){
         case " ": case "ArrowRight": case "ArrowDown": e.preventDefault(); nextCard(); return;
         case "ArrowLeft": case "ArrowUp": e.preventDefault(); prevCard(); return;
+        case "t": case "T": toggleThread(true); return;
+        case "c": case "C": setChips(!state.chips); return;
         case "r": case "R": showCard(0); return;
         case "f": case "F": toggleFull(); return;
         case "k": case "K": setKeyword(false); return;
@@ -916,8 +996,9 @@ Vielen Dank für eure Zeit. Ich freue mich darauf, euch persönlich kennenzulern
   // ---------- init ----------
   if(hasTTS){ loadVoices(); window.speechSynthesis.onvoiceschanged=loadVoices; }
   buildScript(); applyStyles(); syncToggles();
-  if(/leitfaden|keyword|stichwort/i.test(location.hash)) state.keyword=true;
+  if(/leitfaden|keyword|stichwort|thread|faden/i.test(location.hash)) state.keyword=true;
   setKeyword(state.keyword);
+  if(/thread|overview|uebersicht|übersicht/i.test(location.hash)) toggleThread(true);
   setTimeout(()=>{ measure(); setPos(0); },60);
 })();
 </script>
