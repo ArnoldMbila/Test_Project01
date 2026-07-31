@@ -11,13 +11,29 @@ Ein ADHS- und legasthenie-freundlicher Teleprompter für Videoaufnahmen – läu
 - **Antippen** der Textfläche = Start / Pause.
 - **▶ Start** startet mit 3-2-1-Countdown.
 - 🐢 / 🐇 = langsamer / schneller · **A− / A+** = Schriftgröße.
-- 🎯 Fokus-Modus · ⛶ Vollbild · ⚙️ Einstellungen (Text einfügen, Optionen).
-- Ziehen (nach oben/unten) auf der Textfläche = manuell an die richtige Stelle scrollen.
+- 🔊 = Vorlesen an/aus · 🎯 Fokus-Modus · ⛶ Vollbild · ⚙️ Einstellungen.
+- Ziehen (nach oben/unten) auf der Textfläche = manuell an die richtige Stelle scrollen (im normalen Modus).
 
 ### Tastatur (mit Bluetooth-Tastatur am iPad)
 `Leertaste` Start/Pause · `↑`/`↓` Tempo · `←`/`→` springen · `R` Anfang · `F` Vollbild · `+`/`−` Schrift.
 
-## ADHS- & Legasthenie-Hilfen
+## Highlights
+
+### 🔊 Vorlesen (Sprachausgabe)
+- 🔊 antippen (oder in den Einstellungen „Text vorlesen") aktiviert die Sprachausgabe.
+- Beim Start wird der Text **Satz für Satz vorgelesen**, und der Fokus/das Lese-Lineal springt automatisch auf den gerade gesprochenen Satz – ideal zum Mitlesen.
+- Die **Stimme** ist wählbar (deutsche Stimmen zuerst); das **Tempo (WpM)** steuert auch die Vorlese-Geschwindigkeit.
+- Nutzt die Sprachausgabe des Geräts – auf dem iPad direkt in Safari, ohne Zusatz-App.
+
+### 📑 Mehrere Skripte
+- Beliebig viele Skripte anlegen, benennen, kopieren, löschen und **umschalten** (Einstellungen → Skripte).
+- Der aktive Skript-Name steht oben links; alle Skripte werden lokal gespeichert.
+
+### 🎙️ Atempausen & Absatz-Pausen
+- „Atempause zwischen Absätzen" (0–6 Sek.) einstellen: Bei jeder neuen Passage pausiert der Prompter kurz mit einer **Atem-Animation** zum Durchatmen.
+- Manuelle Pause an beliebiger Stelle: eine Zeile mit nur `[pause]` oder `///` in den Text einfügen.
+
+## Weitere ADHS- & Legasthenie-Hilfen
 - **Bionic Reading** – Wortanfänge fett, die Augen finden schneller Halt.
 - **Fokus-Modus** – alles außer der aktuellen Zeile wird gedimmt.
 - **Lese-Lineal** – leuchtendes Band markiert die aktive Zeile.
