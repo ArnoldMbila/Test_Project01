@@ -11,13 +11,20 @@ Ein ADHS- und legasthenie-freundlicher Teleprompter für Videoaufnahmen – läu
 - **Antippen** der Textfläche = Start / Pause.
 - **▶ Start** startet mit 3-2-1-Countdown.
 - 🐢 / 🐇 = langsamer / schneller · **A− / A+** = Schriftgröße.
-- 🔊 = Vorlesen an/aus · 🎯 Fokus-Modus · ⛶ Vollbild · ⚙️ Einstellungen.
+- 🔑 = Stichwort-Modus (Leitfaden) · 🔊 = Vorlesen an/aus · 🎯 Fokus-Modus · ⛶ Vollbild · ⚙️ Einstellungen.
 - Ziehen (nach oben/unten) auf der Textfläche = manuell an die richtige Stelle scrollen (im normalen Modus).
 
 ### Tastatur (mit Bluetooth-Tastatur am iPad)
 `Leertaste` Start/Pause · `↑`/`↓` Tempo · `←`/`→` springen · `R` Anfang · `F` Vollbild · `+`/`−` Schrift.
 
 ## Highlights
+
+### 🔑 Stichwort-Modus (Leitfaden)
+- 🔑 antippen schaltet vom Fließtext auf einen **Karten-Leitfaden** um: pro Abschnitt nur die **Schlüsselwörter** – du sprichst frei statt abzulesen.
+- Die Stichwörter werden **automatisch** aus deinem Text gezogen (deutsche Nomen/Kernbegriffe), plus eine klare Überschrift je Karte (z. B. „1. Grund", „Kernbotschaft").
+- Bedienung: **tippen** (rechts = weiter, links = zurück), **wischen**, Pfeil-Buttons oder Tastatur `←`/`→`. Fortschritts-Punkte zeigen, wo du bist.
+- Pro Karte: **👁️ Volltext** (zur Sicherheit einblenden) und **🔊 Anhören** (Abschnitt vorlesen lassen).
+- Direkt im Leitfaden starten: Link mit `#leitfaden` am Ende öffnen.
 
 ### 🔊 Vorlesen (Sprachausgabe)
 - 🔊 antippen (oder in den Einstellungen „Text vorlesen") aktiviert die Sprachausgabe.

@@ -151,6 +151,51 @@
   body.creambg #vignette{background:linear-gradient(180deg,#f3ead6 0%,transparent 26%,transparent 74%,#f3ead6 100%)}
   body.highcontrast #script{color:#fff;text-shadow:0 1px 0 #000}
 
+  /* ---------- Keyword / Leitfaden mode ---------- */
+  #cards{position:absolute;inset:0;z-index:4;display:none;flex-direction:column;align-items:center;justify-content:center;
+    padding:calc(64px + var(--safe-t)) clamp(14px,5vw,60px) 22px;}
+  body.keyword #cards{display:flex}
+  body.keyword #scroller,body.keyword #focusBand,body.keyword .cue,body.keyword #vignette{display:none}
+  .cardStage{position:relative;flex:1;width:100%;max-width:820px;display:flex;align-items:center;justify-content:center;}
+  .card{position:absolute;inset:0;display:none;flex-direction:column;justify-content:center;gap:clamp(14px,2.4vh,26px);
+    padding:clamp(20px,4vw,40px);border-radius:28px;
+    background:linear-gradient(155deg,rgba(124,92,255,.20),rgba(34,211,238,.10) 60%,rgba(255,255,255,.03));
+    border:1px solid rgba(255,255,255,.14);box-shadow:0 30px 90px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.12);
+    backdrop-filter:blur(8px);overflow:auto;}
+  body.creambg .card{background:linear-gradient(155deg,rgba(124,92,255,.14),rgba(34,211,238,.10) 60%,rgba(255,255,255,.5));border-color:rgba(0,0,0,.12)}
+  .card.show{display:flex;animation:cardIn .38s cubic-bezier(.2,.7,.3,1)}
+  @keyframes cardIn{from{opacity:0;transform:translateY(22px) scale(.98)}to{opacity:1;transform:none}}
+  .card .badge{position:absolute;top:18px;left:18px;width:46px;height:46px;border-radius:14px;
+    display:flex;align-items:center;justify-content:center;font-weight:900;font-size:20px;color:#04121a;
+    background:linear-gradient(135deg,var(--accent2),var(--accent));box-shadow:0 8px 20px rgba(124,92,255,.4)}
+  .card .ktitle{font-size:clamp(26px,calc(4.6vw * var(--card-mult,1)),56px);font-weight:900;line-height:1.1;
+    letter-spacing:-.01em;margin-top:26px;
+    background:linear-gradient(180deg,var(--txt),color-mix(in srgb,var(--txt) 70%, var(--accent2)));
+    -webkit-background-clip:text;background-clip:text;}
+  body.creambg .card .ktitle{background:none;-webkit-text-fill-color:initial;color:#20180a}
+  .chips{display:flex;flex-wrap:wrap;gap:clamp(8px,1.4vw,14px)}
+  .chip2{font-size:clamp(18px,calc(2.9vw * var(--card-mult,1)),34px);font-weight:800;line-height:1.15;
+    padding:.32em .7em;border-radius:999px;border:1px solid rgba(255,255,255,.16);
+    background:rgba(255,255,255,.06);display:inline-flex;align-items:center;gap:.4em}
+  .chip2::before{content:"";width:.5em;height:.5em;border-radius:50%;background:var(--ac,var(--accent2));box-shadow:0 0 10px var(--ac,var(--accent2))}
+  .chip2:nth-child(4n+1){--ac:var(--accent2)} .chip2:nth-child(4n+2){--ac:var(--accent)}
+  .chip2:nth-child(4n+3){--ac:var(--good)} .chip2:nth-child(4n+4){--ac:var(--warm)}
+  body.creambg .chip2{background:rgba(0,0,0,.05);border-color:rgba(0,0,0,.12);color:#20180a}
+  .card .kfull{font-size:14px;color:var(--muted);line-height:1.55;font-weight:500;
+    border-left:3px solid rgba(255,255,255,.15);padding-left:12px;display:none}
+  .card.reveal .kfull{display:block;animation:cardIn .3s ease}
+  .kfoot{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:2px}
+  .kmini{appearance:none;border:1px solid var(--panel-brd);background:var(--panel);color:var(--txt);
+    border-radius:12px;min-height:44px;padding:0 14px;font-weight:700;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+  .dots{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;padding:14px 0 2px}
+  .dots i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,.22);transition:all .2s;cursor:pointer}
+  .dots i.on{background:linear-gradient(135deg,var(--accent2),var(--accent));width:26px;border-radius:99px}
+  body.creambg .dots i{background:rgba(0,0,0,.18)}
+  .kswipe{position:absolute;top:8px;right:14px;color:var(--muted);font-size:12px;font-weight:600;opacity:.75}
+  /* keyword-only / crawl-only bar buttons */
+  body.keyword .crawlonly{display:none!important}
+  .kwonly{display:none!important} body.keyword .kwonly{display:inline-flex!important}
+
   @media (max-width:520px){
     .btn{min-width:50px;min-height:52px} .btn.primary{min-width:100px} .speedbox .lab{min-width:60px}
   }
@@ -175,21 +220,30 @@
 
     <div id="scroller"><div id="script"></div></div>
 
+    <div id="cards">
+      <div class="kswipe">Wischen oder tippen ➜</div>
+      <div class="cardStage" id="cardStage"></div>
+      <div class="dots" id="dots"></div>
+    </div>
+
     <div id="breath"><div class="ring">🫁</div><div class="btxt">Atempause</div><div class="bcount"></div></div>
     <div id="count"><b id="countNum">3</b></div>
   </div>
 
   <div id="bar">
-    <button class="btn icon" id="restartBtn" title="Zum Anfang">⏮</button>
-    <button class="btn big" id="slowBtn" title="Langsamer">🐢</button>
+    <button class="btn icon crawlonly" id="restartBtn" title="Zum Anfang">⏮</button>
+    <button class="btn big crawlonly" id="slowBtn" title="Langsamer">🐢</button>
+    <button class="btn big kwonly" id="prevCard" title="Zurück">◀</button>
     <button class="btn primary" id="playBtn">▶ Start</button>
-    <button class="btn big" id="fastBtn" title="Schneller">🐇</button>
-    <button class="btn icon" id="speakBtn" title="Vorlesen an/aus">🔊</button>
+    <button class="btn big kwonly" id="nextCard" title="Weiter">▶</button>
+    <button class="btn big crawlonly" id="fastBtn" title="Schneller">🐇</button>
+    <button class="btn icon crawlonly" id="speakBtn" title="Vorlesen an/aus">🔊</button>
     <div class="speedbox">
       <button class="btn icon" id="fMinus" title="Schrift kleiner">A−</button>
       <div class="lab">Schrift<b id="fontVal">100%</b></div>
       <button class="btn icon" id="fPlus" title="Schrift größer">A+</button>
     </div>
+    <button class="btn icon" id="kwBtn" title="Stichwort-Modus (Leitfaden)">🔑</button>
     <button class="btn icon" id="focusBtn" title="Fokus-Modus">🎯</button>
     <button class="btn icon" id="fullBtn" title="Vollbild">⛶</button>
     <button class="btn icon" id="setBtn" title="Einstellungen">⚙️</button>
@@ -245,6 +299,7 @@
 
     <div class="group">
       <h3>Fokus &amp; ADHS-Hilfen</h3>
+      <div class="row"><div><label>🔑 Stichwort-Modus (Leitfaden)</label><div class="desc">Nur Schlüsselwörter pro Abschnitt – frei sprechen statt ablesen</div></div><div class="tg" id="tgKw"></div></div>
       <div class="row"><div><label>Fokus-Modus</label><div class="desc">Alles außer der aktuellen Zeile wird gedimmt</div></div><div class="tg on" id="tgFocus"></div></div>
       <div class="row"><div><label>Lese-Lineal</label><div class="desc">Leuchtendes Band markiert die Lese-Zeile</div></div><div class="tg on" id="tgRuler"></div></div>
       <div class="row"><div><label>Belohnungen &amp; Konfetti</label><div class="desc">Dopamin-Boosts bei Fortschritt 🎉</div></div><div class="tg on" id="tgCheer"></div></div>
@@ -324,7 +379,7 @@ Vielen Dank für eure Zeit. Ich freue mich darauf, euch persönlich kennenzulern
     activeId: null,
     wpm:140, font:100, line:1.5, letter:0, word:0.06,
     dys:false, bionic:true, focus:true, ruler:true, cheer:true, mirror:false, bg:"dark",
-    tts:false, voice:"", breath:0,
+    tts:false, voice:"", breath:0, keyword:false,
   };
   state.activeId = state.scripts[0].id;
   migrateAndLoad();
@@ -399,6 +454,108 @@ Vielen Dank für eure Zeit. Ich freue mich darauf, euch persönlich kennenzulern
     });
     scriptNameVal.textContent=activeScript().name;
     updateTimeEstimate(0); setPos(0); updateActive();
+    buildCards();
+  }
+
+  // ---------- Keyword / Leitfaden mode ----------
+  const cardStage=$("#cardStage"), dotsEl=$("#dots");
+  let cards=[], curCard=0;
+  const KW_STOP=new Set(("ich du er sie es wir ihr der die das den dem des ein eine einen einem einer und oder aber auch als wenn weil dass wie wo was wer warum wieder immer schon noch nur auch mehr sehr bei mit von zu zum zur aus auf in im am an vor nach ohne über unter für gegen um durch dabei damit daraus dazu genau also so dann denn doch mal hier dort dieser diese dieses jener jene jenes mein dein sein unser euer ihre nicht kein keine keinen habe hat hatte haben bin ist sind war waren werde wird würde kann könnte muss müssen soll sollte will wollen macht machen gemacht bringt bringe voran vielen hallo liebes was wo genau ich mich mir sich uns euch dem den").split(/\s+/));
+  const ORDINAL={erste:"1",zweite:"2",dritte:"3",vierte:"4",fünfte:"5",fuenfte:"5"};
+
+  function sentenceStarts(text){
+    // indices in the token list that begin a sentence
+    return text;
+  }
+  function extractKeywords(text, max){
+    const toks=text.match(/[\p{L}\p{N}][\p{L}\p{N}\-']*/gu)||[];
+    // mark sentence-start tokens by scanning original text
+    const starts=new Set(); let expectStart=true, ti=0;
+    // simple pass: rebuild via regex with terminator awareness
+    const re=/([\p{L}\p{N}][\p{L}\p{N}\-']*)|([.!?…])/gu; let m, idx=0;
+    while((m=re.exec(text))){
+      if(m[1]){ if(expectStart) starts.add(idx); expectStart=false; idx++; }
+      else { expectStart=true; }
+    }
+    const seen=new Set(), out=[];
+    toks.forEach((w,i)=>{
+      const isCap=/^[A-ZÄÖÜ]/.test(w);
+      const low=w.toLowerCase();
+      if(!isCap) return;
+      if(KW_STOP.has(low)) return;
+      if(w.length<4) return;
+      if(starts.has(i) && w.length<6 && !/[A-ZÄÖÜ].*[A-ZÄÖÜ]/.test(w)) return; // likely sentence-start filler
+      if(seen.has(low)) return; seen.add(low); out.push(w);
+    });
+    return out.slice(0,max);
+  }
+  function cardTitle(block){
+    const g=block.match(/^Der\s+(erste|zweite|dritte|vierte|f[üu]nfte)\s+Grund/i);
+    if(g){ return (ORDINAL[g[1].toLowerCase()]||"")+". Grund"; }
+    if(/^Hallo/i.test(block)) return "Begrüßung";
+    if(/^Vielen Dank/i.test(block)) return "Abschluss";
+    if(/^Daraus ergeben sich/i.test(block)) return "Überblick: 3 Gründe";
+    if(/^Was mich (awesome|insgesamt)/i.test(block)) return "Kernbotschaft";
+    // fallback: first few words
+    const w=(block.match(/\S+/g)||[]).slice(0,4).join(" ");
+    return w.length>42? w.slice(0,42)+"…" : w;
+  }
+  function buildCards(){
+    const raw=activeScript().text.replace(/\r/g,"");
+    const blocks=raw.split(/\n\s*\n/).map(p=>p.trim()).filter(b=>b && !isPauseMarker(b));
+    cards=blocks.map((block,i)=>{
+      const flat=block.replace(/\n+/g," ");
+      const afterColon=flat.includes(":")? flat.slice(flat.indexOf(":")+1):flat;
+      let kw=extractKeywords(afterColon,5);
+      if(kw.length<2) kw=extractKeywords(flat,5);
+      return {title:cardTitle(flat), chips:kw, full:flat};
+    });
+    curCard=Math.min(curCard, Math.max(0,cards.length-1));
+    renderCards();
+  }
+  function renderCards(){
+    cardStage.innerHTML=""; dotsEl.innerHTML="";
+    cards.forEach((c,i)=>{
+      const el=document.createElement("div"); el.className="card";
+      const chips=c.chips.map(k=>'<span class="chip2">'+escapeHtml(k)+'</span>').join("");
+      el.innerHTML='<div class="badge">'+(i+1)+'</div>'+
+        '<div class="ktitle">'+escapeHtml(c.title)+'</div>'+
+        (chips?'<div class="chips">'+chips+'</div>':'')+
+        '<div class="kfoot">'+
+          '<button class="kmini" data-act="full">👁️ Volltext</button>'+
+          (hasTTS?'<button class="kmini" data-act="listen">🔊 Anhören</button>':'')+
+          '<span class="desc" style="margin-left:auto">Karte '+(i+1)+' / '+cards.length+'</span>'+
+        '</div>'+
+        '<div class="kfull">'+escapeHtml(c.full)+'</div>';
+      el.querySelectorAll(".kmini").forEach(b=>b.addEventListener("click",(ev)=>{ ev.stopPropagation();
+        if(b.dataset.act==="full"){ el.classList.toggle("reveal"); }
+        else { speakText(c.full); } }));
+      cardStage.appendChild(el);
+      const d=document.createElement("i"); if(i===curCard)d.classList.add("on");
+      d.addEventListener("click",(ev)=>{ ev.stopPropagation(); showCard(i); }); dotsEl.appendChild(d);
+    });
+    showCard(curCard,true);
+  }
+  function showCard(i,silent){
+    if(!cards.length) return;
+    curCard=Math.max(0,Math.min(i,cards.length-1));
+    const els=cardStage.querySelectorAll(".card");
+    els.forEach((e,idx)=>{ e.classList.toggle("show",idx===curCard); if(idx!==curCard) e.classList.remove("reveal"); });
+    dotsEl.querySelectorAll("i").forEach((d,idx)=>d.classList.toggle("on",idx===curCard));
+    progressBar.style.width=(((curCard+1)/cards.length)*100)+"%";
+    timeLeft.textContent="Karte "+(curCard+1)+"/"+cards.length;
+    if(!silent && hasTTS){ try{ window.speechSynthesis.cancel(); }catch(e){} }
+  }
+  function nextCard(){ if(curCard<cards.length-1){ showCard(curCard+1);} else { if(state.cheer){showCheer("Leitfaden durch! 🎉"); confettiBurst(1.8);} } }
+  function prevCard(){ showCard(curCard-1); }
+  function setKeyword(v){
+    if(v && playing) pause();
+    state.keyword=v; body.classList.toggle("keyword",v);
+    $("#kwBtn").classList.toggle("on",v); const t=$("#tgKw"); if(t)t.classList.toggle("on",v);
+    playBtn.style.display = v ? "none" : "";
+    if(v){ if(!cards.length) buildCards(); showCard(curCard||0,true); }
+    else { progressBar.style.width="0%"; updateTimeEstimate(pos>0?pos/maxPos:0); setPos(pos); }
+    save();
   }
 
   // ---------- scroll engine (crawl mode) ----------
@@ -506,6 +663,13 @@ Vielen Dank für eure Zeit. Ich freue mich darauf, euch persönlich kennenzulern
     } else { fallbackDwell(s.wc, done); }
   }
   function fallbackDwell(wc, done){ const ms=Math.max(500, (wc/state.wpm)*60000); stepTimer=setTimeout(done, ms); }
+  function speakText(text){
+    if(!hasTTS) return;
+    try{ window.speechSynthesis.cancel();
+      const u=new SpeechSynthesisUtterance(text); u.lang="de-DE"; u.rate=clamp(state.wpm/150,0.6,1.8);
+      const v=pickVoice(); if(v)u.voice=v; window.speechSynthesis.speak(u);
+    }catch(e){}
+  }
 
   // ---------- breath overlay ----------
   let breathTimer=null;
@@ -603,8 +767,10 @@ Vielen Dank für eure Zeit. Ich freue mich darauf, euch persönlich kennenzulern
     if(state.bg==="warm")body.classList.add("warmbg");
     if(state.bg==="cream")body.classList.add("creambg");
     if(state.bg==="contrast")body.classList.add("highcontrast");
+    document.documentElement.style.setProperty("--card-mult", (state.font/100).toFixed(2));
     wpmVal.textContent=state.wpm; fontVal.textContent=state.font+"%";
     $("#speakBtn").classList.toggle("on",state.tts);
+    $("#kwBtn").classList.toggle("on",state.keyword);
     requestAnimationFrame(()=>{ measure(); setPos(pos); });
   }
 
@@ -634,10 +800,15 @@ Vielen Dank für eure Zeit. Ich freue mich darauf, euch persönlich kennenzulern
   $("#fullBtn").onclick=toggleFull;
   $("#setBtn").onclick=openSet;
   $("#speakBtn").onclick=()=>{ setTts(!state.tts); };
+  $("#kwBtn").onclick=()=>setKeyword(!state.keyword);
+  $("#prevCard").onclick=(e)=>{ e.stopPropagation(); prevCard(); };
+  $("#nextCard").onclick=(e)=>{ e.stopPropagation(); nextCard(); };
   function setTts(v){ const was=playing; if(was)pause(); state.tts=hasTTS?v:false; applyStyles(); syncToggles(); save(); if(was&&pos>1){ /* stay */ } }
   function flashChip(){ const c=$("#wpmChip"); c.style.color="var(--accent2)"; setTimeout(()=>c.style.color="",250); }
 
-  viewport.addEventListener("click",(e)=>{ if(e.target.closest("#bar")||e.target.closest("#settings"))return; if(countEl.style.display==="flex")return; if(breathing)return; toggle(); });
+  viewport.addEventListener("click",(e)=>{ if(e.target.closest("#bar")||e.target.closest("#settings"))return; if(countEl.style.display==="flex")return; if(breathing)return;
+    if(state.keyword){ if(e.target.closest(".kmini")||e.target.closest(".dots"))return; (e.clientX < viewport.clientWidth*0.35 ? prevCard() : nextCard()); return; }
+    toggle(); });
 
   function toggleFull(){ const d=document;
     if(!d.fullscreenElement&&!d.webkitFullscreenElement){ (document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen||function(){}).call(document.documentElement); }
@@ -663,7 +834,7 @@ Vielen Dank für eure Zeit. Ich freue mich darauf, euch persönlich kennenzulern
   $("#resetBtn").onclick=()=>{ if(!confirm("Alle Skripte und Einstellungen zurücksetzen?"))return;
     localStorage.removeItem(KEY);
     state.scripts=[{id:uid(),name:"Digistore24-Bewerbung",text:DEFAULT_TEXT}]; state.activeId=state.scripts[0].id;
-    Object.assign(state,{wpm:140,font:100,line:1.5,letter:0,word:0.06,dys:false,bionic:true,focus:true,ruler:true,cheer:true,mirror:false,bg:"dark",tts:false,voice:"",breath:0});
+    Object.assign(state,{wpm:140,font:100,line:1.5,letter:0,word:0.06,dys:false,bionic:true,focus:true,ruler:true,cheer:true,mirror:false,bg:"dark",tts:false,voice:"",breath:0,keyword:false});
     refreshScriptSel(); txtArea.value=activeScript().text; buildScript(); applyStyles(); syncToggles(); save(); };
 
   function bindToggle(id,key,cls,after){ const el=$(id); el.onclick=()=>{ state[key]=!state[key]; el.classList.toggle("on",state[key]); if(cls)body.classList.toggle(cls,state[key]); if(after)after(); applyStyles(); save(); }; }
@@ -674,6 +845,7 @@ Vielen Dank für eure Zeit. Ich freue mich darauf, euch persönlich kennenzulern
   bindToggle("#tgCheer","cheer");
   bindToggle("#tgMirror","mirror","mirror");
   $("#tgTts").onclick=()=>{ setTts(!state.tts); };
+  $("#tgKw").onclick=()=>{ setKeyword(!state.keyword); };
   voiceSel.onchange=()=>{ state.voice=voiceSel.value; save(); };
 
   function bindRange(id,key,after){ const el=$(id); el.oninput=()=>{ state[key]=parseFloat(el.value); if(id==="#rBreath")updateBreathLbl(); applyStyles(); if(after)after(); save(); }; }
@@ -687,6 +859,7 @@ Vielen Dank für eure Zeit. Ich freue mich darauf, euch persönlich kennenzulern
     $("#tgFocus").classList.toggle("on",state.focus); $("#tgRuler").classList.toggle("on",state.ruler);
     $("#tgCheer").classList.toggle("on",state.cheer); $("#tgMirror").classList.toggle("on",state.mirror);
     $("#tgTts").classList.toggle("on",state.tts);
+    $("#tgKw").classList.toggle("on",state.keyword);
     $("#rLine").value=state.line; $("#rLetter").value=state.letter; $("#rWord").value=state.word; $("#rBreath").value=state.breath;
     updateBreathLbl();
     document.querySelectorAll(".seg").forEach(x=>x.classList.toggle("sel",x.dataset.bg===state.bg));
@@ -697,12 +870,23 @@ Vielen Dank für eure Zeit. Ich freue mich darauf, euch persönlich kennenzulern
   window.addEventListener("keydown",(e)=>{
     if(settings.classList.contains("open"))return;
     if(e.target.tagName==="TEXTAREA"||e.target.tagName==="SELECT"||e.target.tagName==="INPUT")return;
+    if(state.keyword){
+      switch(e.key){
+        case " ": case "ArrowRight": case "ArrowDown": e.preventDefault(); nextCard(); return;
+        case "ArrowLeft": case "ArrowUp": e.preventDefault(); prevCard(); return;
+        case "r": case "R": showCard(0); return;
+        case "f": case "F": toggleFull(); return;
+        case "k": case "K": setKeyword(false); return;
+      }
+      return;
+    }
     switch(e.key){
       case " ": e.preventDefault(); toggle(); break;
       case "ArrowUp": e.preventDefault(); state.wpm=clamp(state.wpm+10,60,280); applyStyles(); save(); flashChip(); break;
       case "ArrowDown": e.preventDefault(); state.wpm=clamp(state.wpm-10,60,280); applyStyles(); save(); flashChip(); break;
       case "ArrowRight": e.preventDefault(); if(!usingStepMode()) setPos(pos+viewport.clientHeight*0.25); break;
       case "ArrowLeft": e.preventDefault(); if(!usingStepMode()) setPos(pos-viewport.clientHeight*0.25); break;
+      case "k": case "K": setKeyword(true); break;
       case "r": case "R": restart(); break;
       case "f": case "F": toggleFull(); break;
       case "+": state.font=clamp(state.font+10,50,220); applyStyles(); save(); break;
@@ -711,8 +895,15 @@ Vielen Dank für eure Zeit. Ich freue mich darauf, euch persönlich kennenzulern
   });
 
   // ---------- drag to scrub (crawl only) ----------
+  // keyword swipe
+  let swX=null,swY=null;
+  viewport.addEventListener("touchstart",(e)=>{ if(!state.keyword||e.touches.length!==1)return; swX=e.touches[0].clientX; swY=e.touches[0].clientY; },{passive:true});
+  viewport.addEventListener("touchend",(e)=>{ if(!state.keyword||swX==null)return; const t=e.changedTouches[0];
+    const dx=t.clientX-swX, dy=t.clientY-swY; swX=swY=null;
+    if(Math.abs(dx)>45 && Math.abs(dx)>Math.abs(dy)){ moved=true; (dx<0?nextCard():prevCard()); } },{passive:true});
+
   let dragY=null,dragPos=0,moved=false;
-  viewport.addEventListener("touchstart",(e)=>{ if(e.touches.length!==1||usingStepMode())return; dragY=e.touches[0].clientY; dragPos=pos; moved=false; },{passive:true});
+  viewport.addEventListener("touchstart",(e)=>{ if(e.touches.length!==1||usingStepMode()||state.keyword)return; dragY=e.touches[0].clientY; dragPos=pos; moved=false; },{passive:true});
   viewport.addEventListener("touchmove",(e)=>{ if(dragY==null)return; const dy=e.touches[0].clientY-dragY; if(Math.abs(dy)>6){ moved=true; if(playing)pause(); setPos(dragPos-dy); } },{passive:true});
   viewport.addEventListener("touchend",()=>{ dragY=null; },{passive:true});
   viewport.addEventListener("click",(e)=>{ if(moved){ e.stopPropagation(); moved=false; } },true);
@@ -725,6 +916,8 @@ Vielen Dank für eure Zeit. Ich freue mich darauf, euch persönlich kennenzulern
   // ---------- init ----------
   if(hasTTS){ loadVoices(); window.speechSynthesis.onvoiceschanged=loadVoices; }
   buildScript(); applyStyles(); syncToggles();
+  if(/leitfaden|keyword|stichwort/i.test(location.hash)) state.keyword=true;
+  setKeyword(state.keyword);
   setTimeout(()=>{ measure(); setPos(0); },60);
 })();
 </script>
