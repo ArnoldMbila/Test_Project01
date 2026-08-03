@@ -1,0 +1,69 @@
+# SOULINK — Grammar-KB: harte und weiche Anschlussregeln
+# Geprüft vom Continuity Guard (kein LLM beteiligt).
+schemaVersion: 1
+
+rules:
+  - id: continuity.axis.180.v1
+    kind: hard
+    statement: "Kamerapositionen bleiben auf einer Seite der Handlungsachse."
+    checks: [cameraSide, screenPosition]
+    violationEffect: "Figuren tauschen scheinbar die Seiten; der Raum bricht zusammen."
+    allowedBreak:
+      requiresMotivation: true
+      validMotivations:
+        - "Bruch markiert Loyalitäts- oder Wahrheitswechsel"
+        - "Kamera überquert die Achse sichtbar in derselben Einstellung"
+        - "neutrale Einstellung auf der Achse als Brücke"
+
+  - id: continuity.eyeline.v1
+    kind: hard
+    statement: "Blickrichtungen im Gegenschuss müssen sich treffen."
+    checks: [eyelineDirection, subjectHeight]
+    violationEffect: "Die Figuren sehen aneinander vorbei; Dialog verliert Verbindung."
+
+  - id: continuity.screen_direction.v1
+    kind: hard
+    statement: "Eine Reisebewegung behält ihre Bildrichtung, bis ein Grund sie ändert."
+    checks: [movementDirection]
+    allowedBreak:
+      requiresMotivation: true
+      validMotivations: ["sichtbarer Richtungswechsel im Bild", "Zielwechsel der Figur"]
+
+  - id: continuity.object_state.v1
+    kind: hard
+    statement: "Zustand von Kostüm, Requisit und Verletzung folgt der Zeitgültigkeit im Graph."
+    checks: [factOverlap]
+    violationEffect: "Der Zuschauer verliert das Vertrauen in die erzählte Welt."
+
+  - id: continuity.knowledge_state.v1
+    kind: hard
+    statement: "Eine Figur darf nicht auf Wissen reagieren, das sie noch nicht hat."
+    checks: [knowsAboutEdge, beatOrder]
+
+  - id: editing.30degree.v1
+    kind: soft
+    statement: "Zwischen zwei Einstellungen desselben Motivs liegt ein Positionswechsel ≥ 30°."
+    violationEffect: "Wirkt wie ein Fehler statt wie ein Schnitt."
+    allowedBreak:
+      requiresMotivation: true
+      validMotivations: ["Jump Cut als bewusstes Stilmittel"]
+
+  - id: editing.size_contrast.v1
+    kind: soft
+    statement: "Aufeinanderfolgende Einstellungen unterscheiden sich in der Größe."
+    violationEffect: "Die Montage wird flach; Betonungen gehen verloren."
+
+  - id: editing.motif_fatigue.v1
+    kind: info
+    statement: "Eine Einstellungsfamilie kehrt in 6 Panels höchstens zweimal wieder."
+    violationEffect: "Wiederholung entwertet die Wirkung."
+
+  - id: camera.movement_motivation.v1
+    kind: soft
+    statement: "Kamerabewegung braucht eine Motivation (Figur, Enthüllung, Subjektivität)."
+    violationEffect: "Bewegung wird Dekoration und verliert ihre Bedeutung für echte Momente."
+
+  - id: light.motivation.v1
+    kind: soft
+    statement: "Lichtquellen sind im Raum motiviert oder bewusst stilisiert — nicht beliebig."
+    violationEffect: "Der Raum verliert Glaubwürdigkeit; Stimmung wirkt aufgesetzt."

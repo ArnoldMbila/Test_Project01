@@ -9,6 +9,11 @@
 > zum Auswendiglernen von **Offenbarung 1–22** (Elberfelder 1905).
 > Einfach `offenbarung-crisis/index.html` im Browser öffnen.
 
+> 🎬 **NEU: [`soulink/`](soulink/README.md)** – „SOULINK“, ein **Director
+> Operating System für visuelles Storytelling** (iPad). Aktuell in der
+> Architekturphase: PRD, Systemdesign, Datenmodelle, UX, Agentenstruktur,
+> Referenzbild-Pipeline, Filmsprache-Wissensbasis und Roadmap.
+
 Eine modulare 3D-Arcade-Lernapp für Unity 6 (C#), die Bibelstudium-Fragen aus
 PDF-Testbögen in kurze, ADHS-freundliche Mini-Game-Sessions verwandelt.
 Alle Spielmechaniken, Namen und Inhalte sind Originalentwürfe für dieses

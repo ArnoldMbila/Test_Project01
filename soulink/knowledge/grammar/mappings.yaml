@@ -1,0 +1,117 @@
+# SOULINK — Grammar-KB: NarrativeJob → Kamera-Kandidaten
+# Startbestand (M2 füllt auf ≥ 3 Kandidaten je Job).
+# Pflichtfelder je Kandidat: id, effect, strength, costs.
+schemaVersion: 1
+
+jobs:
+  - job: establish_geography
+    intent: "Der Zuschauer muss wissen, wo er ist und wer wo steht."
+    candidates:
+      - id: establish.wide_master.v1
+        shotSize: wide
+        angle: eyeLevel
+        lens: { focalEq: 28, note: "Raum bleibt lesbar, kaum Verzerrung" }
+        composition: { framingRule: thirds, depthLayers: [foreground, mid, back] }
+        effect: "Räumliche Ordnung wird gesetzt; alle Folgeschnitte können sich darauf berufen."
+        strength: principle
+        bestWhen: { tension: [0.0, 0.5] }
+        costs: "Kostet Tempo; emotional distanziert."
+      - id: establish.moving_reveal.v1
+        shotSize: wide
+        movement: { type: dolly, motivation: "Raum wird nach und nach freigegeben", speed: slow }
+        effect: "Geografie und Spannung entstehen gleichzeitig."
+        strength: convention
+        bestWhen: { tension: [0.3, 0.7] }
+        costs: "Teurer, schwerer konsistent zu generieren."
+      - id: establish.detail_to_whole.v1
+        shotSize: insert
+        note: "Insert zuerst, dann Auflösung ins Weite"
+        effect: "Der Ort wird über ein bedeutungstragendes Detail betreten."
+        strength: heuristic
+        bestWhen: { subtext: loaded }
+        costs: "Braucht zwei Panels; verzögert die Orientierung."
+
+  - job: escalate_threat
+    intent: "Der Druck muss messbar steigen."
+    candidates:
+      - id: escalate.tighten.v1
+        shotSize: closeUp
+        angle: low
+        lens: { focalEq: 50 }
+        effect: "Weniger Fluchtraum im Bild = weniger Fluchtraum in der Szene."
+        strength: convention
+        bestWhen: { tension: [0.5, 0.9] }
+        costs: "Verliert die Geografie — nicht dreimal hintereinander."
+      - id: escalate.dutch_pressure.v1
+        angle: { dutch: 8 }
+        effect: "Die Welt selbst gerät aus dem Lot."
+        strength: heuristic
+        avoidWhen: ["realistisches Register ohne subjektive Färbung"]
+        costs: "Schnell aufdringlich; wirkt nur einmal pro Sequenz."
+      - id: escalate.static_hold.v1
+        movement: { type: static }
+        note: "Bewusst keine Bewegung, längere Standzeit"
+        effect: "Die Kamera weigert sich wegzusehen; Druck entsteht durch Dauer."
+        strength: principle
+        costs: "Braucht Mut und eine tragfähige Darstellung im Bild."
+
+  - job: show_reaction
+    intent: "Die Wirkung auf eine Figur ist wichtiger als das Ereignis."
+    candidates:
+      - id: reaction.matched_reverse.v1
+        shotSize: matchPrevious
+        note: "Größe des Gegenschusses spiegelt den Vorgängerschuss"
+        effect: "Gleichgewicht zwischen den Figuren; Beziehung bleibt intakt."
+        strength: convention
+        costs: "Vorhersehbar; erzeugt keine Hierarchie."
+      - id: reaction.closer_than_expected.v1
+        shotSize: bigCloseUp
+        effect: "Der Bruch der Erwartung markiert die Wichtigkeit der Reaktion."
+        strength: heuristic
+        bestWhen: { tension: [0.6, 1.0] }
+        costs: "Verletzt Größenanschluss — nur an Beat-Höhepunkten."
+      - id: reaction.withheld.v1
+        note: "Rücken, Verdeckung oder Abwendung statt Gesicht"
+        effect: "Die verweigerte Reaktion lädt den Moment stärker auf als jede gezeigte."
+        strength: principle
+        bestWhen: { subtext: concealed }
+        costs: "Riskant — kann als Auslassung statt als Aussage gelesen werden."
+
+  - job: reveal_information
+    intent: "Etwas Verborgenes wird sichtbar; das Publikum bewertet neu."
+    candidates:
+      - id: reveal.rack_focus.v1
+        focus: { rackFocus: true }
+        effect: "Die Enthüllung passiert im selben Raum, ohne Schnitt — kein Zweifel am Ort."
+        strength: convention
+        costs: "Braucht zwei klare Schärfeebenen."
+      - id: reveal.pull_back.v1
+        movement: { type: dolly, motivation: "Kontext wird freigegeben", speed: medium }
+        effect: "Der Zuschauer erfährt, was die Figur längst weiß — oder umgekehrt."
+        strength: principle
+        costs: "Löst die Nähe auf."
+      - id: reveal.insert_hard.v1
+        shotSize: insert
+        effect: "Direkte, unmissverständliche Wissensübergabe."
+        strength: convention
+        costs: "Plump, wenn der Zuschauer es schon ahnt."
+
+  - job: shift_power
+    intent: "Das Machtverhältnis kippt."
+    candidates:
+      - id: power.height_inversion.v1
+        note: "Winkel- und Höhenverhältnis der Figuren tauschen gegenüber dem Vorschuss"
+        effect: "Die Umkehr ist im Bildaufbau sichtbar, bevor sie ausgesprochen wird."
+        strength: principle
+        costs: "Setzt einen etablierten Vorschuss voraus."
+      - id: power.frame_weight.v1
+        composition: { subjectWeight: dominant, placement: foreground }
+        effect: "Bildgewicht verschiebt sich zur nun stärkeren Figur."
+        strength: convention
+        costs: "Subtil — funktioniert nur bei ruhiger Montage."
+      - id: power.axis_break_motivated.v1
+        note: "Motivierter Achsensprung"
+        requiresMotivation: true
+        effect: "Der Raumbruch markiert den Bruch der Loyalität."
+        strength: heuristic
+        costs: "Ohne klare Motivation wirkt es wie ein Fehler."
