@@ -4,6 +4,11 @@
 > siehe [`web-playable/`](web-playable/README.md) – Three.js-Version derselben
 > App, deploybar auf GitHub Pages/Vercel/Netlify oder lokal per `npm start`.
 
+> 🎬 **NEU: [`soulink/`](soulink/README.md)** – **SOULINK**, ein *Director Operating
+> System* für visuelles Storytelling auf dem iPad. Aktuell reine Architektur:
+> PRD, Systemdesign, UX, Datenmodell, Agentenstruktur, Roadmap, ADRs und JSON-Verträge.
+> Kernidee: keine Zufallsbilder, sondern begründete Regie-Entscheidungen.
+
 > ⚔️ **NEU: [`offenbarung-crisis/`](offenbarung-crisis/README.md)** –
 > „APOKALYPSIS CRISIS“, ein RPG-Missions-Lernspiel (FF7-Ever-Crisis-inspiriert)
 > zum Auswendiglernen von **Offenbarung 1–22** (Elberfelder 1905).
