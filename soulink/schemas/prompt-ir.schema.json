@@ -1,0 +1,224 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://soulink.app/schemas/prompt-ir.schema.json",
+  "title": "PromptIR",
+  "description": "Modellneutrale, strukturierte Repraesentation aller Bildentscheidungen (ADR-003). Beschreibt, WAS im Bild gilt - nicht, WIE man es formuliert. Prompt-Dialekte, Gewichtungssyntax und Parameterflaggen leben ausschliesslich im PromptRenderer. Renderer duerfen umsortieren und uebersetzen, aber nichts semantisch ergaenzen.",
+  "type": "object",
+  "required": ["schemaVersion", "subject", "action", "camera", "space", "light", "anchors", "aspect", "provenance"],
+  "additionalProperties": false,
+  "properties": {
+    "schemaVersion": { "type": "integer", "minimum": 1 },
+
+    "subject": {
+      "type": "array",
+      "description": "Wer/was im Bild ist, in Kanon-Formulierung aus dem Memory Graph. Wortgleichheit ueber Panels hinweg ist hier kein Stilfehler, sondern Kontinuitaetstechnik.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["entity", "canonPhrase"],
+        "additionalProperties": false,
+        "properties": {
+          "entity": { "type": "string" },
+          "canonPhrase": { "type": "string", "minLength": 3, "maxLength": 400 },
+          "prominence": { "enum": ["primary", "secondary", "background"] },
+          "screenPosition": { "enum": ["left", "centerLeft", "center", "centerRight", "right", "offscreen"] }
+        }
+      }
+    },
+
+    "action": {
+      "type": "object",
+      "required": ["description", "panelJob"],
+      "additionalProperties": false,
+      "properties": {
+        "description": { "type": "string", "minLength": 5, "maxLength": 500 },
+        "panelJob": {
+          "enum": ["establish", "introduce", "state", "intent", "action", "reaction",
+                   "reveal", "escalate", "withhold", "transition", "punctuate", "resolve"]
+        },
+        "momentInAction": {
+          "enum": ["before", "onset", "peak", "aftermath"],
+          "description": "Welcher Augenblick der Handlung gezeigt wird - oft die eigentliche Regieentscheidung."
+        }
+      }
+    },
+
+    "camera": {
+      "type": "object",
+      "required": ["intent", "size", "height", "lensMm", "movement"],
+      "additionalProperties": false,
+      "properties": {
+        "intent": {
+          "enum": ["establishGeography", "isolate", "intimacy", "dominance", "vulnerability",
+                   "reveal", "withhold", "pressure", "observation", "disorientation",
+                   "connection", "anticipation"]
+        },
+        "size": {
+          "enum": ["extremeWide", "wide", "fullShot", "mediumWide", "medium",
+                   "mediumCloseUp", "closeUp", "extremeCloseUp", "insert"]
+        },
+        "height": { "enum": ["ground", "low", "eye", "high", "overhead"] },
+        "angleDegrees": { "type": "number", "minimum": -180, "maximum": 180 },
+        "lensMm": { "type": "integer", "minimum": 8, "maximum": 400 },
+        "subjectDistanceMeters": { "type": "number", "exclusiveMinimum": 0 },
+        "depthOfField": { "enum": ["deep", "moderate", "shallow", "extremeShallow"] },
+        "movement": {
+          "type": "object",
+          "required": ["kind"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "enum": ["static", "pan", "tilt", "dolly", "track", "crane",
+                       "handheld", "steadicam", "zoom", "pushIn", "pullOut"]
+            },
+            "motivation": { "type": "string", "maxLength": 200 },
+            "speed": { "enum": ["slow", "moderate", "fast"] }
+          }
+        },
+        "framing": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "headroom": { "enum": ["tight", "neutral", "generous"] },
+            "leadRoom": { "enum": ["none", "left", "right"] },
+            "balance": { "enum": ["centered", "offCenterWeak", "offCenterStrong", "symmetrical"] },
+            "frameInFrame": { "type": "string", "maxLength": 200 }
+          }
+        }
+      }
+    },
+
+    "space": {
+      "type": "object",
+      "required": ["location", "timeOfDay"],
+      "additionalProperties": false,
+      "properties": {
+        "location": { "type": "string", "minLength": 2, "maxLength": 300 },
+        "timeOfDay": { "enum": ["dawn", "morning", "midday", "afternoon", "goldenHour", "dusk", "night", "unspecified"] },
+        "weather": { "type": ["string", "null"], "maxLength": 200 },
+        "layers": {
+          "type": "object",
+          "description": "Bildebenen. Tiefe entsteht durch Staffelung, nicht durch Stilworte.",
+          "additionalProperties": false,
+          "properties": {
+            "foreground": { "type": "string", "maxLength": 300 },
+            "midground": { "type": "string", "maxLength": 300 },
+            "background": { "type": "string", "maxLength": 300 }
+          }
+        }
+      }
+    },
+
+    "light": {
+      "type": "object",
+      "required": ["key"],
+      "additionalProperties": false,
+      "properties": {
+        "key": {
+          "type": "object",
+          "required": ["source", "direction", "quality"],
+          "additionalProperties": false,
+          "properties": {
+            "source": { "type": "string", "maxLength": 200 },
+            "direction": { "enum": ["front", "frontLeft", "frontRight", "side", "sideLeft", "sideRight",
+                                    "back", "backLeft", "backRight", "top", "bottom"] },
+            "quality": { "enum": ["hard", "soft", "mixed"] },
+            "colorTemperatureK": { "type": "integer", "minimum": 1000, "maximum": 20000 }
+          }
+        },
+        "fill": { "type": ["string", "null"], "maxLength": 200 },
+        "rim": { "type": ["string", "null"], "maxLength": 200 },
+        "practicals": { "type": "array", "items": { "type": "string", "maxLength": 200 } },
+        "contrastRatio": { "enum": ["low", "moderate", "high", "extreme"] }
+      }
+    },
+
+    "mood": {
+      "type": "object",
+      "description": "Abgeleitet aus Beat-Spannung und Subtext - nie frei gewaehlt.",
+      "additionalProperties": false,
+      "properties": {
+        "temperature": { "enum": ["cold", "cool", "neutral", "warm", "hot"] },
+        "tension": { "type": "number", "minimum": 0, "maximum": 1 },
+        "subtext": { "type": "string", "maxLength": 400 }
+      }
+    },
+
+    "style": {
+      "type": "object",
+      "description": "Projekt-Stilprofil. Beschreibt Bildmittel, nie 'im Stil von [Person]' (siehe 08, Abschnitt Recht).",
+      "additionalProperties": false,
+      "properties": {
+        "medium": { "type": "string", "maxLength": 200 },
+        "palette": { "type": "array", "items": { "type": "string", "maxLength": 60 } },
+        "grain": { "enum": ["none", "fine", "moderate", "heavy"] },
+        "contrastCurve": { "type": "string", "maxLength": 200 },
+        "renderingNotes": { "type": "string", "maxLength": 400 }
+      }
+    },
+
+    "anchors": {
+      "type": "array",
+      "description": "Kontinuitaetsanker, woertlich in Kanon-Formulierung. Ausgewaehlt per Anker-Score (Unterscheidungskraft x Sichtbarkeit x Driftrisiko x Erzaehlrelevanz). Typisch 3-5; zu viele verwaessern, zu wenige lassen die Figur driften.",
+      "items": {
+        "type": "object",
+        "required": ["phrase", "entity"],
+        "additionalProperties": false,
+        "properties": {
+          "phrase": { "type": "string", "minLength": 2, "maxLength": 200 },
+          "entity": { "type": "string" },
+          "score": { "type": "number", "minimum": 0, "maximum": 1 }
+        }
+      }
+    },
+
+    "exclusions": {
+      "type": "array",
+      "description": "Negativregeln, abgeleitet aus Kontinuitaet und Stil - nicht aus Gewohnheit.",
+      "items": {
+        "type": "object",
+        "required": ["phrase", "reason"],
+        "additionalProperties": false,
+        "properties": {
+          "phrase": { "type": "string", "maxLength": 200 },
+          "reason": { "type": "string", "maxLength": 300 }
+        }
+      }
+    },
+
+    "aspect": {
+      "type": "string",
+      "pattern": "^[0-9]+(\\.[0-9]+)?:[0-9]+(\\.[0-9]+)?$",
+      "description": "Seitenverhaeltnis, z. B. '2.39:1'."
+    },
+
+    "conditioning": {
+      "type": "array",
+      "description": "Referenzbilder, Masken, Posen. Wird nur gerendert, wenn das Zielmodell die Faehigkeit deklariert; sonst greift Degradation mit FidelityRisk.",
+      "items": {
+        "type": "object",
+        "required": ["kind", "assetRef"],
+        "additionalProperties": false,
+        "properties": {
+          "kind": { "enum": ["identityReference", "styleReference", "poseReference", "depthMap", "mask", "previousPanel"] },
+          "assetRef": { "type": "string" },
+          "weight": { "type": "number", "minimum": 0, "maximum": 1 }
+        }
+      }
+    },
+
+    "provenance": {
+      "type": "object",
+      "description": "Rueckverfolgbarkeit (Invariante I5). Ohne diese Felder ist ein erzeugtes Bild nicht erklaerbar und nicht reproduzierbar.",
+      "required": ["panelId", "beatId", "decisionIds"],
+      "additionalProperties": false,
+      "properties": {
+        "panelId": { "type": "string" },
+        "beatId": { "type": "string" },
+        "decisionIds": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "ruleIds": { "type": "array", "items": { "type": "string" } },
+        "ledgerCursor": { "type": "integer", "minimum": 0 }
+      }
+    }
+  }
+}

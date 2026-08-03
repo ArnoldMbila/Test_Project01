@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://soulink.app/schemas/continuation-option.schema.json",
+  "title": "ContinuationOption",
+  "description": "Eine dramaturgisch begruendete Fortsetzung (Invariante I3). Adressiert genau einen Spannungsvektor, gehoert zu genau einem Strategie-Archetyp und liefert eine fertige PromptIR - keine Prompt-Idee.",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "addresses",
+    "strategy",
+    "arcPosition",
+    "expectedTensionDelta",
+    "panelJob",
+    "cameraPlan",
+    "continuityConstraints",
+    "transition",
+    "promptIR",
+    "rationale"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string", "minLength": 1 },
+    "title": {
+      "type": "string",
+      "description": "Die Idee in wenigen Worten, nicht die Beschreibung des Bildes.",
+      "minLength": 3,
+      "maxLength": 80
+    },
+    "addresses": {
+      "type": "string",
+      "description": "ID GENAU EINES TensionVector (ADR-012). Mehrere adressierte Vektoren machen Optionen unvergleichbar und die Diversitaetspruefung unmoeglich."
+    },
+    "strategy": {
+      "enum": ["escalate", "reveal", "reverse", "delay", "contrast", "approach", "consequence"],
+      "description": "Strategie-Archetyp aus strategy-archetypes.yaml. Vom deterministischen Planer vorgegeben; der Agent darf ihn nicht wechseln."
+    },
+    "arcPosition": {
+      "enum": ["setup", "rising", "midpoint", "complication", "crisis", "climax", "falling", "resolution"]
+    },
+    "expectedTensionDelta": {
+      "type": "number",
+      "minimum": -1,
+      "maximum": 1,
+      "description": "Erwartete Veraenderung des Spannungsniveaus gegenueber dem Ausgangsbild. Negative Werte sind zulaessig und erwuenscht (Atempause, Kontrast)."
+    },
+    "panelJob": {
+      "enum": [
+        "establish", "introduce", "state", "intent", "action", "reaction",
+        "reveal", "escalate", "withhold", "transition", "punctuate", "resolve"
+      ],
+      "description": "Genau eine Aufgabe des Folgepanels (Invariante I1)."
+    },
+    "cameraPlan": {
+      "type": "object",
+      "required": ["intent", "size", "height", "lens", "movement", "axisHandling"],
+      "additionalProperties": false,
+      "properties": {
+        "intent": {
+          "enum": [
+            "establishGeography", "isolate", "intimacy", "dominance", "vulnerability",
+            "reveal", "withhold", "pressure", "observation", "disorientation",
+            "connection", "anticipation"
+          ],
+          "description": "Erzaehlerische Absicht. Ableitungsrichtung ist unumkehrbar: Absicht -> Grammatik -> Parameter (Invariante I2)."
+        },
+        "size": {
+          "enum": ["extremeWide", "wide", "fullShot", "mediumWide", "medium",
+                   "mediumCloseUp", "closeUp", "extremeCloseUp", "insert"]
+        },
+        "height": { "enum": ["ground", "low", "eye", "high", "overhead"] },
+        "angleDegrees": { "type": "number", "minimum": -180, "maximum": 180 },
+        "lens": {
+          "type": "object",
+          "required": ["mm"],
+          "additionalProperties": false,
+          "properties": {
+            "mm": { "type": "integer", "minimum": 8, "maximum": 400 },
+            "language": {
+              "enum": ["distortedProximity", "spatialContext", "neutralWitness", "isolation", "compression"],
+              "description": "Abgeleitet aus mm, nicht frei gesetzt."
+            }
+          }
+        },
+        "subjectDistanceMeters": { "type": "number", "exclusiveMinimum": 0 },
+        "movement": {
+          "type": "object",
+          "required": ["kind", "motivation"],
+          "additionalProperties": false,
+          "properties": {
+            "kind": {
+              "enum": ["static", "pan", "tilt", "dolly", "track", "crane",
+                       "handheld", "steadicam", "zoom", "pushIn", "pullOut"]
+            },
+            "motivation": {
+              "enum": ["followsSubject", "revealsFact", "appliesPressure", "releasesPressure",
+                       "establishesGeography", "subjectivePOV", "intentionalUnmotivated"],
+              "description": "Pflicht (FR-CI-08). Eine Bewegung ohne Motivation ist nicht darstellbar; 'intentionalUnmotivated' verlangt eine Zweckangabe in der Rationale."
+            },
+            "motivationDetail": { "type": "string", "maxLength": 200 }
+          }
+        },
+        "axisHandling": {
+          "type": "object",
+          "required": ["mode"],
+          "additionalProperties": false,
+          "properties": {
+            "mode": {
+              "enum": ["preserved", "reestablished", "crossedByMovement", "neutralShot", "intentionalBreak"],
+              "description": "'intentionalBreak' erzeugt eine markierte Regelabweichung mit Zweckangabe."
+            },
+            "note": { "type": "string", "maxLength": 300 }
+          }
+        },
+        "cameraRelation": {
+          "enum": ["reverse", "closer", "wider", "insert", "pov", "relocated", "sameSetup"],
+          "description": "Vom Planer vergeben. Zusammen mit 'strategy' Grundlage der Diversitaetsbedingung."
+        }
+      }
+    },
+    "continuityConstraints": {
+      "type": "array",
+      "description": "Was gleich bleiben MUSS, mit Herkunft aus dem Memory Graph.",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["entity", "property", "value"],
+        "additionalProperties": false,
+        "properties": {
+          "entity": { "type": "string" },
+          "property": { "type": "string" },
+          "value": { "type": "string" },
+          "provenance": {
+            "type": "string",
+            "description": "StateChange-ID oder Referenzbefund, aus dem die Bedingung stammt."
+          }
+        }
+      }
+    },
+    "transition": {
+      "type": "object",
+      "required": ["kind", "because"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": ["cut", "matchCut", "jumpCut", "dissolve", "wipe", "smashCut", "lCut", "jCut", "fade", "whipPan"]
+        },
+        "because": {
+          "type": "string",
+          "description": "Warum genau dieser Uebergang die beabsichtigte Wirkung traegt.",
+          "minLength": 15,
+          "maxLength": 500
+        },
+        "bridge": {
+          "type": ["string", "null"],
+          "description": "Match-Element bei matchCut: Form, Bewegung, Farbe oder Ton. Pflicht, wenn kind = matchCut."
+        }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "kind": { "const": "matchCut" } } },
+          "then": { "required": ["bridge"], "properties": { "bridge": { "type": "string", "minLength": 3 } } }
+        }
+      ]
+    },
+    "promptIR": { "$ref": "https://soulink.app/schemas/prompt-ir.schema.json" },
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["kind", "severity", "note"],
+        "additionalProperties": false,
+        "properties": {
+          "kind": {
+            "enum": ["identityDrift", "contentInvention", "lightingDrift", "blockingDrift",
+                     "motionUnsupported", "framingShift", "nonReproducible", "narrativeAmbiguity"]
+          },
+          "severity": { "enum": ["low", "medium", "high"] },
+          "note": { "type": "string", "minLength": 10, "maxLength": 400 }
+        }
+      }
+    },
+    "rationale": { "$ref": "https://soulink.app/schemas/rationale.schema.json" }
+  }
+}

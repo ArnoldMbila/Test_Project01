@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://soulink.app/schemas/rationale.schema.json",
+  "title": "Rationale",
+  "description": "Das Warum einer Entscheidung. Pflichtbestandteil jedes persistierten Artefakts (Invariante I4). Wird vom Rationale Gate auf Vollstaendigkeit, Nicht-Zirkularitaet und Belegbarkeit geprueft.",
+  "type": "object",
+  "required": ["claim", "because", "grounds", "confidence", "author"],
+  "additionalProperties": false,
+  "properties": {
+    "claim": {
+      "type": "string",
+      "description": "Was wird entschieden? Ein Satz, im Indikativ.",
+      "minLength": 8,
+      "maxLength": 300
+    },
+    "because": {
+      "type": "string",
+      "description": "Die erzaehlerische Wirkung, nicht der Geschmack. Muss benennen, was beim Zuschauer geschieht. Formulierungen ohne benannte Wirkung ('dramatischer', 'sieht besser aus', 'cinematic') werden abgelehnt.",
+      "minLength": 20,
+      "maxLength": 800
+    },
+    "grounds": {
+      "type": "array",
+      "description": "Typisierte Belege. Mindestens einer. Jede referenzierte ID wird gegen den Projektzustand aufgeloest; nicht aufloesbare Belege fuehren zur Ablehnung.",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/ground" }
+    },
+    "alternatives": {
+      "type": "array",
+      "description": "Verworfene Optionen mit dem Grund der Verwerfung. Leer erlaubt, aber bei Kameraableitungen und Fortsetzungsoptionen erwartet.",
+      "items": {
+        "type": "object",
+        "required": ["option", "rejectedBecause"],
+        "additionalProperties": false,
+        "properties": {
+          "option": { "type": "string", "minLength": 3, "maxLength": 300 },
+          "rejectedBecause": {
+            "type": "string",
+            "description": "Die Wirkung, die man nicht wollte.",
+            "minLength": 10,
+            "maxLength": 500
+          }
+        }
+      }
+    },
+    "confidence": {
+      "type": "object",
+      "required": ["value"],
+      "additionalProperties": false,
+      "properties": {
+        "value": { "type": "number", "minimum": 0, "maximum": 1 },
+        "sourceOfDoubt": {
+          "type": ["string", "null"],
+          "description": "Pflicht, sobald value < 0.75 oder das zugrunde liegende Material mehrdeutig ist.",
+          "maxLength": 300
+        }
+      }
+    },
+    "author": {
+      "type": "object",
+      "required": ["kind"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": { "enum": ["system", "agent", "human"] },
+        "name": {
+          "type": "string",
+          "description": "Modulname bei 'system', Agenten-ID bei 'agent'.",
+          "maxLength": 80
+        }
+      }
+    },
+    "createdAt": { "type": "string", "format": "date-time" }
+  },
+  "$defs": {
+    "ground": {
+      "type": "object",
+      "required": ["kind", "ref"],
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "beat",
+            "rule",
+            "continuityFact",
+            "referenceFinding",
+            "spine",
+            "humanDirective"
+          ]
+        },
+        "ref": {
+          "type": "string",
+          "description": "Aufloesbare Referenz. Bei 'rule' inklusive Korpusfassung, z. B. 'shot-grammar.v3#R-021'.",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "note": {
+          "type": "string",
+          "description": "Optionaler Kurzhinweis, wie der Beleg die Behauptung stuetzt.",
+          "maxLength": 300
+        }
+      }
+    }
+  }
+}
