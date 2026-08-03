@@ -1,0 +1,75 @@
+name: SOULINK Pages
+
+# Einmalige Voraussetzung im Repo: Settings → Pages → Source: "GitHub Actions".
+# Danach deployt jeder Push auf die unten genannten Branches die Seite.
+
+on:
+  push:
+    branches:
+      - main
+      # Vorschau-Branch — nach dem Merge nach main diese Zeile entfernen.
+      - claude/soulink-director-os-cs1twu
+    paths:
+      - 'soulink/site/**'
+      - 'soulink/prototype/**'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Laufende Deployments nicht abbrechen, aber auch nicht stapeln.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Seite zusammenstellen
+        run: |
+          set -euo pipefail
+          mkdir -p _site/prototype
+          cp soulink/site/index.html _site/index.html
+
+          # Der Prototyp liegt als Fragment im Repo (ohne doctype/html/head),
+          # damit dieselbe Datei auch als Claude-Artifact veröffentlicht werden
+          # kann. Fuer Pages wird sie hier zu einem vollstaendigen Dokument
+          # ergaenzt: Der HTML-Parser schliesst <head> selbsttaetig, sobald das
+          # erste Body-Element kommt — <title> und <style> landen korrekt im Kopf.
+          {
+            printf '<!doctype html>\n<html lang="de">\n<head>\n'
+            printf '<meta charset="utf-8">\n'
+            printf '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
+            printf '<meta name="color-scheme" content="light dark">\n'
+            cat soulink/prototype/index.html
+            printf '\n</html>\n'
+          } > _site/prototype/index.html
+
+      - name: Ergebnis pruefen
+        run: |
+          set -euo pipefail
+          test -s _site/index.html
+          test -s _site/prototype/index.html
+          grep -q '<!doctype html>' _site/prototype/index.html
+          grep -q 'Analyse starten' _site/prototype/index.html
+          echo "OK — $(wc -c < _site/prototype/index.html) Bytes Prototyp"
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

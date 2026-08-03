@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>SOULINK — Director Operating System</title>
+<style>
+  :root {
+    --bg:#EEF0F1; --surface:#F8F9FA; --raised:#FFFFFF; --hairline:#D3D9DC;
+    --hairline-2:#BFC8CD; --text:#12181B; --dim:#5C6A72; --faint:#8A979E;
+    --accent:#2E7CAD; --accent-ink:#FFFFFF; --highlight:#A96313;
+    --highlight-soft:rgba(169,99,19,.10);
+    --font-display:"Futura","Avenir Next","Century Gothic",ui-sans-serif,sans-serif;
+    --font-ui:-apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Arial,sans-serif;
+    --font-read:"Iowan Old Style","Charter","Palatino",Georgia,serif;
+    --font-mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:#0E1113; --surface:#171B1E; --raised:#212730; --hairline:#2E363C;
+      --hairline-2:#3C464D; --text:#E6EAEC; --dim:#93A0A7; --faint:#6E7C84;
+      --accent:#74AFD4; --accent-ink:#0E1113; --highlight:#E8A24C;
+      --highlight-soft:rgba(232,162,76,.12);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg:#0E1113; --surface:#171B1E; --raised:#212730; --hairline:#2E363C;
+    --hairline-2:#3C464D; --text:#E6EAEC; --dim:#93A0A7; --faint:#6E7C84;
+    --accent:#74AFD4; --accent-ink:#0E1113; --highlight:#E8A24C;
+    --highlight-soft:rgba(232,162,76,.12);
+  }
+  :root[data-theme="light"] {
+    --bg:#EEF0F1; --surface:#F8F9FA; --raised:#FFFFFF; --hairline:#D3D9DC;
+    --hairline-2:#BFC8CD; --text:#12181B; --dim:#5C6A72; --faint:#8A979E;
+    --accent:#2E7CAD; --accent-ink:#FFFFFF; --highlight:#A96313;
+    --highlight-soft:rgba(169,99,19,.10);
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:var(--font-ui); font-size:16px; line-height:1.55;
+    -webkit-text-size-adjust:100%; -webkit-font-smoothing:antialiased;
+  }
+  :focus-visible { outline:2px solid var(--accent); outline-offset:3px; border-radius:2px; }
+  .wrap { max-width:940px; margin:0 auto; padding:0 24px; }
+
+  .eyebrow {
+    font-family:var(--font-display); font-size:11px; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--faint);
+  }
+
+  header.masthead {
+    border-bottom:1px solid var(--hairline);
+    background:var(--surface);
+    padding:56px 0 40px;
+  }
+  .wordmark {
+    font-family:var(--font-display); font-size:clamp(28px,7vw,46px);
+    letter-spacing:.24em; font-weight:500; margin:0 0 20px;
+  }
+  .wordmark span { color:var(--accent); }
+  .lede {
+    font-family:var(--font-read); font-size:clamp(19px,2.6vw,24px);
+    line-height:1.44; margin:0; max-width:30ch; text-wrap:balance;
+  }
+  .sub { color:var(--dim); font-size:15px; margin:18px 0 0; max-width:62ch; }
+
+  .cta-row { display:flex; gap:12px; flex-wrap:wrap; margin-top:32px; align-items:center; }
+  .btn {
+    display:inline-block; background:var(--accent); color:var(--accent-ink);
+    text-decoration:none; padding:13px 22px; border-radius:3px;
+    font-weight:500; font-size:16px; min-height:46px;
+  }
+  .btn:hover { filter:brightness(1.08); }
+  .btn-ghost {
+    display:inline-block; text-decoration:none; color:var(--text);
+    border:1px solid var(--hairline-2); padding:12px 20px; border-radius:3px; font-size:15px;
+  }
+  .btn-ghost:hover { border-color:var(--accent); color:var(--accent); }
+  .stage-chip {
+    font-family:var(--font-display); font-size:10px; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--dim);
+    border:1px dashed var(--hairline-2); padding:5px 10px; border-radius:2px;
+  }
+
+  section { padding:48px 0; border-bottom:1px solid var(--hairline); }
+  section > .wrap > .eyebrow { display:block; margin-bottom:18px; }
+  h2 {
+    font-family:var(--font-display); font-weight:500; font-size:clamp(20px,3vw,26px);
+    letter-spacing:.02em; margin:0 0 18px; text-wrap:balance;
+  }
+  p { max-width:66ch; }
+
+  .principles { display:grid; gap:1px; background:var(--hairline); border:1px solid var(--hairline); }
+  .principles > div { background:var(--surface); padding:18px 20px; display:grid; gap:6px; }
+  .principles b { font-family:var(--font-read); font-size:17px; font-weight:600; }
+  .principles span { color:var(--dim); font-size:14px; }
+  .principles code { font-family:var(--font-mono); font-size:12.5px; color:var(--text); }
+  @media (min-width:760px) { .principles { grid-template-columns:1fr 1fr; } }
+
+  .docs { list-style:none; margin:0; padding:0; display:grid; gap:1px; background:var(--hairline); border:1px solid var(--hairline); }
+  .docs li { background:var(--surface); }
+  .docs a {
+    display:grid; grid-template-columns:32px minmax(0,1fr); gap:14px;
+    padding:14px 20px; text-decoration:none; color:inherit; align-items:baseline;
+  }
+  .docs a:hover { background:var(--raised); }
+  .docs .n { font-family:var(--font-mono); font-size:12px; color:var(--faint); }
+  .docs .t { font-weight:500; }
+  .docs .d { display:block; color:var(--dim); font-size:13.5px; font-weight:400; margin-top:2px; }
+
+  .note {
+    background:var(--highlight-soft); border-left:2px solid var(--highlight);
+    padding:16px 20px; font-size:14.5px; color:var(--text);
+  }
+  .note b { font-weight:600; }
+
+  footer { padding:36px 0 56px; color:var(--dim); font-size:13.5px; }
+  footer a { color:var(--accent); }
+  footer p { margin:0 0 8px; }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <h1 class="wordmark">SOU<span>·</span>LINK</h1>
+    <p class="lede">Keine Zufallsbilder. Regie-Intelligenz.</p>
+    <p class="sub">
+      Ein Director Operating System für visuelles Storytelling auf dem iPad. Das Bild ist das
+      letzte Glied der Kette, nicht das erste: Absicht → Dramaturgie → Kamera → Kontinuität →
+      Prompt → Bild. Jedes Artefakt trägt die Begründung mit sich, aus der es entstanden ist.
+    </p>
+    <div class="cta-row">
+      <a class="btn" href="prototype/">Prototyp öffnen</a>
+      <a class="btn-ghost" href="https://github.com/ArnoldMbila/Test_Project01/tree/main/soulink/docs">Architektur lesen</a>
+      <span class="stage-chip">Architekturphase · kein Produktionscode</span>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <span class="eyebrow">Grundprinzipien</span>
+    <h2>Vier Sätze, die keine Slogans sind, sondern Systeminvarianten</h2>
+    <p style="color:var(--dim);font-size:15px">
+      Ein Prinzip, das nur im Handbuch steht, ist Marketing. Ein Prinzip, das Compiler und
+      Validator durchsetzen, ist Architektur.
+    </p>
+    <div class="principles">
+      <div>
+        <b>Jedes Panel hat genau eine Aufgabe.</b>
+        <span><code>narrativeJob</code> ist ein einzelner, nicht-optionaler Wert. Mehrfachaufgaben sind nicht darstellbar.</span>
+      </div>
+      <div>
+        <b>Jede Kamera verfolgt einen erzählerischen Zweck.</b>
+        <span>Es existiert kein Pfad zu einem <code>CameraSetup</code> ohne <code>CameraIntent</code>. Die Ableitungsrichtung ist unumkehrbar.</span>
+      </div>
+      <div>
+        <b>Jede Fortsetzung ist dramaturgisch begründet.</b>
+        <span>Eine Option braucht Spannungsvektor, Strategie-Archetyp und erwartetes Spannungsdelta.</span>
+      </div>
+      <div>
+        <b>Jede Entscheidung braucht ein klares Warum.</b>
+        <span>Das Rationale Gate prüft Vollständigkeit, Nicht-Zirkularität und Belegbarkeit. „Weil es dramatischer ist“ fällt durch.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="eyebrow">Der Prototyp</span>
+    <h2>Die Konsole, klickbar</h2>
+    <p style="color:var(--dim);font-size:15px">
+      Referenzbild in sieben Stufen lesen, vier Spannungsvektoren antippen, fünf strategisch
+      verschiedene Fortsetzungen vergleichen. Im Grundriss die Kamera ziehen — die verbotene
+      Halbebene färbt sich <em>während</em> der Bewegung, nicht danach.
+    </p>
+    <div class="note">
+      <b>Kein laufendes Produkt.</b> Es sind keine Modelle angebunden. Alle Analysen, Optionen
+      und Begründungen sind die im Architekturdokument ausformulierten Inhalte — so lässt sich
+      die Regie-Logik prüfen, nicht die Modellqualität.
+    </div>
+    <div class="cta-row">
+      <a class="btn" href="prototype/">Prototyp öffnen</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <span class="eyebrow">Architektur</span>
+    <h2>Elf Dokumente, drei Verträge</h2>
+    <ul class="docs">
+      <li><a href="https://github.com/ArnoldMbila/Test_Project01/blob/main/soulink/docs/00-REGIE-DOKTRIN.md"><span class="n">00</span><span class="t">Regie-Doktrin<span class="d">Die Invarianten I1–I6 und wie sie technisch erzwungen werden</span></span></a></li>
+      <li><a href="https://github.com/ArnoldMbila/Test_Project01/blob/main/soulink/docs/01-PRD.md"><span class="n">01</span><span class="t">PRD<span class="d">Nutzer, Anforderungen, Erfolgsmetriken, Nicht-Ziele</span></span></a></li>
+      <li><a href="https://github.com/ArnoldMbila/Test_Project01/blob/main/soulink/docs/02-SYSTEMDESIGN.md"><span class="n">02</span><span class="t">Systemdesign<span class="d">Deterministischer Kern, Entscheidungs-Ledger, Model Gateway</span></span></a></li>
+      <li><a href="https://github.com/ArnoldMbila/Test_Project01/blob/main/soulink/docs/03-MODULE.md"><span class="n">03</span><span class="t">Modulspezifikationen<span class="d">Director Engine, Story Engine, Camera Intelligence, Continuity, Prompt Composer, Assistant</span></span></a></li>
+      <li><a href="https://github.com/ArnoldMbila/Test_Project01/blob/main/soulink/docs/04-DATENMODELL.md"><span class="n">04</span><span class="t">Datenmodell<span class="d">Entitäten, Zustands-Zeitachse, Versionierung</span></span></a></li>
+      <li><a href="https://github.com/ArnoldMbila/Test_Project01/blob/main/soulink/docs/05-AGENTEN.md"><span class="n">05</span><span class="t">Agentenstruktur<span class="d">Verträge, Orchestrierung, Reparaturschleife, Budgets, Evals</span></span></a></li>
+      <li><a href="https://github.com/ArnoldMbila/Test_Project01/blob/main/soulink/docs/06-UX-IPAD.md"><span class="n">06</span><span class="t">UX / iPad<span class="d">Drei Zonen, fünf Modi, Pencil, Reasoning Inspector</span></span></a></li>
+      <li><a href="https://github.com/ArnoldMbila/Test_Project01/blob/main/soulink/docs/07-REFERENZ-FORTSETZUNG.md"><span class="n">07</span><span class="t">Referenz &amp; Fortsetzung<span class="d">Die 7-Stufen-Analyse mit durchgerechnetem Beispiel</span></span></a></li>
+      <li><a href="https://github.com/ArnoldMbila/Test_Project01/blob/main/soulink/docs/08-QUALITAET-NFR.md"><span class="n">08</span><span class="t">Qualität &amp; NFR<span class="d">Teststrategie, Eval-Harness, Guardrails, Recht</span></span></a></li>
+      <li><a href="https://github.com/ArnoldMbila/Test_Project01/blob/main/soulink/docs/09-ROADMAP.md"><span class="n">09</span><span class="t">Roadmap<span class="d">Phasen P0–P6 mit Exit-Kriterien</span></span></a></li>
+      <li><a href="https://github.com/ArnoldMbila/Test_Project01/blob/main/soulink/docs/10-ADR.md"><span class="n">10</span><span class="t">Architekturentscheidungen<span class="d">Zwölf ADRs mit Alternativen und Konsequenzen</span></span></a></li>
+      <li><a href="https://github.com/ArnoldMbila/Test_Project01/tree/main/soulink/schemas"><span class="n">JSON</span><span class="t">Verträge<span class="d">Rationale, ContinuationOption, PromptIR — Persistenz- und Agentenschema zugleich</span></span></a></li>
+    </ul>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>Quelle: <a href="https://github.com/ArnoldMbila/Test_Project01/tree/main/soulink">github.com/ArnoldMbila/Test_Project01 · soulink/</a></p>
+    <p>Diese Seite wird aus dem Repository gebaut. Der Prototyp ist eine Design-Deliverable zu Doku 06 und 07.</p>
+  </div>
+</footer>
+
+</body>
+</html>
