@@ -1,0 +1,1431 @@
+<title>SOULINK — Director OS · UX-Prototyp</title>
+
+<style>
+  :root {
+    --bg:        #EEF0F1;
+    --surface:   #F8F9FA;
+    --raised:    #FFFFFF;
+    --hairline:  #D3D9DC;
+    --hairline-2:#BFC8CD;
+    --text:      #12181B;
+    --dim:       #5C6A72;
+    --faint:     #8A979E;
+    --accent:    #2E7CAD;
+    --accent-ink:#FFFFFF;
+    --highlight: #A96313;
+    --highlight-soft: rgba(169, 99, 19, 0.10);
+    --critical:  #B4413C;
+    --grid:      rgba(18, 24, 27, 0.07);
+    --shadow:    0 1px 2px rgba(16,24,28,.06), 0 8px 24px rgba(16,24,28,.06);
+
+    --font-display: "Futura", "Avenir Next", "Century Gothic", ui-sans-serif, sans-serif;
+    --font-ui: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+    --font-read: "Iowan Old Style", "Charter", "Palatino", Georgia, serif;
+    --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+    --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px;
+    --r: 3px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:        #0E1113;
+      --surface:   #171B1E;
+      --raised:    #212730;
+      --hairline:  #2E363C;
+      --hairline-2:#3C464D;
+      --text:      #E6EAEC;
+      --dim:       #93A0A7;
+      --faint:     #6E7C84;
+      --accent:    #74AFD4;
+      --accent-ink:#0E1113;
+      --highlight: #E8A24C;
+      --highlight-soft: rgba(232, 162, 76, 0.12);
+      --critical:  #D9635E;
+      --grid:      rgba(230, 234, 236, 0.07);
+      --shadow:    0 1px 2px rgba(0,0,0,.35), 0 10px 30px rgba(0,0,0,.32);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg:#0E1113; --surface:#171B1E; --raised:#212730; --hairline:#2E363C;
+    --hairline-2:#3C464D; --text:#E6EAEC; --dim:#93A0A7; --faint:#6E7C84;
+    --accent:#74AFD4; --accent-ink:#0E1113; --highlight:#E8A24C;
+    --highlight-soft:rgba(232,162,76,.12); --critical:#D9635E;
+    --grid:rgba(230,234,236,.07);
+    --shadow:0 1px 2px rgba(0,0,0,.35), 0 10px 30px rgba(0,0,0,.32);
+  }
+  :root[data-theme="light"] {
+    --bg:#EEF0F1; --surface:#F8F9FA; --raised:#FFFFFF; --hairline:#D3D9DC;
+    --hairline-2:#BFC8CD; --text:#12181B; --dim:#5C6A72; --faint:#8A979E;
+    --accent:#2E7CAD; --accent-ink:#FFFFFF; --highlight:#A96313;
+    --highlight-soft:rgba(169,99,19,.10); --critical:#B4413C;
+    --grid:rgba(18,24,27,.07);
+    --shadow:0 1px 2px rgba(16,24,28,.06), 0 8px 24px rgba(16,24,28,.06);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-ui);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  button { font: inherit; color: inherit; }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  .eyebrow {
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+
+  .mono { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+  /* ---------- Topbar ---------- */
+
+  .topbar {
+    display: flex;
+    align-items: center;
+    gap: var(--s4);
+    flex-wrap: wrap;
+    padding: var(--s3) var(--s4);
+    background: var(--surface);
+    border-bottom: 1px solid var(--hairline);
+    position: sticky;
+    top: 0;
+    z-index: 20;
+  }
+
+  .wordmark {
+    font-family: var(--font-display);
+    font-size: 19px;
+    letter-spacing: .26em;
+    font-weight: 500;
+    margin: 0;
+    padding-right: var(--s2);
+  }
+  .wordmark span { color: var(--accent); }
+
+  .slate {
+    display: flex;
+    gap: var(--s3);
+    align-items: baseline;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--dim);
+    border-left: 1px solid var(--hairline);
+    padding-left: var(--s4);
+  }
+  .slate b { color: var(--text); font-weight: 500; }
+
+  .chip-proto {
+    margin-left: auto;
+    font-family: var(--font-display);
+    font-size: 10px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--dim);
+    border: 1px dashed var(--hairline-2);
+    padding: 4px 9px;
+    border-radius: 2px;
+  }
+
+  .modes {
+    display: flex;
+    gap: 2px;
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+  .mode {
+    flex: 0 0 auto;
+    background: none;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    padding: 7px 13px 8px;
+    color: var(--dim);
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .mode:hover { color: var(--text); }
+  .mode[aria-selected="true"] {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+  }
+  .mode small {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--faint);
+    letter-spacing: .04em;
+  }
+
+  /* ---------- Notice ---------- */
+
+  .notice {
+    padding: var(--s3) var(--s4);
+    background: var(--bg);
+    border-bottom: 1px solid var(--hairline);
+    font-size: 13px;
+    color: var(--dim);
+    display: flex;
+    gap: var(--s3);
+    align-items: baseline;
+    flex-wrap: wrap;
+  }
+  .notice b { color: var(--text); font-weight: 600; }
+
+  /* ---------- Console ---------- */
+
+  .console {
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr) 350px;
+    align-items: stretch;
+    min-height: 62vh;
+  }
+
+  .rail, .inspector { background: var(--surface); }
+  .rail { border-right: 1px solid var(--hairline); }
+  .inspector { border-left: 1px solid var(--hairline); }
+  .stage { padding: var(--s5) var(--s5) var(--s6); min-width: 0; }
+
+  .rail { padding: var(--s4); }
+  .rail-group { margin-bottom: var(--s5); }
+  .rail-group > .eyebrow { display: block; margin-bottom: var(--s2); }
+
+  .tree { list-style: none; margin: 0; padding: 0; font-size: 13px; }
+  .tree li { margin: 0; }
+  .tree .lvl1 { color: var(--dim); padding: 3px 0; }
+  .tree .lvl2 { color: var(--text); padding: 3px 0 3px 14px; }
+  .tree .panel-btn {
+    display: flex;
+    gap: var(--s2);
+    align-items: baseline;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: 0;
+    border-left: 2px solid transparent;
+    padding: 5px var(--s2) 5px 26px;
+    cursor: pointer;
+    color: var(--dim);
+    font-size: 12.5px;
+  }
+  .tree .panel-btn:hover { background: var(--raised); color: var(--text); }
+  .tree .panel-btn[aria-current="true"] {
+    border-left-color: var(--highlight);
+    background: var(--highlight-soft);
+    color: var(--text);
+  }
+  .tree .panel-btn .num {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--faint);
+  }
+  .tree .panel-btn .job {
+    font-family: var(--font-display);
+    font-size: 10px;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+  }
+
+  .spine { font-size: 12.5px; color: var(--dim); }
+  .spine dt {
+    font-family: var(--font-display);
+    font-size: 9.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin-top: var(--s3);
+  }
+  .spine dd { margin: 2px 0 0; color: var(--text); font-family: var(--font-read); font-size: 14px; }
+
+  /* ---------- Stage shared ---------- */
+
+  .stage-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--s4);
+    flex-wrap: wrap;
+    margin-bottom: var(--s4);
+  }
+  .stage-head h2 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    letter-spacing: .02em;
+    margin: 0;
+    text-wrap: balance;
+  }
+  .stage-head p { margin: 4px 0 0; color: var(--dim); font-size: 13.5px; max-width: 62ch; }
+
+  .btn {
+    background: var(--accent);
+    color: var(--accent-ink);
+    border: 0;
+    border-radius: var(--r);
+    padding: 9px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    min-height: 40px;
+  }
+  .btn:hover { filter: brightness(1.08); }
+  .btn[disabled] { opacity: .45; cursor: default; filter: none; }
+  .btn-ghost {
+    background: none;
+    border: 1px solid var(--hairline-2);
+    color: var(--text);
+    border-radius: var(--r);
+    padding: 7px 13px;
+    font-size: 13px;
+    cursor: pointer;
+    min-height: 36px;
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ---------- Frame diagram ---------- */
+
+  .frame-wrap { position: relative; max-width: 780px; }
+  .frame-wrap svg { display: block; width: 100%; height: auto; border: 1px solid var(--hairline-2); background: var(--raised); }
+
+  .vec {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1.5px solid var(--accent);
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    padding: 0;
+    transition: transform .16s ease, background .16s ease;
+  }
+  .vec:hover { transform: translate(-50%, -50%) scale(1.14); }
+  .vec[aria-pressed="true"] {
+    background: var(--highlight);
+    border-color: var(--highlight);
+    color: var(--bg);
+  }
+  .frame-caption {
+    font-size: 12px;
+    color: var(--faint);
+    margin-top: var(--s2);
+    font-family: var(--font-mono);
+    display: flex;
+    gap: var(--s4);
+    flex-wrap: wrap;
+  }
+
+  /* ---------- Analysis stages ---------- */
+
+  .stages { margin-top: var(--s5); border-top: 1px solid var(--hairline); }
+  .stage-row {
+    display: grid;
+    grid-template-columns: 28px minmax(0,1fr) 74px;
+    gap: var(--s3);
+    padding: var(--s3) 0;
+    border-bottom: 1px solid var(--hairline);
+    align-items: start;
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  .stage-row.on { opacity: 1; transform: none; transition: opacity .38s ease, transform .38s ease; }
+  .stage-row .idx { font-family: var(--font-mono); font-size: 12px; color: var(--faint); padding-top: 2px; }
+  .stage-row h4 {
+    margin: 0 0 2px;
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--dim);
+  }
+  .stage-row p { margin: 0; font-size: 13.5px; color: var(--text); }
+  .conf { text-align: right; }
+  .conf .num { font-family: var(--font-mono); font-size: 12px; color: var(--dim); }
+  .conf .bar { height: 3px; background: var(--hairline); margin-top: 4px; }
+  .conf .bar i { display: block; height: 100%; background: var(--accent); }
+  .conf.low .bar i { background: var(--critical); }
+  .conf.low .num { color: var(--critical); }
+
+  /* ---------- Option cards ---------- */
+
+  .options {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+    gap: var(--s3);
+    margin-top: var(--s5);
+  }
+  .opt {
+    text-align: left;
+    background: var(--raised);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r);
+    padding: var(--s3) var(--s4) var(--s4);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s2);
+    box-shadow: var(--shadow);
+  }
+  .opt:hover { border-color: var(--hairline-2); }
+  .opt[aria-pressed="true"] {
+    border-color: var(--highlight);
+    box-shadow: inset 3px 0 0 var(--highlight), var(--shadow);
+  }
+  .opt.dim { opacity: .32; }
+  .opt-top { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s2); }
+  .opt .strategy {
+    font-family: var(--font-display);
+    font-size: 10px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .opt[aria-pressed="true"] .strategy { color: var(--highlight); }
+  .opt .delta { font-family: var(--font-mono); font-size: 12px; color: var(--dim); }
+  .opt .delta.up { color: var(--text); }
+  .opt h3 { margin: 0; font-size: 16px; font-weight: 600; font-family: var(--font-read); }
+  .opt dl { margin: var(--s1) 0 0; display: grid; grid-template-columns: 68px minmax(0,1fr); gap: 3px var(--s2); font-size: 12px; }
+  .opt dt { font-family: var(--font-display); font-size: 9.5px; letter-spacing: .11em; text-transform: uppercase; color: var(--faint); padding-top: 2px; }
+  .opt dd { margin: 0; color: var(--dim); }
+  .opt dd.cam { font-family: var(--font-mono); font-size: 11.5px; color: var(--text); }
+  .risk {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11.5px;
+    color: var(--dim);
+    border-top: 1px dashed var(--hairline-2);
+    padding-top: var(--s2);
+    margin-top: auto;
+  }
+  .risk::before {
+    content: "";
+    width: 7px; height: 7px;
+    transform: rotate(45deg);
+    border: 1px solid var(--dim);
+  }
+
+  .empty {
+    color: var(--faint);
+    font-size: 13.5px;
+    border: 1px dashed var(--hairline-2);
+    padding: var(--s5);
+    text-align: center;
+    margin-top: var(--s5);
+    border-radius: var(--r);
+  }
+
+  /* ---------- Board ---------- */
+
+  .board { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--s3); }
+  .pcard {
+    text-align: left;
+    background: var(--raised);
+    border: 1px solid var(--hairline);
+    border-radius: var(--r);
+    padding: var(--s3);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s2);
+  }
+  .pcard:hover { border-color: var(--hairline-2); }
+  .pcard[aria-pressed="true"] { border-color: var(--highlight); box-shadow: inset 3px 0 0 var(--highlight); }
+  .pcard-head { display: flex; align-items: baseline; gap: var(--s2); }
+  .pcard-head .num { font-family: var(--font-mono); font-size: 11px; color: var(--faint); }
+  .pcard-head .job { font-family: var(--font-display); font-size: 10px; letter-spacing: .13em; text-transform: uppercase; }
+  .thumb {
+    aspect-ratio: 2.39;
+    border: 1px solid var(--hairline);
+    background:
+      repeating-linear-gradient(45deg, var(--grid) 0 1px, transparent 1px 7px);
+    display: grid;
+    place-items: center;
+    color: var(--faint);
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+  }
+  .pcard .cam { font-family: var(--font-mono); font-size: 11.5px; color: var(--text); }
+  .pcard .trans { font-size: 11.5px; color: var(--dim); }
+  .flags { display: flex; gap: var(--s2); flex-wrap: wrap; font-size: 11px; }
+  .flag { display: inline-flex; align-items: center; gap: 5px; color: var(--dim); }
+  .flag.hard { color: var(--critical); }
+  .flag.hard::before { content: ""; width: 8px; height: 8px; background: var(--critical); border-radius: 50%; }
+  .flag.soft::before { content: ""; width: 8px; height: 8px; border: 1px dashed var(--hairline-2); border-radius: 50%; }
+  .flag.ok::before { content: ""; width: 8px; height: 1px; background: var(--hairline-2); }
+
+  /* ---------- Grundriss ---------- */
+
+  .plan-wrap { display: grid; grid-template-columns: minmax(0,1fr) 210px; gap: var(--s4); align-items: start; }
+  .plan-svg { width: 100%; height: auto; border: 1px solid var(--hairline-2); background: var(--raised); touch-action: none; cursor: grab; }
+  .plan-svg:active { cursor: grabbing; }
+  .readout { font-family: var(--font-mono); font-size: 12px; display: grid; gap: var(--s2); }
+  .readout div { display: flex; justify-content: space-between; gap: var(--s2); border-bottom: 1px solid var(--hairline); padding-bottom: 4px; }
+  .readout span:first-child { color: var(--faint); }
+  .verdict { padding: var(--s3); border: 1px solid var(--hairline-2); border-radius: var(--r); font-size: 12.5px; font-family: var(--font-ui); }
+  .verdict.bad { border-color: var(--critical); color: var(--critical); }
+  .lens-pick { display: flex; gap: 2px; }
+  .lens-pick button {
+    flex: 1;
+    background: none;
+    border: 1px solid var(--hairline);
+    padding: 8px 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--dim);
+    min-height: 38px;
+  }
+  .lens-pick button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+
+  /* ---------- Kontinuität ---------- */
+
+  .timeline { overflow-x: auto; }
+  .tl {
+    min-width: 640px;
+    display: grid;
+    grid-template-columns: 118px repeat(7, minmax(64px, 1fr));
+    gap: 1px;
+    background: var(--hairline);
+    border: 1px solid var(--hairline);
+    font-size: 12px;
+  }
+  .tl > * { background: var(--surface); padding: var(--s2) var(--s3); }
+  .tl .hd { font-family: var(--font-mono); font-size: 11px; color: var(--faint); text-align: center; }
+  .tl .ent { font-family: var(--font-display); font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--dim); }
+  .tl .cell { color: var(--dim); text-align: center; font-size: 11px; }
+  .tl .cell.set { background: var(--raised); color: var(--text); }
+  .tl .cell.chg { background: var(--highlight-soft); color: var(--text); box-shadow: inset 2px 0 0 var(--highlight); }
+  .tl .cell.warn { box-shadow: inset 0 0 0 1px var(--hairline-2); border-top: 2px dashed var(--critical); color: var(--critical); }
+
+  /* ---------- Inspector ---------- */
+
+  .inspector { padding: var(--s4); }
+  .insp-block { margin-bottom: var(--s5); }
+  .insp-block > .eyebrow { display: block; margin-bottom: var(--s2); }
+  .insp-claim { font-family: var(--font-read); font-size: 17px; line-height: 1.42; margin: 0; text-wrap: pretty; }
+  .insp-because { font-family: var(--font-read); font-size: 14.5px; line-height: 1.62; color: var(--dim); margin: 0; text-wrap: pretty; }
+  .grounds { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s2); }
+  .grounds li { display: grid; grid-template-columns: 76px minmax(0,1fr); gap: var(--s2); font-size: 12.5px; align-items: baseline; }
+  .grounds .k { font-family: var(--font-mono); font-size: 10.5px; color: var(--faint); text-transform: uppercase; letter-spacing: .06em; }
+  .grounds .v { color: var(--text); }
+  .grounds .v em { color: var(--dim); font-style: normal; }
+  .alts { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s2); font-size: 12.5px; color: var(--dim); }
+  .alts b { color: var(--text); font-weight: 600; }
+  .cost { font-family: var(--font-read); font-size: 14px; color: var(--text); border-left: 2px solid var(--highlight); padding-left: var(--s3); margin: 0; }
+  .conf-line { display: flex; align-items: center; gap: var(--s2); font-family: var(--font-mono); font-size: 12px; color: var(--dim); }
+  .conf-line .track { flex: 1; height: 3px; background: var(--hairline); }
+  .conf-line .track i { display: block; height: 100%; background: var(--accent); }
+  .insp-actions { display: flex; gap: var(--s2); flex-wrap: wrap; }
+  .critique {
+    font-family: var(--font-read);
+    font-size: 14px;
+    line-height: 1.55;
+    border: 1px dashed var(--hairline-2);
+    padding: var(--s3);
+    color: var(--text);
+    border-radius: var(--r);
+  }
+  .critique .eyebrow { display: block; margin-bottom: 6px; }
+  .insp-placeholder { color: var(--faint); font-size: 13.5px; font-family: var(--font-read); }
+
+  /* ---------- Tension curve ---------- */
+
+  .curvebar {
+    position: sticky;
+    bottom: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--hairline);
+    padding: var(--s3) var(--s4);
+    display: grid;
+    grid-template-columns: 150px minmax(0,1fr);
+    gap: var(--s4);
+    align-items: center;
+    z-index: 15;
+  }
+  .curvebar .legend { font-size: 11.5px; color: var(--dim); }
+  .curvebar .legend b { display: block; font-family: var(--font-display); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin-bottom: 3px; }
+  .curve-svg { width: 100%; height: 74px; display: block; }
+
+  /* ---------- Footer ---------- */
+
+  .foot {
+    padding: var(--s5) var(--s4) var(--s6);
+    border-top: 1px solid var(--hairline);
+    color: var(--dim);
+    font-size: 13px;
+    display: grid;
+    gap: var(--s2);
+  }
+  .foot a { color: var(--accent); }
+  .foot code { font-family: var(--font-mono); font-size: 12px; }
+
+  @media (max-width: 1100px) {
+    .console { grid-template-columns: minmax(0,1fr) 320px; }
+    .rail {
+      grid-column: 1 / -1;
+      border-right: 0;
+      border-bottom: 1px solid var(--hairline);
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: var(--s4);
+    }
+    .rail-group { margin-bottom: 0; }
+  }
+  @media (max-width: 780px) {
+    .console { grid-template-columns: minmax(0,1fr); }
+    .inspector { border-left: 0; border-top: 1px solid var(--hairline); }
+    .stage { padding: var(--s4); }
+    .plan-wrap { grid-template-columns: minmax(0,1fr); }
+    .curvebar { grid-template-columns: minmax(0,1fr); gap: var(--s2); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+    .stage-row { opacity: 1; transform: none; }
+  }
+</style>
+
+<header class="topbar">
+  <h1 class="wordmark">SOU<span>·</span>LINK</h1>
+  <div class="slate">
+    <span>PROJEKT <b>Nachtwerkstatt</b></span>
+    <span>SZENE <b>14 · INT./EXT. WERKSTATT — NACHT</b></span>
+    <span>LEDGER <b class="mono" id="cursor">#0412</b></span>
+  </div>
+  <span class="chip-proto">UX-Prototyp · keine Modelle angebunden</span>
+
+  <nav class="modes" role="tablist" aria-label="Modus">
+    <button class="mode" role="tab" aria-selected="true" data-view="referenz">Referenz<small>Bild lesen &amp; fortsetzen</small></button>
+    <button class="mode" role="tab" aria-selected="false" data-view="board">Board<small>Panelfolge</small></button>
+    <button class="mode" role="tab" aria-selected="false" data-view="grundriss">Grundriss<small>Achse &amp; Blocking</small></button>
+    <button class="mode" role="tab" aria-selected="false" data-view="kontinuitaet">Kontinuität<small>Zustands-Zeitachse</small></button>
+  </nav>
+</header>
+
+<div class="notice">
+  <b>Das ist der Prototyp, nicht die App.</b>
+  <span>Er zeigt die Konsole aus Doku 06, geladen mit dem durchgerechneten Beispiel aus Doku 07. Alle Analysen, Optionen und Begründungen sind die im Dokument ausformulierten — nichts wird zur Laufzeit generiert.</span>
+</div>
+
+<main class="console">
+
+  <aside class="rail">
+    <div class="rail-group">
+      <span class="eyebrow">Struktur</span>
+      <ul class="tree" id="tree">
+        <li class="lvl1">Akt II · Die Schwelle</li>
+        <li class="lvl2">Sequenz 4 · Rückkehr im Regen</li>
+      </ul>
+    </div>
+    <div class="rail-group">
+      <span class="eyebrow">Panels · Szene 14</span>
+      <ul class="tree" id="panel-list"></ul>
+    </div>
+    <div class="rail-group">
+      <span class="eyebrow">Story Spine</span>
+      <dl class="spine">
+        <dt>Dramatische Frage</dt>
+        <dd>Bringt Mara zu Ende, wofür sie zurückgekommen ist?</dd>
+        <dt>Thema</dt>
+        <dd>Wer an der Schwelle stehen bleibt, entscheidet trotzdem.</dd>
+      </dl>
+    </div>
+  </aside>
+
+  <section class="stage" id="stage">
+
+    <!-- ============ REFERENZ ============ -->
+    <div data-view="referenz">
+      <div class="stage-head">
+        <div>
+          <h2>Referenzbild lesen</h2>
+          <p>Sieben Stufen. Stufen 1–4 laufen ohne Story-Kontext, damit die Deutung die Beobachtung nicht färbt (ADR-007). Erst Stufe 5 darf deuten.</p>
+        </div>
+        <button class="btn" id="run">Analyse starten</button>
+      </div>
+
+      <div class="frame-wrap" id="frame-wrap">
+        <svg viewBox="0 0 478 200" role="img" aria-label="Schematische Lesung des Referenzbildes: Figur im Türrahmen, Blick nach links aus dem Bild, abgewandte Silhouette rechts im Hintergrund.">
+          <defs>
+            <linearGradient id="neon" x1="0" y1="0" x2="0.4" y2="1">
+              <stop offset="0%" stop-color="var(--accent)" stop-opacity=".30"/>
+              <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+            </linearGradient>
+            <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="var(--highlight)"/>
+            </marker>
+          </defs>
+
+          <!-- Drittel -->
+          <g stroke="var(--grid)" stroke-width="1">
+            <line x1="159.3" y1="0" x2="159.3" y2="200"/>
+            <line x1="318.6" y1="0" x2="318.6" y2="200"/>
+            <line x1="0" y1="66.6" x2="478" y2="66.6"/>
+            <line x1="0" y1="133.3" x2="478" y2="133.3"/>
+          </g>
+
+          <!-- Neon-Kegel -->
+          <path d="M62 0 L20 200 L235 200 L150 0 Z" fill="url(#neon)"/>
+          <rect x="58" y="4" width="52" height="5" fill="var(--accent)" opacity=".55"/>
+
+          <!-- Regen draußen links -->
+          <g stroke="var(--dim)" stroke-width="1" opacity=".30">
+            <line x1="6" y1="20" x2="16" y2="58"/><line x1="26" y1="8" x2="36" y2="46"/>
+            <line x1="44" y1="30" x2="54" y2="68"/><line x1="14" y1="86" x2="24" y2="124"/>
+            <line x1="38" y1="104" x2="48" y2="142"/><line x1="8" y1="140" x2="18" y2="178"/>
+          </g>
+
+          <!-- Türrahmen: Rahmen im Rahmen -->
+          <rect x="86" y="16" width="132" height="184" fill="none" stroke="var(--hairline-2)" stroke-width="2.5"/>
+
+          <!-- Figur Mara -->
+          <g fill="var(--text)" opacity=".82">
+            <circle cx="140" cy="66" r="17"/>
+            <path d="M112 200 L112 108 Q140 88 168 108 L168 200 Z"/>
+          </g>
+          <!-- verdeckte Hand -->
+          <rect x="163" y="132" width="16" height="15" fill="var(--highlight)" opacity=".55"/>
+
+          <!-- Silhouette Hintergrund, abgewandt -->
+          <g fill="var(--dim)" opacity=".34">
+            <circle cx="386" cy="84" r="13"/>
+            <path d="M366 200 L366 120 Q386 104 406 120 L406 200 Z"/>
+          </g>
+
+          <!-- Blickvektor -->
+          <line x1="122" y1="62" x2="26" y2="50" stroke="var(--highlight)" stroke-width="2"
+                stroke-dasharray="6 5" marker-end="url(#arrow)"/>
+
+          <!-- Ebenen-Marker -->
+          <g font-family="ui-monospace, monospace" font-size="9" fill="var(--faint)">
+            <text x="8" y="194">VG</text>
+            <text x="94" y="194">MG</text>
+            <text x="366" y="194">HG</text>
+          </g>
+        </svg>
+
+        <button class="vec" data-vec="TV-1" style="left:11%; top:26%;" aria-pressed="false"
+                title="TV-1 Blick aus dem Bild">1</button>
+        <button class="vec" data-vec="TV-2" style="left:36%; top:70%;" aria-pressed="false"
+                title="TV-2 Verdecktes Objekt">2</button>
+        <button class="vec" data-vec="TV-3" style="left:81%; top:42%;" aria-pressed="false"
+                title="TV-3 Machtgefälle">3</button>
+        <button class="vec" data-vec="TV-4" style="left:57%; top:86%;" aria-pressed="false"
+                title="TV-4 Unausgesprochene Beziehung">4</button>
+      </div>
+
+      <div class="frame-caption">
+        <span>2.39:1</span><span>MS · 50 mm · Augenhöhe</span><span>Key 5600 K oben-links</span><span>Praktikables 2800 K hinten rechts</span>
+      </div>
+
+      <div class="stages" id="stages"></div>
+
+      <div id="options-zone">
+        <div class="empty" id="opt-empty">Die Fortsetzungsoptionen erscheinen, sobald die Analyse Spannungsvektoren gefunden hat.</div>
+      </div>
+    </div>
+
+    <!-- ============ BOARD ============ -->
+    <div data-view="board" hidden>
+      <div class="stage-head">
+        <div>
+          <h2>Board · Szene 14</h2>
+          <p>Jede Karte trägt vier Schichten: Aufgabe, Bild, Kameraentscheidung, Zustand. Ein Board, das nur Bilder zeigt, wäre ein Moodboard.</p>
+        </div>
+      </div>
+      <div class="board" id="board"></div>
+    </div>
+
+    <!-- ============ GRUNDRISS ============ -->
+    <div data-view="grundriss" hidden>
+      <div class="stage-head">
+        <div>
+          <h2>Grundriss · Achse</h2>
+          <p>Kamera ziehen. Die verbotene Halbebene färbt sich <em>während</em> der Bewegung — der Achsensprung wird fühlbar, bevor er passiert.</p>
+        </div>
+      </div>
+      <div class="plan-wrap">
+        <svg class="plan-svg" id="plan" viewBox="0 0 400 300" role="application"
+             aria-label="Grundriss mit verschiebbarer Kameraposition und Handlungsachse">
+          <rect x="40" y="30" width="320" height="240" fill="none" stroke="var(--hairline-2)" stroke-width="2"/>
+          <line x1="40" y1="150" x2="40" y2="210" stroke="var(--accent)" stroke-width="4"/>
+          <text x="12" y="184" font-family="ui-monospace, monospace" font-size="10" fill="var(--faint)">TÜR</text>
+
+          <polygon id="forbidden" points="" fill="var(--critical)" opacity="0"/>
+          <line id="axis" x1="0" y1="0" x2="0" y2="0" stroke="var(--hairline-2)" stroke-width="1.5" stroke-dasharray="7 5"/>
+
+          <polygon id="fov" points="" fill="var(--accent)" opacity=".16"/>
+
+          <g id="figA">
+            <circle cx="120" cy="180" r="11" fill="var(--text)"/>
+            <text x="120" y="207" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="var(--dim)">MARA</text>
+          </g>
+          <g id="figB">
+            <circle cx="280" cy="120" r="11" fill="var(--dim)"/>
+            <text x="280" y="147" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="var(--dim)">ABGEWANDTER</text>
+          </g>
+
+          <g id="cam" style="cursor:grab">
+            <circle id="cam-hit" cx="180" cy="255" r="26" fill="transparent"/>
+            <rect x="168" y="243" width="24" height="24" rx="2" fill="var(--highlight)"/>
+            <text x="180" y="285" text-anchor="middle" font-family="ui-monospace, monospace" font-size="10" fill="var(--highlight)">KAMERA</text>
+          </g>
+        </svg>
+
+        <div>
+          <div class="readout" style="margin-bottom:var(--s3)">
+            <div><span>Achse</span><span id="ro-axis">—</span></div>
+            <div><span>Seite</span><span id="ro-side">—</span></div>
+            <div><span>Winkel</span><span id="ro-angle">—</span></div>
+            <div><span>Bildwinkel</span><span id="ro-fov">—</span></div>
+          </div>
+          <span class="eyebrow" style="display:block;margin-bottom:6px">Optik</span>
+          <div class="lens-pick" id="lenses">
+            <button data-mm="24" aria-pressed="false">24</button>
+            <button data-mm="35" aria-pressed="false">35</button>
+            <button data-mm="50" aria-pressed="true">50</button>
+            <button data-mm="85" aria-pressed="false">85</button>
+          </div>
+          <div class="verdict" id="verdict" style="margin-top:var(--s3)">Achse gewahrt.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ KONTINUITÄT ============ -->
+    <div data-view="kontinuitaet" hidden>
+      <div class="stage-head">
+        <div>
+          <h2>Kontinuität · Zustands-Zeitachse</h2>
+          <p>Zustände hängen nicht an Entitäten, sondern haben einen Anfang, eine Ursache und ein Ende (ADR-009). Konflikte erscheinen dort, wo sie entstehen.</p>
+        </div>
+      </div>
+      <div class="timeline">
+        <div class="tl" id="tl"></div>
+      </div>
+      <p style="font-size:12.5px;color:var(--dim);margin-top:var(--s3);max-width:64ch">
+        Bernsteinkante = Zustandsänderung mit Ursache. Gestrichelte rote Oberkante = weicher Konflikt:
+        Lichtwechsel ohne Ortswechsel und ohne Übergang.
+      </p>
+    </div>
+
+  </section>
+
+  <aside class="inspector" id="inspector">
+    <span class="eyebrow" style="display:block;margin-bottom:var(--s3)">Reasoning Inspector</span>
+    <p class="insp-placeholder">Nichts ausgewählt. Starte die Analyse und wähle eine Fortsetzung — oder tippe ein Panel an.</p>
+  </aside>
+
+</main>
+
+<div class="curvebar">
+  <div class="legend">
+    <b>Spannungskurve</b>
+    Szene 14 · Beats B08–B14. Gestrichelt: wohin die gewählte Option führt.
+  </div>
+  <svg class="curve-svg" id="curve" viewBox="0 0 700 74" preserveAspectRatio="none" role="img"
+       aria-label="Spannungsverlauf der Szene 14 über sieben Beats"></svg>
+</div>
+
+<footer class="foot">
+  <div>Prototyp zur Architektur in <code>soulink/docs/</code> — Doku 06 (UX) und Doku 07 (Referenz &amp; Fortsetzung).</div>
+  <div>Es sind keine Modelle angebunden. Analysestufen, Spannungsvektoren, Optionen und Begründungen sind die im Architekturdokument ausformulierten Inhalte.</div>
+</footer>
+
+<script>
+(() => {
+  "use strict";
+
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const $  = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+
+  /* ---------------- Daten ---------------- */
+
+  const STAGES = [
+    { n: 1, name: "Technisch", conf: .88,
+      text: "2.39:1 · hoher Kontrastumfang, Lichter am Neon abreißend · Mischlicht 5600 K / 2800 K · sichtbares Korn · flache Schärfentiefe." },
+    { n: 2, name: "Kompositorisch", conf: .84,
+      text: "Figur auf linkem Drittel · Türrahmen als Rahmen-im-Rahmen · drei Ebenen · Vorderraum links offen, Kopfraum knapp · gestörte Symmetrie." },
+    { n: 3, name: "Kameratechnisch", conf: .79,
+      text: "Halbnah · Augenhöhe, minimal darunter · ca. 50 mm · Abstand ~2,5 m · Achse entlang der Türlinie · Blickrichtung links, aus dem Bild · statisch." },
+    { n: 4, name: "Inhaltlich / Kontinuität", conf: .81,
+      text: "Nasse Haare, dunkler nasser Mantel · metallisches Objekt, verdeckt · Werkstatt-Schwelle · Nacht, Starkregen · Neon oben-links als Führung, kein Aufheller · zweite Figur abgewandt." },
+    { n: 5, name: "Narrativ", conf: .62,
+      text: "Sie ist eine Strecke gegangen, keine Distanz. Der Türrahmen hält sie an der Grenze. Ihr Blick ist bereits woanders als ihr Körper. Die abgewandte Figur hat die stärkere Position — sie muss sich nicht umdrehen." },
+    { n: 6, name: "Dramaturgisch", conf: .71,
+      text: "Vermutete Beat-Funktion: Komplikation vor der Wendung. Spannungsniveau ≈ 0,61. Vier Spannungsvektoren extrahiert — im Bild antippbar." },
+    { n: 7, name: "Synthese", conf: .74,
+      text: "Archetyp-Planer wählt fünf tragfähige Strategien an vier Vektoren. Diversitätsbedingung erfüllt: keine zwei Optionen teilen Archetyp und Kamerarelation." }
+  ];
+
+  const VECTORS = {
+    "TV-1": { kind: "offscreenGaze", q: "Was sieht sie, das wir nicht sehen?", ev: "Blick verlässt den Rahmen nach links, Vorderraum offen", s: .80 },
+    "TV-2": { kind: "concealedObject", q: "Was hält sie, und wofür?", ev: "Rechte Hand vom Türrahmen verdeckt, metallischer Reflex", s: .75 },
+    "TV-3": { kind: "powerImbalance", q: "Wer von beiden führt diese Szene?", ev: "Abgewandte Silhouette im HG, Kamera auf ihrer Seite", s: .66 },
+    "TV-4": { kind: "unspokenRelation", q: "Was liegt zwischen ihnen?", ev: "Zwei Figuren, kein Blickkontakt, Türrahmen dazwischen", s: .58 }
+  };
+
+  const OPTIONS = [
+    {
+      id: "A", strategy: "Verzögerung", vec: "TV-1", delta: +0.09, job: "Withhold",
+      title: "Was sie sieht, bleibt draußen",
+      cam: "WS · 35 mm · Augenhöhe · statisch · von hinten",
+      relation: "wider",
+      trans: "Harter Schnitt",
+      constraints: "Mantel nass · Regen anhaltend · Nacht · Neon oben-links",
+      risk: "Modelle erfinden gern das Blickziel — Ausschlussregel verstärkt",
+      claim: "Weite Einstellung von hinter ihr, 35 mm, Augenhöhe, statisch.",
+      because: "Das Bild fragt, wen sie ansieht. Diese Option beantwortet die Frage nicht — und macht sie damit größer. Die Kamera legt sich auf ihre Schulterlinie, das Blickziel bleibt außerhalb des Rahmens. Der Zuschauer sucht mit ihr, statt zu bekommen.",
+      grounds: [
+        ["Vektor", "TV-1 · Blick aus dem Bild <em>(Stärke 0,80)</em>"],
+        ["Regel", "shot-grammar.v3#R-033 · Verweigerung braucht Rahmenausschluss"],
+        ["Regel", "R-042 · Größensprung MS → WS erfüllt"],
+        ["Kontinuität", "Achse entlang der Türlinie gewahrt"]
+      ],
+      alts: [["Gegenschuss", "hätte die Spannung sofort verbraucht"], ["Push-In auf ihr Gesicht", "hätte die Frage auf sie gelenkt statt auf das Ungesehene"]],
+      cost: "Die Nähe zur Figur geht verloren; ihr Gesicht trägt den Beat nicht mehr. Panel n+1 muss sie zurückholen.",
+      conf: .81,
+      critique: "Zweimal verzögern hintereinander liest sich als Zögern des Films, nicht der Figur. Wenn Panel 11 schon zurückgehalten hat, verbraucht diese Option Geduld, ohne Einsatz zu erhöhen — dann trägt Option C mehr."
+    },
+    {
+      id: "B", strategy: "Enthüllung", vec: "TV-2", delta: +0.14, job: "Reveal",
+      title: "Der Schlüssel",
+      cam: "Insert · 85 mm · leicht unter · 0,6 m",
+      relation: "insert",
+      trans: "Match Cut auf die Handbewegung",
+      constraints: "Hand nass · Tropfen auf Metall · Neon als Reflexquelle · Mantelärmel sichtbar",
+      risk: "Objektidentität nur zu 0,62 gelesen — diese Option entscheidet etwas, das das Bild offen lässt",
+      claim: "Insert auf das verdeckte Objekt, 85 mm, leicht untersichtig.",
+      because: "Das verdeckte Objekt ist der stärkste unbeantwortete Vektor mit direktem Handlungsbezug. Die Enthüllung verwandelt Anwesenheit in Absicht: Sie ist nicht gekommen, sie ist gekommen, um etwas zu tun. Die Untersicht gibt dem Objekt Gewicht, ohne die Figur zu zeigen.",
+      grounds: [
+        ["Vektor", "TV-2 · Verdecktes Objekt <em>(Stärke 0,75)</em>"],
+        ["Beat", "B12 · Wertwechsel Vertrauen → Verrat"],
+        ["Regel", "shot-grammar.v3#R-021 · Untersicht gibt Gewicht"],
+        ["Übergang", "transition-grammar.v1#T-004 · Match Cut behauptet Gleichzeitigkeit"]
+      ],
+      alts: [["Enthüllung in der Totale", "das Objekt wäre nicht lesbar gewesen"], ["Enthüllung erst in Panel 14", "hätte die Komplikation ohne Motor gelassen"]],
+      cost: "Die Mehrdeutigkeit des Bildes wird eingelöst. Was danach kommt, kann sich nicht mehr auf Ungewissheit stützen.",
+      conf: .68,
+      critique: "Die Analyse liest das Objekt nur mit 0,62 Sicherheit. Diese Option macht aus einer Unsicherheit eine Tatsache — und zwar unwiderruflich, weil ein Insert keine Deutung zulässt. Wer die Ambivalenz noch braucht, nimmt A."
+    },
+    {
+      id: "C", strategy: "Umkehrung", vec: "TV-3", delta: +0.18, job: "Reaction",
+      title: "Sie dreht sich um",
+      cam: "MS · 50 mm · Augenhöhe · Gegenschuss",
+      relation: "reverse",
+      trans: "Harter Schnitt",
+      constraints: "Neon jetzt von oben-rechts · Regen im HG durch offene Tür · Mantelfigur unscharf im VG",
+      risk: "Modelle drehen Lichtquellen gern mit — Anker „einzige Quelle über der Tür“ verstärkt",
+      claim: "Gegenschuss auf die Silhouette, die sich zur Kamera dreht. Halbnah, 50 mm, Augenhöhe.",
+      because: "Das Bild etabliert ein Gefälle zugunsten des Abgewandten. Diese Option nimmt ihm den einzigen Vorteil, den er hat: die Abwendung. Wer sich umdreht, muss sich stellen. Der Achsenwechsel geschieht durch die Figurenbewegung selbst, nicht durch einen Kamerasprung.",
+      grounds: [
+        ["Vektor", "TV-3 · Machtgefälle <em>(Stärke 0,66)</em>"],
+        ["Regel", "shot-grammar.v3#R-014 · Achsenwechsel durch Figurenbewegung"],
+        ["Beat", "B12 · verlangt Gegenbewegung"],
+        ["Kontinuität", "Neonröhre über der Tür bleibt einzige Quelle"]
+      ],
+      alts: [["Zoom auf die Silhouette", "hätte die Machtfrage beobachtet statt beantwortet"], ["Aufsicht auf Mara", "hätte das Gefälle bestätigt statt gekippt"]],
+      cost: "Die Rätselhaftigkeit der abgewandten Figur ist aufgebraucht. Sie ist ab jetzt eine Person, kein Druck.",
+      conf: .76,
+      critique: "Δ +0,18 ist der größte Sprung im Set — kurz vor dem Klimax in B14 kann das den Höhepunkt entwerten. Prüfe die Kurve: Wenn B13 schon hoch liegt, ist E die klügere Wahl und C gehört nach hinten."
+    },
+    {
+      id: "D", strategy: "Annäherung", vec: "TV-4", delta: +0.06, job: "State",
+      title: "Die Schwelle",
+      cam: "MS Zweier · 40 mm · Augenhöhe · langsamer Push-In",
+      relation: "closer",
+      trans: "L-Cut · Ton läuft vor",
+      constraints: "Türrahmen weiterhin trennend · keine Berührung · Regen hinter ihr",
+      risk: "Ohne Bewegungsunterstützung des Modells bleibt nur ein Standbild — FidelityRisk hoch",
+      claim: "Zweier in der Halbnahen, 40 mm, langsamer Push-In.",
+      because: "Die schwächste, aber langfristigste Spannung ist die zwischen den beiden. Diese Option löst nichts ein, sie investiert. Der Push-In nimmt den Raum weg, den die Figuren zwischen sich lassen — die Kamera drängt, wo die Figuren es nicht tun.",
+      grounds: [
+        ["Vektor", "TV-4 · Unausgesprochene Beziehung <em>(Stärke 0,58)</em>"],
+        ["Regel", "shot-grammar.v3#R-052 · Push-In als Druck, Motivation appliesPressure"],
+        ["Übergang", "transition-grammar.v1#T-011 · L-Cut verbindet vor dem Bild"],
+        ["Spine", "Thema · wer an der Schwelle bleibt, entscheidet trotzdem"]
+      ],
+      alts: [["Getrennte Singles", "hätten die Trennung bestätigt statt sie spürbar zu machen"], ["Over-the-Shoulder", "hätte eine Hierarchie behauptet, die die Szene noch offen lässt"]],
+      cost: "Der Beat steigt kaum. Wer Tempo braucht, verliert hier eine Einstellung.",
+      conf: .73,
+      critique: "Zwei Figuren im Rahmen ohne Interaktion kippen schnell ins Statische. Das einzige Bewegungselement ist der Push-In — trägt das Modell ihn nicht, bleibt ein hübsches, totes Bild. Ohne Bewegungsfähigkeit lieber C."
+    },
+    {
+      id: "E", strategy: "Kontrast", vec: "TV-1", delta: -0.12, job: "Punctuate",
+      title: "Draußen, ohne sie",
+      cam: "WS · 24 mm · hoch · statisch · keine Figur",
+      relation: "relocated",
+      trans: "Harter Schnitt hinein und hinaus",
+      constraints: "Nacht · Starkregen · dieselbe Straßenlaterne wie im HG",
+      risk: "Wird als Leerlauf gelesen, wenn Panel n+2 nicht sofort greift",
+      claim: "Weite Einstellung der leeren Straße im Regen, 24 mm, hoch, statisch.",
+      because: "Nach 0,61 Spannung braucht die Szene einen Absatz, bevor sie steigt. Die leere Straße beantwortet die Blickfrage mit Abwesenheit — und Abwesenheit ist eine Antwort. Der Zuschauer bekommt den Raum, in dem das Vorherige nachwirkt.",
+      grounds: [
+        ["Vektor", "TV-1 · gegenläufig adressiert"],
+        ["Regel", "story-templates.v2#S-018 · Atempause vor Anstieg"],
+        ["Beat", "B12 · Spannungsniveau 0,61 ohne Entlastung seit B09"],
+        ["Regel", "shot-grammar.v3#R-007 · Aufsicht als Beobachtung"]
+      ],
+      alts: [["Rückblende", "hätte die Gegenwart verlassen, statt sie atmen zu lassen"], ["Naheinstellung auf Regen am Fenster", "wäre Stimmung ohne Aussage gewesen"]],
+      cost: "Die Szene verliert 4 Sekunden Druck. Das ist nur bezahlt, wenn Panel n+2 hart einsetzt.",
+      conf: .70,
+      critique: "Eine Atempause direkt vor der Wendung kann den Aufbau zerschneiden statt ihn zu tragen. Diese Option ist nur dann richtig, wenn das folgende Panel bereits geplant und hart ist — sonst ist sie Flucht, nicht Rhythmus."
+    }
+  ];
+
+  const PANELS = [
+    { id: "P08", job: "Establish", cam: "WS · 24 mm · Augenhöhe · statisch", trans: "Harter Schnitt", flags: [["ok","Anschluss geprüft"]],
+      claim: "Weite Einstellung der Werkstatt von außen, 24 mm.",
+      because: "Die Szene braucht die geografische Ordnung, bevor die Schwelle Bedeutung tragen kann. Wer nicht weiß, was innen und was außen ist, liest den Türrahmen nicht als Grenze.",
+      grounds: [["Beat","B08 · Setup"],["Regel","shot-grammar.v3#R-001 · Etablierung vor Detail"]],
+      alts: [["Direkt auf die Tür","hätte den Ort behauptet statt ihn zu zeigen"]],
+      cost: "Kostet eine Einstellung Tempo am Szenenanfang.", conf: .86 },
+    { id: "P09", job: "Introduce", cam: "MS · 50 mm · Augenhöhe · statisch", trans: "Harter Schnitt", flags: [["ok","Anschluss geprüft"]],
+      claim: "Halbnah auf Mara im Regen, 50 mm, neutrale Optik.",
+      because: "Eine Figur wird zuerst als Mensch lesbar gemacht, nicht als Stimmung. Die neutrale Brennweite hält die Wertung zurück — der Zuschauer soll sie ansehen, nicht schon beurteilen.",
+      grounds: [["Beat","B09 · Introduce"],["Regel","shot-grammar.v3#R-004 · neutraler Zeuge bei 40–58 mm"]],
+      alts: [["24 mm nah heran","hätte sie verzerrt und vorab bewertet"]],
+      cost: "Der Raum um sie bleibt unbetont.", conf: .82 },
+    { id: "P10", job: "State", cam: "MCU · 85 mm · Augenhöhe · statisch", trans: "Harter Schnitt", flags: [["ok","Anschluss geprüft"]],
+      claim: "Nahe Halbnah, 85 mm, Hintergrund aufgelöst.",
+      because: "Der innere Zustand braucht Trennung vom Ort. Die lange Brennweite isoliert sie aus der Werkstatt, ohne dass sie sich bewegen muss.",
+      grounds: [["Beat","B10 · Zustand vor Handlung"],["Regel","shot-grammar.v3#R-018 · Isolation ab 58 mm"]],
+      alts: [["Zweier mit der Silhouette","hätte die Beziehung zu früh geöffnet"]],
+      cost: "Die räumliche Orientierung wird schwächer; P11 muss sie stützen.", conf: .79 },
+    { id: "P11", job: "Action", cam: "MS · 35 mm · Augenhöhe · Handkamera", trans: "Harter Schnitt", flags: [["soft","Lichtsprung ohne Übergang"]],
+      claim: "Halbnah, 35 mm, Handkamera, folgt ihrem Eintreten.",
+      because: "Die Bewegung ist von der Figur motiviert, nicht vom Effekt: Die Kamera folgt, statt zu kommentieren. Die Handkamera überträgt ihre Unsicherheit auf den Rahmen.",
+      grounds: [["Beat","B11 · Handlung"],["Regel","shot-grammar.v3#R-060 · Bewegungsmotivation followsSubject"]],
+      alts: [["Dolly auf Schienen","hätte Kontrolle behauptet, die die Figur nicht hat"]],
+      cost: "Weicher Konflikt: Der Lichtwechsel Tageslicht → Neon geschieht ohne Übergangseinstellung.", conf: .74 },
+    { id: "P12", job: "Reveal", cam: "CU · 85 mm · leicht unter · statisch", trans: "Match Cut auf die Hand", flags: [["hard","Achse — bewusst gebrochen"]],
+      claim: "Naheinstellung, 85 mm, leicht untersichtig.",
+      because: "Die Enthüllung muss ohne räumliche Ablenkung lesbar sein; die leichte Untersicht gibt Mara in diesem Moment die Kontrolle zurück. Der Achsenbruch ist markiert: Er soll die Desorientierung der Figur teilen.",
+      grounds: [["Beat","B12 · Wertwechsel Vertrauen → Verrat"],["Regel","shot-grammar.v3#R-021"],["Regel","R-042 · Größensprung erfüllt"],["Kontinuität","Mantel seit P09 nass"]],
+      alts: [["Große Nahaufnahme","hätte den Höhepunkt in B14 vorweggenommen"],["Halbtotale","Information wäre im Raum untergegangen"]],
+      cost: "Die räumliche Orientierung geht verloren; Panel 13 muss sie zurückgeben.", conf: .78 },
+    { id: "P13", job: "Reaction", cam: "MS · 50 mm · Augenhöhe · Gegenschuss", trans: "Harter Schnitt", flags: [["ok","Achse zurückgeholt"]],
+      claim: "Gegenschuss, 50 mm, Achse neu etabliert.",
+      because: "Eine Enthüllung, die nirgends landet, findet nicht statt. Der Gegenschuss gibt der Information einen Empfänger und holt zugleich die in P12 bewusst gebrochene Orientierung zurück.",
+      grounds: [["Beat","B13 · Reaktion"],["Regel","shot-grammar.v3#R-011 · Eyeline Match"],["Coverage","Lücke aus P12 geschlossen"]],
+      alts: [["Weiter auf Mara bleiben","hätte die Reaktion dem Zuschauer überlassen"]],
+      cost: "Der Schnitt kostet die Intimität der Naheinstellung.", conf: .83 }
+  ];
+
+  const BEATS = [
+    { id: "B08", t: .18 }, { id: "B09", t: .27 }, { id: "B10", t: .38 },
+    { id: "B11", t: .49 }, { id: "B12", t: .61 }, { id: "B13", t: .58 }, { id: "B14", t: .72 }
+  ];
+
+  const TIMELINE = [
+    { ent: "Mara · Kostüm", cells: [["Mantel trocken","set"],["Mantel nass","chg"],["nass","set"],["nass","set"],["nass","set"],["nass","set"],["nass","set"]] },
+    { ent: "Mara · Zustand", cells: [["ruhig","set"],["angespannt","chg"],["angespannt","set"],["entschlossen","chg"],["entschlossen","set"],["entschlossen","set"],["—","" ]] },
+    { ent: "Ort", cells: [["Straße","set"],["Straße","set"],["Schwelle","chg"],["Werkstatt","chg"],["Werkstatt","set"],["Werkstatt","set"],["Werkstatt","set"]] },
+    { ent: "Licht", cells: [["Straßenlaterne","set"],["Laterne","set"],["Misch 5600/2800","chg"],["Neon","warn"],["Neon","set"],["Neon","set"],["Neon","set"]] },
+    { ent: "Requisit", cells: [["—",""],["—",""],["Objekt verdeckt","chg"],["verdeckt","set"],["Schlüssel sichtbar","chg"],["in der Hand","set"],["in der Hand","set"]] },
+    { ent: "Zeit / Wetter", cells: [["Nacht · Regen","set"],["Regen","set"],["Regen","set"],["Regen","set"],["Regen","set"],["Regen","set"],["Regen","set"]] }
+  ];
+
+  /* ---------------- Zustand ---------------- */
+
+  let selectedOption = null;
+  let activeVector = null;
+  let selectedPanel = null;
+  let analysed = false;
+  let cursor = 412;
+
+  /* ---------------- Inspector ---------------- */
+
+  function renderInspector(d) {
+    const insp = $("#inspector");
+    if (!d) {
+      insp.innerHTML = '<span class="eyebrow" style="display:block;margin-bottom:var(--s3)">Reasoning Inspector</span>' +
+        '<p class="insp-placeholder">Nichts ausgewählt. Starte die Analyse und wähle eine Fortsetzung — oder tippe ein Panel an.</p>';
+      return;
+    }
+    const grounds = d.grounds.map(([k, v]) =>
+      `<li><span class="k">${k}</span><span class="v">${v}</span></li>`).join("");
+    const alts = d.alts.map(([o, r]) => `<li><b>${o}</b> — ${r}</li>`).join("");
+    const pct = Math.round(d.conf * 100);
+
+    insp.innerHTML = `
+      <span class="eyebrow" style="display:block;margin-bottom:var(--s3)">Reasoning Inspector</span>
+      <div class="insp-block">
+        <span class="eyebrow">Warum</span>
+        <p class="insp-claim">${d.claim}</p>
+      </div>
+      <div class="insp-block">
+        <span class="eyebrow">Weil</span>
+        <p class="insp-because">${d.because}</p>
+      </div>
+      <div class="insp-block">
+        <span class="eyebrow">Belege</span>
+        <ul class="grounds">${grounds}</ul>
+      </div>
+      <div class="insp-block">
+        <span class="eyebrow">Verworfen</span>
+        <ul class="alts">${alts}</ul>
+      </div>
+      <div class="insp-block">
+        <span class="eyebrow">Kosten dieser Entscheidung</span>
+        <p class="cost">${d.cost}</p>
+      </div>
+      <div class="insp-block">
+        <span class="eyebrow">Konfidenz</span>
+        <div class="conf-line"><span>${d.conf.toFixed(2)}</span><span class="track"><i style="width:${pct}%"></i></span></div>
+      </div>
+      ${d.critique ? `<div class="insp-block insp-actions">
+        <button class="btn-ghost" id="why-not">Warum nicht?</button>
+        <button class="btn-ghost" id="accept">Übernehmen</button>
+      </div><div id="critique-slot"></div>` : ""}
+    `;
+
+    const wn = $("#why-not");
+    if (wn) wn.addEventListener("click", () => {
+      $("#critique-slot").innerHTML =
+        `<div class="critique"><span class="eyebrow">Advocatus Diaboli</span>${d.critique}</div>`;
+      wn.disabled = true;
+    });
+    const ac = $("#accept");
+    if (ac) ac.addEventListener("click", () => {
+      cursor += 6;
+      $("#cursor").textContent = "#" + String(cursor).padStart(4, "0");
+      ac.textContent = "Im Ledger · " + "#" + String(cursor).padStart(4, "0");
+      ac.disabled = true;
+    });
+  }
+
+  /* ---------------- Analysestufen ---------------- */
+
+  function buildStages() {
+    $("#stages").innerHTML = STAGES.map(s => `
+      <div class="stage-row" data-n="${s.n}">
+        <span class="idx">${String(s.n).padStart(2, "0")}</span>
+        <div><h4>${s.name}</h4><p>${s.text}</p></div>
+        <div class="conf ${s.conf < .7 ? "low" : ""}">
+          <span class="num">${s.conf.toFixed(2)}</span>
+          <span class="bar"><i style="width:${Math.round(s.conf * 100)}%"></i></span>
+        </div>
+      </div>`).join("");
+  }
+
+  function runAnalysis() {
+    const btn = $("#run");
+    btn.disabled = true;
+    btn.textContent = "Analyse läuft …";
+    const rows = $$(".stage-row");
+    const step = reduce ? 0 : 460;
+
+    rows.forEach((row, i) => {
+      setTimeout(() => {
+        row.classList.add("on");
+        if (i === rows.length - 1) {
+          analysed = true;
+          btn.textContent = "Analyse abgeschlossen";
+          renderOptions();
+          $("#frame-wrap").querySelectorAll(".vec").forEach(v => v.style.visibility = "visible");
+        }
+      }, step * i);
+    });
+  }
+
+  /* ---------------- Optionen ---------------- */
+
+  function renderOptions() {
+    const zone = $("#options-zone");
+    const head = `<div class="stage-head" style="margin-top:var(--s6)">
+        <div>
+          <h2>Fünf Fortsetzungen</h2>
+          <p>Nicht gesampelt, sondern konstruiert: ein Aufruf je Strategie-Archetyp. Keine zwei Optionen teilen Archetyp und Kamerarelation.</p>
+        </div>
+      </div>`;
+
+    const cards = OPTIONS.map(o => {
+      const up = o.delta >= 0;
+      return `<button class="opt" data-opt="${o.id}" aria-pressed="false">
+        <span class="opt-top">
+          <span class="strategy">${o.strategy}</span>
+          <span class="delta ${up ? "up" : ""}">Δ ${up ? "+" : "−"}${Math.abs(o.delta).toFixed(2)}</span>
+        </span>
+        <h3>${o.title}</h3>
+        <dl>
+          <dt>Adressiert</dt><dd>${o.vec} · ${VECTORS[o.vec].kind}</dd>
+          <dt>Aufgabe</dt><dd>${o.job}</dd>
+          <dt>Kamera</dt><dd class="cam">${o.cam}</dd>
+          <dt>Übergang</dt><dd>${o.trans}</dd>
+          <dt>Bedingung</dt><dd>${o.constraints}</dd>
+        </dl>
+        <span class="risk">${o.risk}</span>
+      </button>`;
+    }).join("");
+
+    zone.innerHTML = head + `<div class="options">${cards}</div>`;
+
+    $$(".opt").forEach(b => b.addEventListener("click", () => selectOption(b.dataset.opt)));
+  }
+
+  function selectOption(id) {
+    selectedOption = OPTIONS.find(o => o.id === id) || null;
+    selectedPanel = null;
+    $$(".opt").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.opt === id)));
+    $$(".pcard").forEach(b => b.setAttribute("aria-pressed", "false"));
+    $$(".panel-btn").forEach(b => b.setAttribute("aria-current", "false"));
+    renderInspector(selectedOption);
+    drawCurve();
+  }
+
+  function filterByVector(v) {
+    activeVector = (activeVector === v) ? null : v;
+    $$(".vec").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.vec === activeVector)));
+    $$(".opt").forEach(b => {
+      const o = OPTIONS.find(x => x.id === b.dataset.opt);
+      b.classList.toggle("dim", Boolean(activeVector) && o.vec !== activeVector);
+    });
+    if (activeVector) {
+      const d = VECTORS[activeVector];
+      renderInspector({
+        claim: `${activeVector} · ${d.kind}`,
+        because: `Offene Frage des Bildes: „${d.q}“ — eine Fortsetzung ist immer die Antwort auf genau einen solchen Vektor (ADR-012).`,
+        grounds: [["Beleg", d.ev], ["Stärke", `<em>${d.s.toFixed(2)}</em>`], ["Stufe", "6 · Dramaturgisch"]],
+        alts: [["Vektor ohne Bildbeleg", "wird vom Rationale Gate verworfen — „es liegt Spannung in der Luft“ ist kein Vektor"]],
+        cost: `Optionen, die diesen Vektor nicht adressieren, sind ausgegraut — sie beantworten eine andere Frage.`,
+        conf: d.s
+      });
+    }
+  }
+
+  /* ---------------- Board ---------------- */
+
+  function buildBoard() {
+    $("#board").innerHTML = PANELS.map(p => `
+      <button class="pcard" data-panel="${p.id}" aria-pressed="false">
+        <span class="pcard-head"><span class="num">${p.id}</span><span class="job">${p.job}</span></span>
+        <span class="thumb">${p.cam.split(" · ")[0]}</span>
+        <span class="cam">${p.cam}</span>
+        <span class="trans">⟶ ${p.trans}</span>
+        <span class="flags">${p.flags.map(([k, t]) => `<span class="flag ${k}">${t}</span>`).join("")}</span>
+      </button>`).join("");
+
+    $("#panel-list").innerHTML = PANELS.map(p => `
+      <li><button class="panel-btn" data-panel="${p.id}" aria-current="false">
+        <span class="num">${p.id}</span><span class="job">${p.job}</span>
+      </button></li>`).join("");
+
+    $$("[data-panel]").forEach(b => b.addEventListener("click", () => selectPanel(b.dataset.panel)));
+  }
+
+  function selectPanel(id) {
+    selectedPanel = PANELS.find(p => p.id === id) || null;
+    selectedOption = null;
+    $$(".pcard").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.panel === id)));
+    $$(".panel-btn").forEach(b => b.setAttribute("aria-current", String(b.dataset.panel === id)));
+    $$(".opt").forEach(b => b.setAttribute("aria-pressed", "false"));
+    renderInspector(selectedPanel);
+    drawCurve();
+  }
+
+  /* ---------------- Kontinuität ---------------- */
+
+  function buildTimeline() {
+    const heads = ["", ...PANELS.map(p => p.id)]
+      .map((h, i) => i === 0 ? `<div class="ent"></div>` : `<div class="hd">${h}</div>`).join("");
+    const rows = TIMELINE.map(r =>
+      `<div class="ent">${r.ent}</div>` +
+      r.cells.map(([t, k]) => `<div class="cell ${k}">${t}</div>`).join("")
+    ).join("");
+    $("#tl").innerHTML = heads + rows;
+  }
+
+  /* ---------------- Spannungskurve ---------------- */
+
+  function drawCurve() {
+    const svg = $("#curve");
+    const W = 700, H = 74, pad = 10;
+    const x = i => pad + i * (W - pad * 2) / (BEATS.length - 1);
+    const y = t => H - pad - t * (H - pad * 2);
+
+    const pts = BEATS.map((b, i) => `${x(i).toFixed(1)},${y(b.t).toFixed(1)}`).join(" ");
+    const dots = BEATS.map((b, i) => {
+      const cur = b.id === "B12";
+      return `<circle cx="${x(i).toFixed(1)}" cy="${y(b.t).toFixed(1)}" r="${cur ? 5 : 3}"
+        fill="${cur ? "var(--highlight)" : "var(--accent)"}"/>
+        <text x="${x(i).toFixed(1)}" y="${H - 1}" text-anchor="middle"
+          font-family="ui-monospace, monospace" font-size="9" fill="var(--faint)">${b.id}</text>`;
+    }).join("");
+
+    let ghost = "";
+    if (selectedOption) {
+      const i0 = 4; // B12
+      const t1 = Math.max(0, Math.min(1, BEATS[i0].t + selectedOption.delta));
+      const gx = x(i0) + (x(1) - x(0));
+      ghost = `<line x1="${x(i0).toFixed(1)}" y1="${y(BEATS[i0].t).toFixed(1)}"
+        x2="${gx.toFixed(1)}" y2="${y(t1).toFixed(1)}"
+        stroke="var(--highlight)" stroke-width="2" stroke-dasharray="5 4"/>
+        <circle cx="${gx.toFixed(1)}" cy="${y(t1).toFixed(1)}" r="4" fill="none"
+          stroke="var(--highlight)" stroke-width="2"/>
+        <text x="${(gx + 8).toFixed(1)}" y="${(y(t1) + 3).toFixed(1)}"
+          font-family="ui-monospace, monospace" font-size="10" fill="var(--highlight)">${selectedOption.strategy}</text>`;
+    }
+
+    svg.innerHTML = `
+      <line x1="${pad}" y1="${y(0)}" x2="${W - pad}" y2="${y(0)}" stroke="var(--hairline)" stroke-width="1"/>
+      <line x1="${pad}" y1="${y(1)}" x2="${W - pad}" y2="${y(1)}" stroke="var(--hairline)" stroke-width="1"/>
+      <polyline points="${pts}" fill="none" stroke="var(--accent)" stroke-width="2"/>
+      ${ghost}${dots}`;
+  }
+
+  /* ---------------- Grundriss ---------------- */
+
+  const A = { x: 120, y: 180 }, B = { x: 280, y: 120 };
+  let camPos = { x: 180, y: 255 };
+  let lensMm = 50;
+
+  function side(p) {
+    return Math.sign((B.x - A.x) * (p.y - A.y) - (B.y - A.y) * (p.x - A.x));
+  }
+  const establishedSide = side({ x: 180, y: 255 });
+
+  function updatePlan() {
+    const svg = $("#plan");
+    const dx = B.x - A.x, dy = B.y - A.y;
+    const len = Math.hypot(dx, dy);
+    const ux = dx / len, uy = dy / len;
+    const ext = 600;
+
+    const p1 = { x: A.x - ux * ext, y: A.y - uy * ext };
+    const p2 = { x: B.x + ux * ext, y: B.y + uy * ext };
+    const ax = $("#axis");
+    ax.setAttribute("x1", p1.x); ax.setAttribute("y1", p1.y);
+    ax.setAttribute("x2", p2.x); ax.setAttribute("y2", p2.y);
+
+    // verbotene Halbebene = Gegenseite der etablierten Seite
+    const nx = -uy, ny = ux;
+    const s = -establishedSide;
+    const off = 700;
+    $("#forbidden").setAttribute("points", [
+      `${p1.x},${p1.y}`, `${p2.x},${p2.y}`,
+      `${p2.x + nx * off * s},${p2.y + ny * off * s}`,
+      `${p1.x + nx * off * s},${p1.y + ny * off * s}`
+    ].join(" "));
+
+    const camSide = side(camPos);
+    const violates = camSide !== 0 && camSide !== establishedSide;
+    $("#forbidden").setAttribute("opacity", violates ? ".22" : ".05");
+
+    // Kamera
+    $("#cam").setAttribute("transform", `translate(${camPos.x - 180},${camPos.y - 255})`);
+
+    // Bildwinkel Richtung Mittelpunkt
+    const mid = { x: (A.x + B.x) / 2, y: (A.y + B.y) / 2 };
+    const dirA = Math.atan2(mid.y - camPos.y, mid.x - camPos.x);
+    const hfovDeg = 2 * Math.atan(36 / (2 * lensMm)) * 180 / Math.PI;
+    const half = (hfovDeg / 2) * Math.PI / 180;
+    const R = 260;
+    $("#fov").setAttribute("points", [
+      `${camPos.x},${camPos.y}`,
+      `${camPos.x + Math.cos(dirA - half) * R},${camPos.y + Math.sin(dirA - half) * R}`,
+      `${camPos.x + Math.cos(dirA + half) * R},${camPos.y + Math.sin(dirA + half) * R}`
+    ].join(" "));
+
+    const axisDeg = (Math.atan2(dy, dx) * 180 / Math.PI + 360) % 180;
+    $("#ro-axis").textContent = axisDeg.toFixed(0) + "°";
+    $("#ro-side").textContent = violates ? "gewechselt" : "gewahrt";
+    $("#ro-angle").textContent = ((dirA * 180 / Math.PI + 360) % 360).toFixed(0) + "°";
+    $("#ro-fov").textContent = hfovDeg.toFixed(0) + "° · " + lensMm + " mm";
+
+    const v = $("#verdict");
+    v.classList.toggle("bad", violates);
+    v.innerHTML = violates
+      ? "<b>R-011 · Achsensprung.</b> Die Figuren tauschen für den Zuschauer die Seiten. Reparatur: Achse neu etablieren, neutrale Einstellung einziehen — oder als bewussten Bruch markieren."
+      : "Achse gewahrt. Blickrichtungen bleiben über den Schnitt konsistent.";
+  }
+
+  function bindPlan() {
+    const svg = $("#plan");
+    let dragging = false;
+
+    const toSvg = e => {
+      const r = svg.getBoundingClientRect();
+      return {
+        x: (e.clientX - r.left) / r.width * 400,
+        y: (e.clientY - r.top) / r.height * 300
+      };
+    };
+
+    svg.addEventListener("pointerdown", e => {
+      const p = toSvg(e);
+      if (Math.hypot(p.x - camPos.x, p.y - camPos.y) < 40) {
+        dragging = true;
+        svg.setPointerCapture(e.pointerId);
+      }
+    });
+    svg.addEventListener("pointermove", e => {
+      if (!dragging) return;
+      const p = toSvg(e);
+      camPos.x = Math.max(50, Math.min(350, p.x));
+      camPos.y = Math.max(40, Math.min(280, p.y));
+      updatePlan();
+    });
+    const stop = e => { dragging = false; try { svg.releasePointerCapture(e.pointerId); } catch (_) {} };
+    svg.addEventListener("pointerup", stop);
+    svg.addEventListener("pointercancel", stop);
+
+    $$("#lenses button").forEach(b => b.addEventListener("click", () => {
+      lensMm = Number(b.dataset.mm);
+      $$("#lenses button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+      updatePlan();
+    }));
+  }
+
+  /* ---------------- Modi ---------------- */
+
+  function bindModes() {
+    $$(".mode").forEach(m => m.addEventListener("click", () => {
+      const v = m.dataset.view;
+      $$(".mode").forEach(x => x.setAttribute("aria-selected", String(x === m)));
+      $$("#stage > [data-view]").forEach(p => { p.hidden = p.dataset.view !== v; });
+      if (v === "grundriss") updatePlan();
+    }));
+  }
+
+  /* ---------------- Start ---------------- */
+
+  buildStages();
+  buildBoard();
+  buildTimeline();
+  bindModes();
+  bindPlan();
+  updatePlan();
+  drawCurve();
+
+  $$(".vec").forEach(b => {
+    b.style.visibility = "hidden";
+    b.addEventListener("click", () => { if (analysed) filterByVector(b.dataset.vec); });
+  });
+
+  $("#run").addEventListener("click", runAnalysis);
+})();
+</script>
