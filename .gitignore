@@ -22,3 +22,6 @@ Thumbs.db
 # web-playable
 web-playable/node_modules/
 web-playable/package-lock.json
+
+# zion-sing
+zion-sing/node_modules/

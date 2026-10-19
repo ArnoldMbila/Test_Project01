@@ -1,0 +1,11 @@
+{
+  "name": "zion-sing",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Zion Sing – Gesangs-Lern-App (Simply-Sing-artig) mit den Offenbarungs-Songs",
+  "scripts": {
+    "start": "node server.mjs",
+    "test": "node --test test/*.test.mjs"
+  }
+}

@@ -1,0 +1,1640 @@
+[
+  {
+    "text": "Wenn",
+    "type": "word",
+    "start": 17.64,
+    "end": 17.8
+  },
+  {
+    "text": "jemand",
+    "type": "word",
+    "start": 17.84,
+    "end": 18.12
+  },
+  {
+    "text": "in",
+    "type": "word",
+    "start": 18.2,
+    "end": 18.26
+  },
+  {
+    "text": "Gefangenschaft",
+    "type": "word",
+    "start": 18.3,
+    "end": 19.32
+  },
+  {
+    "text": "geht,",
+    "type": "word",
+    "start": 19.38,
+    "end": 19.74
+  },
+  {
+    "text": "so",
+    "type": "word",
+    "start": 22.52,
+    "end": 22.66
+  },
+  {
+    "text": "geht",
+    "type": "word",
+    "start": 22.7,
+    "end": 22.88
+  },
+  {
+    "text": "er",
+    "type": "word",
+    "start": 22.92,
+    "end": 23
+  },
+  {
+    "text": "in",
+    "type": "word",
+    "start": 23.06,
+    "end": 23.18
+  },
+  {
+    "text": "Gefangenschaft.",
+    "type": "word",
+    "start": 23.2,
+    "end": 24.44
+  },
+  {
+    "text": "Wenn",
+    "type": "word",
+    "start": 26.18,
+    "end": 26.28
+  },
+  {
+    "text": "jemand",
+    "type": "word",
+    "start": 26.32,
+    "end": 26.6
+  },
+  {
+    "text": "mit",
+    "type": "word",
+    "start": 26.66,
+    "end": 26.76
+  },
+  {
+    "text": "dem",
+    "type": "word",
+    "start": 26.82,
+    "end": 26.98
+  },
+  {
+    "text": "Schwert",
+    "type": "word",
+    "start": 27.04,
+    "end": 27.4
+  },
+  {
+    "text": "getötet",
+    "type": "word",
+    "start": 27.44,
+    "end": 28.14
+  },
+  {
+    "text": "wird,",
+    "type": "word",
+    "start": 28.2,
+    "end": 28.7
+  },
+  {
+    "text": "so",
+    "type": "word",
+    "start": 31.04,
+    "end": 31.16
+  },
+  {
+    "text": "muss",
+    "type": "word",
+    "start": 31.22,
+    "end": 31.38
+  },
+  {
+    "text": "er",
+    "type": "word",
+    "start": 31.4,
+    "end": 31.5
+  },
+  {
+    "text": "mit",
+    "type": "word",
+    "start": 31.56,
+    "end": 31.74
+  },
+  {
+    "text": "dem",
+    "type": "word",
+    "start": 31.76,
+    "end": 31.9
+  },
+  {
+    "text": "Schwert",
+    "type": "word",
+    "start": 31.96,
+    "end": 32.34
+  },
+  {
+    "text": "getötet",
+    "type": "word",
+    "start": 32.38,
+    "end": 33.06
+  },
+  {
+    "text": "werden.",
+    "type": "word",
+    "start": 33.12,
+    "end": 33.68
+  },
+  {
+    "text": "Mhm.",
+    "type": "word",
+    "start": 34,
+    "end": 34.48
+  },
+  {
+    "text": "Ja.",
+    "type": "word",
+    "start": 36.4,
+    "end": 36.52
+  },
+  {
+    "text": "Hier",
+    "type": "word",
+    "start": 37.18,
+    "end": 37.3
+  },
+  {
+    "text": "ist",
+    "type": "word",
+    "start": 37.36,
+    "end": 37.46
+  },
+  {
+    "text": "das",
+    "type": "word",
+    "start": 37.5,
+    "end": 37.68
+  },
+  {
+    "text": "aus",
+    "type": "word",
+    "start": 37.72,
+    "end": 37.98
+  },
+  {
+    "text": "Höhnen",
+    "type": "word",
+    "start": 38.02,
+    "end": 38.52
+  },
+  {
+    "text": "und",
+    "type": "word",
+    "start": 38.6,
+    "end": 38.74
+  },
+  {
+    "text": "der",
+    "type": "word",
+    "start": 38.86,
+    "end": 39.1
+  },
+  {
+    "text": "Glaube",
+    "type": "word",
+    "start": 39.16,
+    "end": 39.6
+  },
+  {
+    "text": "der",
+    "type": "word",
+    "start": 39.62,
+    "end": 39.8
+  },
+  {
+    "text": "Heiligen.",
+    "type": "word",
+    "start": 39.86,
+    "end": 40.42
+  },
+  {
+    "text": "Und",
+    "type": "word",
+    "start": 41.6,
+    "end": 41.72
+  },
+  {
+    "text": "ich",
+    "type": "word",
+    "start": 41.76,
+    "end": 41.84
+  },
+  {
+    "text": "sah",
+    "type": "word",
+    "start": 41.9,
+    "end": 42.08
+  },
+  {
+    "text": "ein",
+    "type": "word",
+    "start": 42.1,
+    "end": 42.26
+  },
+  {
+    "text": "anderes",
+    "type": "word",
+    "start": 42.34,
+    "end": 42.82
+  },
+  {
+    "text": "Tier",
+    "type": "word",
+    "start": 42.9,
+    "end": 43.08
+  },
+  {
+    "text": "aus",
+    "type": "word",
+    "start": 43.1,
+    "end": 43.26
+  },
+  {
+    "text": "der",
+    "type": "word",
+    "start": 43.32,
+    "end": 43.46
+  },
+  {
+    "text": "Hölle",
+    "type": "word",
+    "start": 43.52,
+    "end": 43.84
+  },
+  {
+    "text": "aufsteigen",
+    "type": "word",
+    "start": 43.9,
+    "end": 44.82
+  },
+  {
+    "text": "und",
+    "type": "word",
+    "start": 45.56,
+    "end": 45.64
+  },
+  {
+    "text": "es",
+    "type": "word",
+    "start": 45.7,
+    "end": 45.82
+  },
+  {
+    "text": "hatte",
+    "type": "word",
+    "start": 45.86,
+    "end": 46.1
+  },
+  {
+    "text": "zwei",
+    "type": "word",
+    "start": 46.18,
+    "end": 46.42
+  },
+  {
+    "text": "Hörner",
+    "type": "word",
+    "start": 46.54,
+    "end": 46.9
+  },
+  {
+    "text": "gleich",
+    "type": "word",
+    "start": 46.94,
+    "end": 47.24
+  },
+  {
+    "text": "einem",
+    "type": "word",
+    "start": 47.32,
+    "end": 47.66
+  },
+  {
+    "text": "Lamm",
+    "type": "word",
+    "start": 47.74,
+    "end": 47.98
+  },
+  {
+    "text": "und",
+    "type": "word",
+    "start": 48.62,
+    "end": 48.74
+  },
+  {
+    "text": "es",
+    "type": "word",
+    "start": 48.76,
+    "end": 48.88
+  },
+  {
+    "text": "redete,",
+    "type": "word",
+    "start": 48.98,
+    "end": 49.5
+  },
+  {
+    "text": "wie",
+    "type": "word",
+    "start": 49.56,
+    "end": 49.7
+  },
+  {
+    "text": "er",
+    "type": "word",
+    "start": 49.72,
+    "end": 49.88
+  },
+  {
+    "text": "ihn",
+    "type": "word",
+    "start": 49.94,
+    "end": 50.1
+  },
+  {
+    "text": "rachtet.",
+    "type": "word",
+    "start": 50.16,
+    "end": 50.7
+  },
+  {
+    "text": "Und",
+    "type": "word",
+    "start": 51.64,
+    "end": 51.74
+  },
+  {
+    "text": "die",
+    "type": "word",
+    "start": 51.8,
+    "end": 51.9
+  },
+  {
+    "text": "ganze",
+    "type": "word",
+    "start": 51.94,
+    "end": 52.22
+  },
+  {
+    "text": "Macht",
+    "type": "word",
+    "start": 52.26,
+    "end": 52.48
+  },
+  {
+    "text": "des",
+    "type": "word",
+    "start": 52.5,
+    "end": 52.64
+  },
+  {
+    "text": "ersten",
+    "type": "word",
+    "start": 52.76,
+    "end": 53.14
+  },
+  {
+    "text": "Tieres",
+    "type": "word",
+    "start": 53.22,
+    "end": 53.78
+  },
+  {
+    "text": "übt",
+    "type": "word",
+    "start": 53.88,
+    "end": 54.1
+  },
+  {
+    "text": "es",
+    "type": "word",
+    "start": 54.16,
+    "end": 54.36
+  },
+  {
+    "text": "vor",
+    "type": "word",
+    "start": 54.44,
+    "end": 54.66
+  },
+  {
+    "text": "ihm",
+    "type": "word",
+    "start": 54.78,
+    "end": 55.02
+  },
+  {
+    "text": "aus.",
+    "type": "word",
+    "start": 55.16,
+    "end": 55.74
+  },
+  {
+    "text": "Und",
+    "type": "word",
+    "start": 56.98,
+    "end": 57.08
+  },
+  {
+    "text": "es",
+    "type": "word",
+    "start": 57.12,
+    "end": 57.24
+  },
+  {
+    "text": "veranlasst",
+    "type": "word",
+    "start": 57.28,
+    "end": 58
+  },
+  {
+    "text": "die",
+    "type": "word",
+    "start": 58.06,
+    "end": 58.22
+  },
+  {
+    "text": "Erden",
+    "type": "word",
+    "start": 58.32,
+    "end": 58.76
+  },
+  {
+    "text": "und",
+    "type": "word",
+    "start": 59.28,
+    "end": 59.38
+  },
+  {
+    "text": "die",
+    "type": "word",
+    "start": 59.44,
+    "end": 59.54
+  },
+  {
+    "text": "auf",
+    "type": "word",
+    "start": 59.6,
+    "end": 59.76
+  },
+  {
+    "text": "ihr",
+    "type": "word",
+    "start": 59.8,
+    "end": 59.92
+  },
+  {
+    "text": "wohnen,",
+    "type": "word",
+    "start": 59.98,
+    "end": 60.3
+  },
+  {
+    "text": "dass",
+    "type": "word",
+    "start": 61.22,
+    "end": 61.36
+  },
+  {
+    "text": "sie",
+    "type": "word",
+    "start": 61.38,
+    "end": 61.48
+  },
+  {
+    "text": "das",
+    "type": "word",
+    "start": 61.54,
+    "end": 61.72
+  },
+  {
+    "text": "erste",
+    "type": "word",
+    "start": 61.8,
+    "end": 62.12
+  },
+  {
+    "text": "Tier",
+    "type": "word",
+    "start": 62.22,
+    "end": 62.6
+  },
+  {
+    "text": "anbeten,",
+    "type": "word",
+    "start": 62.72,
+    "end": 63.42
+  },
+  {
+    "text": "dessen",
+    "type": "word",
+    "start": 63.84,
+    "end": 64.14
+  },
+  {
+    "text": "Todeswunde",
+    "type": "word",
+    "start": 64.2,
+    "end": 65.16
+  },
+  {
+    "text": "geheilt",
+    "type": "word",
+    "start": 65.22,
+    "end": 65.78
+  },
+  {
+    "text": "wurde.",
+    "type": "word",
+    "start": 65.84,
+    "end": 66.44
+  },
+  {
+    "text": "Und",
+    "type": "word",
+    "start": 67.36,
+    "end": 67.44
+  },
+  {
+    "text": "es",
+    "type": "word",
+    "start": 67.5,
+    "end": 67.6
+  },
+  {
+    "text": "tut",
+    "type": "word",
+    "start": 67.64,
+    "end": 67.8
+  },
+  {
+    "text": "große",
+    "type": "word",
+    "start": 67.86,
+    "end": 68.34
+  },
+  {
+    "text": "Zeichen,",
+    "type": "word",
+    "start": 68.46,
+    "end": 69.1
+  },
+  {
+    "text": "dass",
+    "type": "word",
+    "start": 69.62,
+    "end": 69.76
+  },
+  {
+    "text": "es",
+    "type": "word",
+    "start": 69.8,
+    "end": 69.92
+  },
+  {
+    "text": "selbst",
+    "type": "word",
+    "start": 69.96,
+    "end": 70.22
+  },
+  {
+    "text": "Feuer",
+    "type": "word",
+    "start": 70.28,
+    "end": 70.62
+  },
+  {
+    "text": "vom",
+    "type": "word",
+    "start": 70.7,
+    "end": 70.86
+  },
+  {
+    "text": "Himmel",
+    "type": "word",
+    "start": 70.9,
+    "end": 71.18
+  },
+  {
+    "text": "vor",
+    "type": "word",
+    "start": 71.32,
+    "end": 71.48
+  },
+  {
+    "text": "den",
+    "type": "word",
+    "start": 71.52,
+    "end": 71.7
+  },
+  {
+    "text": "Menschen",
+    "type": "word",
+    "start": 71.76,
+    "end": 72.22
+  },
+  {
+    "text": "auf",
+    "type": "word",
+    "start": 72.3,
+    "end": 72.44
+  },
+  {
+    "text": "die",
+    "type": "word",
+    "start": 72.5,
+    "end": 72.64
+  },
+  {
+    "text": "Erde",
+    "type": "word",
+    "start": 72.7,
+    "end": 73.02
+  },
+  {
+    "text": "herabkommen",
+    "type": "word",
+    "start": 73.3,
+    "end": 74.14
+  },
+  {
+    "text": "lässt.",
+    "type": "word",
+    "start": 74.2,
+    "end": 74.56
+  },
+  {
+    "text": "Und",
+    "type": "word",
+    "start": 76.5,
+    "end": 76.58
+  },
+  {
+    "text": "es",
+    "type": "word",
+    "start": 76.64,
+    "end": 76.74
+  },
+  {
+    "text": "verführt",
+    "type": "word",
+    "start": 76.8,
+    "end": 77.56
+  },
+  {
+    "text": "die,",
+    "type": "word",
+    "start": 77.58,
+    "end": 77.78
+  },
+  {
+    "text": "welche",
+    "type": "word",
+    "start": 78.12,
+    "end": 78.36
+  },
+  {
+    "text": "auf",
+    "type": "word",
+    "start": 78.44,
+    "end": 78.58
+  },
+  {
+    "text": "der",
+    "type": "word",
+    "start": 78.62,
+    "end": 78.76
+  },
+  {
+    "text": "Erde",
+    "type": "word",
+    "start": 78.82,
+    "end": 79.16
+  },
+  {
+    "text": "wohnen,",
+    "type": "word",
+    "start": 79.24,
+    "end": 79.78
+  },
+  {
+    "text": "wegen",
+    "type": "word",
+    "start": 79.98,
+    "end": 80.22
+  },
+  {
+    "text": "der",
+    "type": "word",
+    "start": 80.3,
+    "end": 80.44
+  },
+  {
+    "text": "Zeichen,",
+    "type": "word",
+    "start": 80.6,
+    "end": 81.06
+  },
+  {
+    "text": "die",
+    "type": "word",
+    "start": 81.94,
+    "end": 82.04
+  },
+  {
+    "text": "vor",
+    "type": "word",
+    "start": 82.1,
+    "end": 82.22
+  },
+  {
+    "text": "dem",
+    "type": "word",
+    "start": 82.28,
+    "end": 82.44
+  },
+  {
+    "text": "Tier",
+    "type": "word",
+    "start": 82.5,
+    "end": 82.78
+  },
+  {
+    "text": "zur",
+    "type": "word",
+    "start": 82.86,
+    "end": 83
+  },
+  {
+    "text": "Zunge",
+    "type": "word",
+    "start": 83.1,
+    "end": 83.42
+  },
+  {
+    "text": "gegeben",
+    "type": "word",
+    "start": 83.7,
+    "end": 84.06
+  },
+  {
+    "text": "wurden.",
+    "type": "word",
+    "start": 84.12,
+    "end": 84.78
+  },
+  {
+    "text": "Und",
+    "type": "word",
+    "start": 86.26,
+    "end": 86.36
+  },
+  {
+    "text": "es",
+    "type": "word",
+    "start": 86.38,
+    "end": 86.5
+  },
+  {
+    "text": "sagt",
+    "type": "word",
+    "start": 86.54,
+    "end": 86.86
+  },
+  {
+    "text": "denen,",
+    "type": "word",
+    "start": 86.88,
+    "end": 88.04
+  },
+  {
+    "text": "die",
+    "type": "word",
+    "start": 88.06,
+    "end": 88.16
+  },
+  {
+    "text": "auf",
+    "type": "word",
+    "start": 88.2,
+    "end": 88.34
+  },
+  {
+    "text": "der",
+    "type": "word",
+    "start": 88.4,
+    "end": 88.52
+  },
+  {
+    "text": "Erde",
+    "type": "word",
+    "start": 88.58,
+    "end": 88.92
+  },
+  {
+    "text": "wohnen,",
+    "type": "word",
+    "start": 89,
+    "end": 89.52
+  },
+  {
+    "text": "dem",
+    "type": "word",
+    "start": 89.58,
+    "end": 89.72
+  },
+  {
+    "text": "Tier,",
+    "type": "word",
+    "start": 89.8,
+    "end": 90.08
+  },
+  {
+    "text": "das",
+    "type": "word",
+    "start": 90.64,
+    "end": 90.76
+  },
+  {
+    "text": "die",
+    "type": "word",
+    "start": 90.82,
+    "end": 90.96
+  },
+  {
+    "text": "Wunde",
+    "type": "word",
+    "start": 91.02,
+    "end": 91.36
+  },
+  {
+    "text": "des",
+    "type": "word",
+    "start": 91.42,
+    "end": 91.54
+  },
+  {
+    "text": "Schwertes",
+    "type": "word",
+    "start": 91.6,
+    "end": 92.22
+  },
+  {
+    "text": "hat",
+    "type": "word",
+    "start": 92.3,
+    "end": 92.88
+  },
+  {
+    "text": "und",
+    "type": "word",
+    "start": 93.54,
+    "end": 93.64
+  },
+  {
+    "text": "wieder",
+    "type": "word",
+    "start": 93.68,
+    "end": 93.96
+  },
+  {
+    "text": "lebendig",
+    "type": "word",
+    "start": 94.02,
+    "end": 94.66
+  },
+  {
+    "text": "geworden",
+    "type": "word",
+    "start": 94.72,
+    "end": 95.5
+  },
+  {
+    "text": "ist,",
+    "type": "word",
+    "start": 95.6,
+    "end": 95.78
+  },
+  {
+    "text": "ein",
+    "type": "word",
+    "start": 96.18,
+    "end": 96.36
+  },
+  {
+    "text": "Bild",
+    "type": "word",
+    "start": 96.42,
+    "end": 96.68
+  },
+  {
+    "text": "zu",
+    "type": "word",
+    "start": 96.76,
+    "end": 96.94
+  },
+  {
+    "text": "machen.",
+    "type": "word",
+    "start": 97.08,
+    "end": 97.74
+  },
+  {
+    "text": "Und",
+    "type": "word",
+    "start": 98.58,
+    "end": 98.66
+  },
+  {
+    "text": "es",
+    "type": "word",
+    "start": 98.72,
+    "end": 98.82
+  },
+  {
+    "text": "wurde",
+    "type": "word",
+    "start": 98.88,
+    "end": 99.06
+  },
+  {
+    "text": "ihm",
+    "type": "word",
+    "start": 99.12,
+    "end": 99.26
+  },
+  {
+    "text": "gegeben,",
+    "type": "word",
+    "start": 99.3,
+    "end": 99.92
+  },
+  {
+    "text": "ihm",
+    "type": "word",
+    "start": 100.56,
+    "end": 100.66
+  },
+  {
+    "text": "Bild",
+    "type": "word",
+    "start": 100.68,
+    "end": 100.84
+  },
+  {
+    "text": "des",
+    "type": "word",
+    "start": 100.86,
+    "end": 100.96
+  },
+  {
+    "text": "Tieres",
+    "type": "word",
+    "start": 101,
+    "end": 101.36
+  },
+  {
+    "text": "Huren",
+    "type": "word",
+    "start": 101.38,
+    "end": 101.7
+  },
+  {
+    "text": "zu",
+    "type": "word",
+    "start": 101.78,
+    "end": 101.9
+  },
+  {
+    "text": "geben,",
+    "type": "word",
+    "start": 101.96,
+    "end": 102.34
+  },
+  {
+    "text": "sodass",
+    "type": "word",
+    "start": 102.66,
+    "end": 102.94
+  },
+  {
+    "text": "das",
+    "type": "word",
+    "start": 103,
+    "end": 103.16
+  },
+  {
+    "text": "Bild",
+    "type": "word",
+    "start": 103.22,
+    "end": 103.46
+  },
+  {
+    "text": "des",
+    "type": "word",
+    "start": 103.46,
+    "end": 103.68
+  },
+  {
+    "text": "Tieres",
+    "type": "word",
+    "start": 103.76,
+    "end": 104.4
+  },
+  {
+    "text": "sogar",
+    "type": "word",
+    "start": 104.48,
+    "end": 104.94
+  },
+  {
+    "text": "redete",
+    "type": "word",
+    "start": 105,
+    "end": 105.7
+  },
+  {
+    "text": "und",
+    "type": "word",
+    "start": 106.94,
+    "end": 107.04
+  },
+  {
+    "text": "bewirkte,",
+    "type": "word",
+    "start": 107.08,
+    "end": 107.92
+  },
+  {
+    "text": "dass",
+    "type": "word",
+    "start": 108.46,
+    "end": 108.66
+  },
+  {
+    "text": "alle",
+    "type": "word",
+    "start": 108.8,
+    "end": 109.02
+  },
+  {
+    "text": "getötet",
+    "type": "word",
+    "start": 109.06,
+    "end": 109.68
+  },
+  {
+    "text": "wurden,",
+    "type": "word",
+    "start": 109.74,
+    "end": 110.26
+  },
+  {
+    "text": "die",
+    "type": "word",
+    "start": 111.34,
+    "end": 111.48
+  },
+  {
+    "text": "das",
+    "type": "word",
+    "start": 111.52,
+    "end": 111.74
+  },
+  {
+    "text": "Bild",
+    "type": "word",
+    "start": 111.82,
+    "end": 112.12
+  },
+  {
+    "text": "des",
+    "type": "word",
+    "start": 112.14,
+    "end": 112.36
+  },
+  {
+    "text": "Tieres",
+    "type": "word",
+    "start": 112.44,
+    "end": 113.32
+  },
+  {
+    "text": "nicht",
+    "type": "word",
+    "start": 113.52,
+    "end": 113.78
+  },
+  {
+    "text": "anbeteten.",
+    "type": "word",
+    "start": 113.88,
+    "end": 115.14
+  },
+  {
+    "text": "Mhm.",
+    "type": "word",
+    "start": 115.2,
+    "end": 115.58
+  },
+  {
+    "text": "Und",
+    "type": "word",
+    "start": 116.12,
+    "end": 116.18
+  },
+  {
+    "text": "es",
+    "type": "word",
+    "start": 116.24,
+    "end": 116.32
+  },
+  {
+    "text": "bringt",
+    "type": "word",
+    "start": 116.36,
+    "end": 116.52
+  },
+  {
+    "text": "alle",
+    "type": "word",
+    "start": 116.62,
+    "end": 116.82
+  },
+  {
+    "text": "dahin,",
+    "type": "word",
+    "start": 116.86,
+    "end": 117.3
+  },
+  {
+    "text": "die",
+    "type": "word",
+    "start": 117.6,
+    "end": 117.7
+  },
+  {
+    "text": "Kleinen,",
+    "type": "word",
+    "start": 117.74,
+    "end": 118.18
+  },
+  {
+    "text": "die",
+    "type": "word",
+    "start": 118.8,
+    "end": 118.9
+  },
+  {
+    "text": "Großen",
+    "type": "word",
+    "start": 118.96,
+    "end": 119.46
+  },
+  {
+    "text": "und",
+    "type": "word",
+    "start": 119.9,
+    "end": 120
+  },
+  {
+    "text": "die",
+    "type": "word",
+    "start": 120.06,
+    "end": 120.16
+  },
+  {
+    "text": "Reichen",
+    "type": "word",
+    "start": 120.22,
+    "end": 120.62
+  },
+  {
+    "text": "und",
+    "type": "word",
+    "start": 121.06,
+    "end": 121.24
+  },
+  {
+    "text": "die",
+    "type": "word",
+    "start": 121.26,
+    "end": 121.38
+  },
+  {
+    "text": "Armen",
+    "type": "word",
+    "start": 121.5,
+    "end": 121.9
+  },
+  {
+    "text": "und",
+    "type": "word",
+    "start": 122.32,
+    "end": 122.42
+  },
+  {
+    "text": "die",
+    "type": "word",
+    "start": 122.46,
+    "end": 122.58
+  },
+  {
+    "text": "Freien",
+    "type": "word",
+    "start": 122.64,
+    "end": 123.08
+  },
+  {
+    "text": "und",
+    "type": "word",
+    "start": 123.5,
+    "end": 123.62
+  },
+  {
+    "text": "die",
+    "type": "word",
+    "start": 123.66,
+    "end": 123.74
+  },
+  {
+    "text": "Sklaven,",
+    "type": "word",
+    "start": 123.84,
+    "end": 124.24
+  },
+  {
+    "text": "dass",
+    "type": "word",
+    "start": 124.46,
+    "end": 124.58
+  },
+  {
+    "text": "man",
+    "type": "word",
+    "start": 124.64,
+    "end": 124.78
+  },
+  {
+    "text": "ihnen",
+    "type": "word",
+    "start": 124.82,
+    "end": 125.08
+  },
+  {
+    "text": "ein",
+    "type": "word",
+    "start": 125.16,
+    "end": 125.32
+  },
+  {
+    "text": "Malzeichen",
+    "type": "word",
+    "start": 125.38,
+    "end": 126.28
+  },
+  {
+    "text": "an",
+    "type": "word",
+    "start": 126.38,
+    "end": 126.52
+  },
+  {
+    "text": "ihre",
+    "type": "word",
+    "start": 126.56,
+    "end": 126.86
+  },
+  {
+    "text": "rechte",
+    "type": "word",
+    "start": 126.92,
+    "end": 127.3
+  },
+  {
+    "text": "Hand",
+    "type": "word",
+    "start": 127.4,
+    "end": 127.68
+  },
+  {
+    "text": "oder",
+    "type": "word",
+    "start": 127.74,
+    "end": 127.96
+  },
+  {
+    "text": "an",
+    "type": "word",
+    "start": 128.039,
+    "end": 128.12
+  },
+  {
+    "text": "ihre",
+    "type": "word",
+    "start": 128.18,
+    "end": 128.36
+  },
+  {
+    "text": "Stirn",
+    "type": "word",
+    "start": 128.46,
+    "end": 129
+  },
+  {
+    "text": "gibt",
+    "type": "word",
+    "start": 129.039,
+    "end": 129.259
+  },
+  {
+    "text": "und",
+    "type": "word",
+    "start": 130.1,
+    "end": 130.22
+  },
+  {
+    "text": "dass",
+    "type": "word",
+    "start": 130.259,
+    "end": 130.5
+  },
+  {
+    "text": "niemand",
+    "type": "word",
+    "start": 130.58,
+    "end": 131.1
+  },
+  {
+    "text": "kaufen",
+    "type": "word",
+    "start": 131.18,
+    "end": 131.76
+  },
+  {
+    "text": "oder",
+    "type": "word",
+    "start": 131.92,
+    "end": 132.14
+  },
+  {
+    "text": "verkaufen",
+    "type": "word",
+    "start": 132.22,
+    "end": 132.96
+  },
+  {
+    "text": "kann",
+    "type": "word",
+    "start": 133.04,
+    "end": 133.6
+  },
+  {
+    "text": "als",
+    "type": "word",
+    "start": 133.78,
+    "end": 133.94
+  },
+  {
+    "text": "nur",
+    "type": "word",
+    "start": 133.98,
+    "end": 134.2
+  },
+  {
+    "text": "der,",
+    "type": "word",
+    "start": 134.26,
+    "end": 134.42
+  },
+  {
+    "text": "welcher",
+    "type": "word",
+    "start": 135.4,
+    "end": 135.76
+  },
+  {
+    "text": "das",
+    "type": "word",
+    "start": 135.8,
+    "end": 136
+  },
+  {
+    "text": "Malzeichen",
+    "type": "word",
+    "start": 136.06,
+    "end": 137.06
+  },
+  {
+    "text": "hat,",
+    "type": "word",
+    "start": 137.12,
+    "end": 137.34
+  },
+  {
+    "text": "den",
+    "type": "word",
+    "start": 138.3,
+    "end": 138.44
+  },
+  {
+    "text": "Namen",
+    "type": "word",
+    "start": 138.5,
+    "end": 138.9
+  },
+  {
+    "text": "des",
+    "type": "word",
+    "start": 138.94,
+    "end": 139.14
+  },
+  {
+    "text": "Tieres",
+    "type": "word",
+    "start": 139.22,
+    "end": 139.8
+  },
+  {
+    "text": "oder",
+    "type": "word",
+    "start": 139.92,
+    "end": 140.14
+  },
+  {
+    "text": "die",
+    "type": "word",
+    "start": 140.16,
+    "end": 140.24
+  },
+  {
+    "text": "Zahl",
+    "type": "word",
+    "start": 140.42,
+    "end": 140.86
+  },
+  {
+    "text": "seines",
+    "type": "word",
+    "start": 140.94,
+    "end": 141.44
+  },
+  {
+    "text": "Namens.",
+    "type": "word",
+    "start": 141.54,
+    "end": 142.3
+  },
+  {
+    "text": "Mhm.",
+    "type": "word",
+    "start": 143.76,
+    "end": 144.44
+  },
+  {
+    "text": "Hier",
+    "type": "word",
+    "start": 144.74,
+    "end": 144.9
+  },
+  {
+    "text": "ist",
+    "type": "word",
+    "start": 144.92,
+    "end": 144.98
+  },
+  {
+    "text": "die",
+    "type": "word",
+    "start": 145.04,
+    "end": 145.16
+  },
+  {
+    "text": "Weisheit,",
+    "type": "word",
+    "start": 145.22,
+    "end": 145.74
+  },
+  {
+    "text": "wer",
+    "type": "word",
+    "start": 145.8,
+    "end": 146.1
+  },
+  {
+    "text": "Verständnis",
+    "type": "word",
+    "start": 146.22,
+    "end": 147.08
+  },
+  {
+    "text": "hat.",
+    "type": "word",
+    "start": 147.14,
+    "end": 147.58
+  },
+  {
+    "text": "Berechne",
+    "type": "word",
+    "start": 149.26,
+    "end": 149.84
+  },
+  {
+    "text": "die",
+    "type": "word",
+    "start": 149.9,
+    "end": 150
+  },
+  {
+    "text": "Zahl",
+    "type": "word",
+    "start": 150.18,
+    "end": 150.54
+  },
+  {
+    "text": "des",
+    "type": "word",
+    "start": 150.54,
+    "end": 150.76
+  },
+  {
+    "text": "Tieres,",
+    "type": "word",
+    "start": 150.84,
+    "end": 151.66
+  },
+  {
+    "text": "denn",
+    "type": "word",
+    "start": 152.64,
+    "end": 152.78
+  },
+  {
+    "text": "es",
+    "type": "word",
+    "start": 152.8,
+    "end": 152.92
+  },
+  {
+    "text": "ist",
+    "type": "word",
+    "start": 153,
+    "end": 153.14
+  },
+  {
+    "text": "eines",
+    "type": "word",
+    "start": 153.24,
+    "end": 153.54
+  },
+  {
+    "text": "Menschen",
+    "type": "word",
+    "start": 153.6,
+    "end": 154
+  },
+  {
+    "text": "Zahl",
+    "type": "word",
+    "start": 154.18,
+    "end": 154.64
+  },
+  {
+    "text": "und",
+    "type": "word",
+    "start": 154.68,
+    "end": 154.86
+  },
+  {
+    "text": "seine",
+    "type": "word",
+    "start": 154.94,
+    "end": 155.36
+  },
+  {
+    "text": "Zahl:",
+    "type": "word",
+    "start": 155.5,
+    "end": 159.18
+  },
+  {
+    "text": "sechshundertsechsundsechzig.",
+    "type": "word",
+    "start": 159.22,
+    "end": 161.28
+  }
+]

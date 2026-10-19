@@ -1,0 +1,12 @@
+{
+  "name": "Zion Sing",
+  "short_name": "Zion Sing",
+  "description": "Singen lernen mit den Liedern der Offenbarung – Echtzeit-Tonhöhen-Feedback.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#120f24",
+  "theme_color": "#120f24",
+  "lang": "de",
+  "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}

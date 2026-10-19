@@ -1,5 +1,9 @@
 # Test_Project01 – Arcade der Heiligen Schrift
 
+> 🎤 **NEU: [`zion-sing/`](zion-sing/README.md)** – **Zion Sing**, eine Gesangs-Lern-App
+> nach dem Vorbild von Simply Sing: Echtzeit-Tonhöhen-Feedback, Karaoke-Lyrics,
+> Stimmumfang-Test, Lektionen – mit den Afro-Songs zur Offenbarung. `cd zion-sing && npm start`.
+
 > 🎮 **Sofort im Browser spielen (iPad-tauglich, ohne Installation):**
 > siehe [`web-playable/`](web-playable/README.md) – Three.js-Version derselben
 > App, deploybar auf GitHub Pages/Vercel/Netlify oder lokal per `npm start`.
