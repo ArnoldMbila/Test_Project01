@@ -51,7 +51,7 @@ export function difficultyOf(song) {
   if (!song.notes || !song.notes.length) return 1;
   const span = song.range ? song.range[1] - song.range[0] : 12;
   const dens = song.notes.length / Math.max(30, song.duration || 180);
-  return Math.max(1, Math.min(5, Math.round(span / 6 + dens * 1.5)));
+  return Math.max(1, Math.min(5, Math.round(1 + (span - 8) / 6 + (dens - 1))));
 }
 
 export function rangeLabel(song, notation) {

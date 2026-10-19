@@ -11,6 +11,7 @@ import { tunerScreen } from './screens/tuner.js';
 import { profileScreen } from './screens/profile.js';
 import { importScreen } from './screens/import.js';
 import { studioScreen } from './screens/studio.js';
+import { icon, wordmark } from './ui/icons.js';
 
 const ROUTES = {
   '': { fn: homeScreen, tab: 'home' },
@@ -32,6 +33,9 @@ const ROUTES = {
 
 const view = document.getElementById('view');
 const nav = document.getElementById('nav');
+nav.innerHTML = `<a class="nav-mark" href="#/" aria-label="Zion Sing – Start">${wordmark()}</a>` +
+  [['#/', 'home', 'home', 'Start'], ['#/songs', 'songs', 'songs', 'Songs'], ['#/train', 'train', 'train', 'Training'], ['#/profile', 'profile', 'user', 'Profil']]
+    .map(([href, tab, ic, label]) => `<a class="tab" href="${href}" data-tab="${tab}">${icon(ic, 20)}<span>${label}</span></a>`).join('');
 let cleanup = null;
 let navToken = 0;
 
@@ -51,7 +55,7 @@ async function route() {
   if (!store.profile.onboarded && name === '') name = 'welcome';
   const r = ROUTES[name] || ROUTES[''];
   document.body.classList.toggle('fullscreen', !!r.full);
-  nav.querySelectorAll('a').forEach((a) => a.classList.toggle('on', a.dataset.tab === r.tab));
+  nav.querySelectorAll('a.tab').forEach((a) => a.classList.toggle('on', a.dataset.tab === r.tab));
   view.innerHTML = '';
   view.scrollTop = 0;
   window.scrollTo(0, 0);

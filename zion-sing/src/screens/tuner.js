@@ -5,18 +5,24 @@ import { store } from '../core/store.js';
 import { noteName, centsOff } from '../core/notes.js';
 import { Lane } from '../ui/lane.js';
 import { keyboardSvg, escapeHtml } from '../ui/dom.js';
+import { icon } from '../ui/icons.js';
 
 export async function tunerScreen(root) {
   const notation = store.profile.notation;
   root.innerHTML = `
   <div class="tuner">
-    <header class="page-head"><button class="icon-btn" onclick="history.back()" aria-label="Zurück">‹</button><h1>Stimmgerät</h1></header>
-    <div class="tn-note"><span data-n>–</span><small data-hz>Sing einen Ton</small></div>
-    <div class="needle"><div class="scale"><span>−50</span><span>0</span><span>+50</span></div><i data-needle></i></div>
-    <div class="tn-kbd" data-kbd>${keyboardSvg(null, null, 40, 79)}</div>
-    <canvas class="lane tn-lane"></canvas>
-    <div class="sec-head"><h3>Referenzton</h3><small class="muted">antippen zum Anhören</small></div>
-    <div class="ref-notes">${[48, 50, 52, 53, 55, 57, 59, 60, 62, 64, 65, 67, 69, 71, 72].map((m) => `<button class="chip" data-m="${m}">${noteName(m, notation)}</button>`).join('')}</div>
+    <a class="back-row" href="#/train">${icon('back', 16)} Training</a>
+    <header class="page-head"><div><h1>Stimmgerät</h1><p class="sub">Sing einen Ton und sieh Note und Abweichung in Cent.</p></div></header>
+    <div class="grid stretch">
+      <section class="card span-3">
+        <div class="tn-note"><span data-n>–</span><small data-hz>Sing einen Ton</small></div>
+        <div class="needle"><div class="scale"><span>−50</span><span>0</span><span>+50</span></div><i data-needle></i></div>
+        <div class="tn-kbd" data-kbd>${keyboardSvg(null, null, 40, 79)}</div>
+        <h3 style="margin-top:18px">Referenzton</h3>
+        <div class="ref-notes">${[48, 50, 52, 53, 55, 57, 59, 60, 62, 64, 65, 67, 69, 71, 72].map((m) => `<button class="chip" data-m="${m}">${noteName(m, notation)}</button>`).join('')}</div>
+      </section>
+      <section class="card span-3 tn-card"><div class="row between"><h3>Verlauf</h3><small class="faint">die letzten 2 Sekunden</small></div><canvas class="lane tn-lane"></canvas></section>
+    </div>
     <p class="banner" data-err hidden></p>
   </div>`;
   const r = await ensureMic();

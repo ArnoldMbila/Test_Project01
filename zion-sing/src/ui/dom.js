@@ -1,5 +1,6 @@
 // Kleine DOM-Helfer: Toasts, Bottom-Sheets, Sterne, Cover.
 import { escapeHtml } from './lyrics.js';
+import { icon } from './icons.js';
 
 export { escapeHtml };
 
@@ -27,7 +28,7 @@ export function sheet(title, bodyHtml, onClose) {
   wrap.className = 'sheet-wrap';
   wrap.innerHTML = `<div class="sheet" role="dialog" aria-label="${escapeHtml(title)}">
     <div class="sheet-grip"></div>
-    <div class="sheet-head"><h3>${escapeHtml(title)}</h3><button class="icon-btn" data-close aria-label="Schließen">✕</button></div>
+    <div class="sheet-head"><h3>${escapeHtml(title)}</h3><button class="icon-btn" data-close aria-label="Schließen">${icon('close', 18)}</button></div>
     <div class="sheet-body">${bodyHtml}</div></div>`;
   document.body.appendChild(wrap);
   requestAnimationFrame(() => wrap.classList.add('open'));
@@ -42,20 +43,28 @@ export function sheet(title, bodyHtml, onClose) {
 
 export function stars(n, max = 3) {
   let s = '';
-  for (let i = 0; i < max; i++) s += `<span class="star${i < n ? ' on' : ''}">★</span>`;
-  return `<span class="stars">${s}</span>`;
+  for (let i = 0; i < max; i++) s += `<span class="star${i < n ? ' on' : ''}">${icon('star', 16)}</span>`;
+  return `<span class="stars" aria-label="${n} von ${max} Sternen">${s}</span>`;
 }
 
 export function cover(song, cls = '') {
   if (song.audio && song.audio.cover) {
-    return `<div class="cover ${cls}" style="--c:${song.color}"><img src="${song.audio.cover}" alt="" loading="lazy"></div>`;
+    return `<div class="cover ${cls}"><img src="${song.audio.cover}" alt="Cover: ${escapeHtml(song.title)}" loading="lazy"></div>`;
   }
-  return `<div class="cover ${cls} cover-gen" style="--c:${song.color || '#7a5cff'}"><span>${song.emoji || '🎵'}</span></div>`;
+  const initials = (song.title || '?').split(/\s+/).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
+  return `<div class="cover ${cls} cover-gen"><span>${escapeHtml(initials)}</span></div>`;
 }
 
 export function fmtTime(s) {
   s = Math.max(0, Math.round(s));
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+}
+
+/** Bewertung 1–5 als kleine Leiste. */
+export function meter(n, max = 5) {
+  let s = '';
+  for (let i = 0; i < max; i++) s += `<i class="${i < n ? 'on' : ''}"></i>`;
+  return `<span class="meter" aria-label="Schwierigkeit ${n} von ${max}">${s}</span>`;
 }
 
 /** Segment-Auswahl (Chips). onPick(value) */
@@ -94,21 +103,4 @@ export function keyboardSvg(lo, hi, from = 36, to = 84, mark = null) {
     out += `<rect x="${(i + 1) * W - W * 0.32}" y="0" width="${W * 0.64}" height="14" rx="0.5" class="bk${on ? ' on' : ''}${mk ? ' mk' : ''}"/>`;
   });
   return out + '</svg>';
-}
-
-export function confetti(n = 80) {
-  const host = document.createElement('div');
-  host.className = 'confetti';
-  const colors = ['#ffd84d', '#ff6bb5', '#7a5cff', '#3fe0c5', '#ff9a3d'];
-  for (let i = 0; i < n; i++) {
-    const p = document.createElement('i');
-    p.style.left = Math.random() * 100 + '%';
-    p.style.background = colors[i % colors.length];
-    p.style.animationDelay = Math.random() * 0.6 + 's';
-    p.style.animationDuration = 1.8 + Math.random() * 1.4 + 's';
-    p.style.transform = `rotate(${Math.random() * 360}deg)`;
-    host.appendChild(p);
-  }
-  document.body.appendChild(host);
-  setTimeout(() => host.remove(), 3800);
 }

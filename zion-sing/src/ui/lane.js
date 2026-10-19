@@ -1,5 +1,10 @@
 // Notenbahn (Canvas): Ziel-Noten laufen von rechts zur Spiellinie, deine
-// Stimme wird als leuchtende Spur darübergelegt.
+// Stimme liegt als Spur darüber. Farben: Ziel-Noten neutral grau, die eine
+// Datenfarbe (Gold) nur auf getroffenen Noten und der treffenden Stimme.
+const GOLD = '#f2b33d';
+const NOTE = '#5c5c5c';
+const NOTE_ACTIVE = '#e6e6e6';
+const NOTE_MISSED = '#262626';
 import { noteName } from '../core/notes.js';
 
 const PAST = 2.2;     // Sekunden links der Spiellinie
@@ -10,7 +15,6 @@ export class Lane {
   constructor(canvas, opts = {}) {
     this.cv = canvas;
     this.g = canvas.getContext('2d');
-    this.color = opts.color || '#9b6bff';
     this.notation = opts.notation || 'de';
     this.notes = [];
     this.scoreOf = () => 0;
@@ -62,7 +66,7 @@ export class Lane {
     }
   }
 
-  burst(x, y, n = 10, color = '#ffd84d') {
+  burst(x, y, n = 10, color = GOLD) {
     for (let i = 0; i < n; i++) {
       const a = Math.random() * Math.PI * 2, s = 40 + Math.random() * 120;
       this.particles.push({ x, y, vx: Math.cos(a) * s - 60, vy: Math.sin(a) * s, life: 1, color });
@@ -108,29 +112,22 @@ export class Lane {
       const done = s + d < t, active = s <= t && !done;
       const sc = this.scoreOf(i);
       let fill;
-      if (done) fill = sc >= 0.6 ? '#ffd84d' : 'rgba(255,255,255,0.18)';
-      else if (active) fill = sc > 0.3 ? '#ffe680' : this.color;
-      else fill = this.color;
-      g.globalAlpha = done ? 0.85 : active ? 1 : 0.75;
-      if (active) { g.shadowColor = sc > 0.3 ? '#ffd84d' : this.color; g.shadowBlur = 18; }
+      if (done) fill = sc >= 0.6 ? GOLD : NOTE_MISSED;
+      else if (active) fill = sc > 0.3 ? GOLD : NOTE_ACTIVE;
+      else fill = NOTE;
       roundRect(g, x0, y, Math.max(4, x1 - x0 - 1.5), bh, bh / 2);
       if (this.notes[i][3] === 'L') { // nur hören: Umriss
-        g.strokeStyle = 'rgba(255,255,255,0.55)'; g.lineWidth = 2; g.setLineDash([5, 4]); g.stroke(); g.setLineDash([]);
+        g.strokeStyle = active ? NOTE_ACTIVE : '#7a7a7a'; g.lineWidth = 2; g.setLineDash([5, 4]); g.stroke(); g.setLineDash([]);
       } else {
         g.fillStyle = fill;
         g.fill();
       }
-      g.shadowBlur = 0;
-      g.globalAlpha = 1;
     }
 
-    // Spiellinie
-    const grad = g.createLinearGradient(head - 30, 0, head + 2, 0);
-    grad.addColorStop(0, 'rgba(255,255,255,0)');
-    grad.addColorStop(1, 'rgba(255,255,255,0.10)');
-    g.fillStyle = grad;
-    g.fillRect(head - 30, 0, 32, h);
-    g.fillStyle = 'rgba(255,255,255,0.55)';
+    // Spiellinie: vergangene Zeit eine Tonstufe heller, dann eine 2px-Linie
+    g.fillStyle = 'rgba(255,255,255,0.03)';
+    g.fillRect(0, 0, head, h);
+    g.fillStyle = 'rgba(255,255,255,0.6)';
     g.fillRect(head - 1, 0, 2, h);
 
     // Stimm-Spur
@@ -140,7 +137,7 @@ export class Lane {
     for (const p of this.trail) {
       if (p.m == null || p.t > t + 0.05) { prev = null; continue; }
       if (prev && p.t - prev.t < 0.15) {
-        g.strokeStyle = p.hit ? '#ffd84d' : 'rgba(255,255,255,0.85)';
+        g.strokeStyle = p.hit ? GOLD : '#ffffff';
         g.beginPath();
         g.moveTo(this.x(prev.t - t), this.y(prev.m));
         g.lineTo(this.x(p.t - t), this.y(p.m));
@@ -151,11 +148,8 @@ export class Lane {
     const last = this.trail[this.trail.length - 1];
     if (last && last.m != null && t - last.t < 0.2) {
       const y = this.y(last.m);
-      g.shadowColor = last.hit ? '#ffd84d' : '#ffffff';
-      g.shadowBlur = 20;
-      g.fillStyle = last.hit ? '#ffd84d' : '#ffffff';
+      g.fillStyle = last.hit ? GOLD : '#ffffff';
       g.beginPath(); g.arc(head, y, Math.max(6, rowH * 0.45), 0, Math.PI * 2); g.fill();
-      g.shadowBlur = 0;
     }
 
     // Partikel

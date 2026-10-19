@@ -3,23 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
-  <meta name="theme-color" content="#120f24">
+  <meta name="theme-color" content="#000000">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <title>Zion Sing</title>
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="icon.svg">
+  <link rel="preload" href="fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <main id="view" aria-live="polite"></main>
-  <nav id="nav" aria-label="Hauptnavigation">
-    <a href="#/" data-tab="home"><span>🏠</span>Start</a>
-    <a href="#/songs" data-tab="songs"><span>🎵</span>Songs</a>
-    <a href="#/train" data-tab="train"><span>🎓</span>Training</a>
-    <a href="#/profile" data-tab="profile"><span>👤</span>Profil</a>
-  </nav>
+  <nav id="nav" aria-label="Hauptnavigation"></nav>
   <div id="toasts" aria-live="assertive"></div>
   <noscript>Zion Sing braucht JavaScript.</noscript>
   <script src="data/offenbarung.js"></script>

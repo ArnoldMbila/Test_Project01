@@ -14,6 +14,7 @@ import { recordings, unlock } from '../core/store.js';
 import { Lane } from '../ui/lane.js';
 import { LyricsView } from '../ui/lyrics.js';
 import { sheet, chips, bindChips, go, toast, fmtTime, escapeHtml } from '../ui/dom.js';
+import { icon } from '../ui/icons.js';
 
 export let lastResult = null;
 
@@ -84,13 +85,13 @@ export async function sessionScreen(root, params) {
   const leadIn = song && lf != null ? Math.max(0, sectionFrom - 2.2) : 0;
 
   root.innerHTML = `
-  <div class="session${studio ? ' studio' : ''}" style="--c:${color}">
+  <div class="session${studio ? ' studio' : ''}">
     <header class="ses-top">
-      <button class="icon-btn" data-act="close" aria-label="Beenden">✕</button>
+      <button class="icon-btn" data-act="close" aria-label="Beenden">${icon('close', 18)}</button>
       <div class="ses-title"><b>${escapeHtml(song ? song.title : lesson.title)}</b>
-        <small>${escapeHtml(song ? song.ref : lesson.unit || 'Warm-up')} · ${studio ? '🎙️ Studio' : stage ? `Stufe ${stage.label}` : mode === 'practice' ? 'Üben' : mode === 'lesson' ? 'Übung' : LEVELS[cfg.difficulty].label}</small></div>
+        <small>${escapeHtml(song ? song.ref : lesson.unit || 'Warm-up')} · ${studio ? 'Studio' : stage ? `Stufe ${stage.label}` : mode === 'practice' ? 'Üben' : mode === 'lesson' ? 'Übung' : LEVELS[cfg.difficulty].label}</small></div>
       <div class="ses-score"><span data-score>0</span><small>Punkte</small></div>
-      <button class="icon-btn" data-act="settings" aria-label="Einstellungen">⚙︎</button>
+      <button class="icon-btn" data-act="settings" aria-label="Einstellungen">${icon('sliders', 18)}</button>
     </header>
     <div class="ses-progress"><i></i></div>
     <div class="ses-stage">
@@ -101,15 +102,15 @@ export async function sessionScreen(root, params) {
       <div class="ses-cue"></div>
       <div class="ses-count"></div>
       <div class="ses-banner" hidden></div>
-      ${studio ? '<div class="rec-dot">● REC</div>' : ''}
+      ${studio ? `<div class="rec-dot">${icon('record', 10)} Aufnahme läuft</div>` : ''}
     </div>
     <div class="ses-lyrics ${kind === 'lesson' ? 'lesson' : ''}"></div>
     <footer class="ses-controls">
-      <button class="ctl" data-act="back" aria-label="5 Sekunden zurück">⏪<small>5 s</small></button>
-      <button class="ctl" data-act="line" aria-label="Zeile wiederholen">↺<small>Zeile</small></button>
-      <button class="ctl play" data-act="play" aria-label="Start/Pause">▶</button>
-      <button class="ctl" data-act="skip" aria-label="Intro überspringen">⏭<small>Intro</small></button>
-      <div class="ctl meter" aria-label="Mikrofonpegel"><i></i><small>Mikro</small></div>
+      <button class="ctl" data-act="back" aria-label="5 Sekunden zurück">${icon('rewind', 18)}<small>5 s</small></button>
+      <button class="ctl" data-act="line" aria-label="Zeile wiederholen">${icon('repeat', 18)}<small>Zeile</small></button>
+      <button class="ctl play" data-act="play" aria-label="Start oder Pause">${icon('play', 28)}</button>
+      <button class="ctl" data-act="skip" aria-label="Intro überspringen">${icon('skip', 18)}<small>Intro</small></button>
+      <div class="ctl meter" aria-label="Mikrofonpegel"><i></i>${icon('mic', 18)}<small>Pegel</small></div>
     </footer>
   </div>`;
 
@@ -171,7 +172,7 @@ export async function sessionScreen(root, params) {
   const micOk = micRes.ok;
   if (!micOk) {
     banner.hidden = false;
-    banner.innerHTML = `🎙️ ${escapeHtml(micRes.msg)}<br><small>Du kannst trotzdem mitsingen – nur ohne Bewertung.</small>`;
+    banner.innerHTML = `${escapeHtml(micRes.msg)}<br><small>Du kannst trotzdem mitsingen – nur ohne Bewertung.</small>`;
   }
   let recorder = null;
   if (micOk && kind === 'song' && PerformanceRecorder.supported()) recorder = new PerformanceRecorder(transport.outputNode);
@@ -215,14 +216,14 @@ export async function sessionScreen(root, params) {
   async function startPlayback() {
     await transport.play();
     lastTS = transport.time - (micOk ? latency() * cfg.rate : 0);
-    playBtn.textContent = '❚❚';
+    playBtn.innerHTML = icon('pause', 28);
     if (recorder) { if (!recStarted) { recorder.start(); recStarted = true; } else recorder.resume(); }
   }
 
   function pause() {
     if (counting) return;
     transport.pause();
-    playBtn.textContent = '▶';
+    playBtn.innerHTML = icon('play', 28);
     if (recorder) recorder.pause();
   }
 
@@ -272,7 +273,8 @@ export async function sessionScreen(root, params) {
       lane.pushPitch(tS, disp, r.hit);
       const h = r.target != null && p.midi != null ? scorer.hint() : null;
       hintEl.className = 'ses-hint' + (h ? ' show ' + h : '');
-      hintEl.textContent = h === 'up' ? '↑ höher' : h === 'down' ? '↓ tiefer' : '';
+      const hk = h || '';
+      if (hintEl.dataset.k !== hk) { hintEl.dataset.k = hk; hintEl.innerHTML = h === 'up' ? `${icon('arrowUp', 16)} Höher` : h === 'down' ? `${icon('arrowDown', 16)} Tiefer` : ''; }
       if (scorer.combo >= 5) { comboEl.textContent = `${scorer.combo}× Combo`; comboEl.classList.add('show'); }
       else comboEl.classList.remove('show');
     }
@@ -285,7 +287,8 @@ export async function sessionScreen(root, params) {
       // „Hör zu“ vs. „Jetzt du!“
       const cur = notes.find((n) => tS >= n[0] - 0.4 && tS < n[0] + n[1] + 0.3);
       const listen = cur && cur[3] === 'L';
-      cueEl.textContent = !playing ? '' : listen ? '👂 Hör zu' : cur ? '🎤 Jetzt du!' : '';
+      const ck = !playing ? '' : listen ? 'l' : cur ? 's' : '';
+      if (cueEl.dataset.k !== ck) { cueEl.dataset.k = ck; cueEl.innerHTML = ck === 'l' ? `${icon('ear', 16)} Hör zu` : ck === 's' ? `${icon('mic', 16)} Jetzt du` : ''; }
       cueEl.className = 'ses-cue' + (playing && cur ? ' show' + (listen ? ' listen' : ' sing') : '');
     }
 

@@ -4,15 +4,15 @@
 import { store } from './store.js';
 
 export const STAGES = [
-  { id: 'basic', label: 'Basic', icon: '🌱', difficulty: 'leicht', vocal: 1, part: 'first', lyrics: 'all',
+  { id: 'basic', label: 'Basic', difficulty: 'leicht', vocal: 1, part: 'first', lyrics: 'all',
     desc: 'Ein Abschnitt, laute Leitstimme, großzügige Bewertung' },
-  { id: 'easy', label: 'Easy', icon: '🙂', difficulty: 'leicht', vocal: 0.8, part: 'half', lyrics: 'all',
+  { id: 'easy', label: 'Easy', difficulty: 'leicht', vocal: 0.8, part: 'half', lyrics: 'all',
     desc: 'Erste Hälfte des Songs mit Leitstimme' },
-  { id: 'medium', label: 'Medium', icon: '🎯', difficulty: 'mittel', vocal: 0.5, part: 'full', lyrics: 'all',
+  { id: 'medium', label: 'Medium', difficulty: 'mittel', vocal: 0.5, part: 'full', lyrics: 'all',
     desc: 'Ganzer Song, Bewertung ±1 Halbton' },
-  { id: 'hard', label: 'Hard', icon: '🔥', difficulty: 'mittel', vocal: 0.15, part: 'full', lyrics: 'learn',
+  { id: 'hard', label: 'Hard', difficulty: 'mittel', vocal: 0.15, part: 'full', lyrics: 'learn',
     desc: 'Leise Leitstimme, Lücken im Text' },
-  { id: 'extreme', label: 'Extreme', icon: '💎', difficulty: 'profi', vocal: 0, part: 'full', lyrics: 'memory',
+  { id: 'extreme', label: 'Extreme', difficulty: 'profi', vocal: 0, part: 'full', lyrics: 'memory',
     desc: 'Ohne Leitstimme, auswendig, exakte Oktave' },
 ];
 

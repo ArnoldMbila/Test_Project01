@@ -10,11 +10,11 @@ export function midiToHz(m) {
   return A4 * Math.pow(2, (m - 69) / 12);
 }
 
-const NAMES_DE = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'H'];
-const NAMES_INT = ['C', 'C♯', 'D', 'D♯', 'E', 'F', 'F♯', 'G', 'G♯', 'A', 'A♯', 'B'];
-const NAMES_SOLF = ['Do', 'Do♯', 'Re', 'Re♯', 'Mi', 'Fa', 'Fa♯', 'Sol', 'Sol♯', 'La', 'La♯', 'Si'];
+const NAMES_DE = ['C', 'Cis', 'D', 'Dis', 'E', 'F', 'Fis', 'G', 'Gis', 'A', 'Ais', 'H'];
+const NAMES_INT = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+const NAMES_SOLF = ['Do', 'Do#', 'Re', 'Re#', 'Mi', 'Fa', 'Fa#', 'Sol', 'Sol#', 'La', 'La#', 'Si'];
 
-/** notation: 'de' (C D E … H), 'int' (… B), 'solf' (Do Re Mi) */
+/** notation: 'de' (C Cis D … H), 'int' (C C# D … B), 'solf' (Do Re Mi) */
 export function noteName(midi, notation = 'de', withOctave = true) {
   const m = Math.round(midi);
   const table = notation === 'solf' ? NAMES_SOLF : notation === 'int' ? NAMES_INT : NAMES_DE;

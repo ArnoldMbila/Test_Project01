@@ -2,21 +2,33 @@
 import { store, customSongs } from '../core/store.js';
 import { allSongs, songFit, difficultyOf, BIBLE, searchVerses, songForVerse, rangeLabel, moodsOf } from '../core/catalog.js';
 import { currentStage } from '../core/stages.js';
-import { cover, stars, go, escapeHtml, fmtTime, toast } from '../ui/dom.js';
+import { cover, stars, meter, go, escapeHtml, fmtTime, toast } from '../ui/dom.js';
+import { icon } from '../ui/icons.js';
+
+function songCard(song) {
+  const best = store.stats.best[song.id];
+  const fit = songFit(song);
+  return `<a class="song-card" href="#/song/${song.id}">
+    ${cover(song)}
+    <div class="sc-main"><b>${escapeHtml(song.title)}</b>
+      <small>${escapeHtml(song.ref || 'Eigener Song')} · ${fmtTime(song.duration || 0)}</small>
+      <div class="row">${meter(difficultyOf(song))}<span class="tag">Stufe ${currentStage(song.id).label}</span>
+        ${fit && fit.fit < 0.6 ? `<span class="fit hard">${fit.label}</span>` : ''}${best ? stars(best.stars) : ''}</div>
+    </div></a>`;
+}
 
 function songRow(song) {
   const best = store.stats.best[song.id];
   const fit = songFit(song);
   const diff = difficultyOf(song);
-  return `<a class="song-row" href="#/song/${song.id}" style="--c:${song.color || '#7a5cff'}">
+  return `<a class="song-row" href="#/song/${song.id}">
     ${cover(song, 'sm')}
     <div class="sr-main"><b>${escapeHtml(song.title)}</b>
       <small>${escapeHtml(song.ref || 'Eigener Song')} · ${song.genre || 'Import'} · ${fmtTime(song.duration || 0)}</small>
-      <div class="row"><span class="dots" title="Schwierigkeit">${'●'.repeat(diff)}${'○'.repeat(5 - diff)}</span>
-      <span class="tag" title="Aktuelle Stufe">${currentStage(song.id).icon} ${currentStage(song.id).label}</span>
-      ${fit ? `<span class="fit ${fit.fit >= 0.85 ? 'good' : fit.fit >= 0.6 ? 'ok' : 'hard'}">${fit.label}</span>` : ''}</div>
+      <div class="row">${meter(diff)}<span class="tag">Stufe ${currentStage(song.id).label}</span>
+      ${fit && fit.fit < 0.6 ? `<span class="fit hard">${fit.label}</span>` : ''}</div>
     </div>
-    <div class="sr-side">${best ? stars(best.stars) + `<small>${best.score}</small>` : '<span class="chev">›</span>'}</div>
+    <div class="sr-side">${best ? stars(best.stars) + `<small class="num faint">${best.score} Punkte</small>` : `<span class="chev">${icon('chevron', 18)}</span>`}</div>
   </a>`;
 }
 
@@ -26,8 +38,8 @@ export async function libraryScreen(root, params) {
   let mood = 'Alle';
   root.innerHTML = `
   <div class="library">
-    <header class="page-head"><h1>Songs</h1><a class="btn small ghost" href="#/import">＋ Import</a></header>
-    <div class="search"><input type="search" placeholder="Song, Vers oder Wort suchen …" data-q aria-label="Suche"></div>
+    <header class="page-head"><h1>Songs</h1><a class="btn small" href="#/import">${icon('plus', 14)} Song importieren</a></header>
+    <div class="search">${icon('search', 18)}<input type="search" placeholder="Song, Vers oder Wort suchen" data-q aria-label="Suche"></div>
     <div class="tabs" role="tablist">
       <button data-tab="songs">Songs</button><button data-tab="mine">Meine</button><button data-tab="chapters">Kapitel</button>
     </div>
@@ -43,12 +55,12 @@ export async function libraryScreen(root, params) {
       const hitSongs = songs.filter((s) => (s.title + ' ' + (s.ref || '') + ' ' + s.lines.map((l) => l.words.map((w) => w[0]).join(' ')).join(' ')).toLowerCase().includes(q));
       const verses = searchVerses(q);
       body.innerHTML = `
-        ${hitSongs.length ? `<h3 class="sub">Songs</h3><div class="list">${hitSongs.map(songRow).join('')}</div>` : ''}
-        <h3 class="sub">Verse (${verses.length}${verses.length === 30 ? '+' : ''})</h3>
+        ${hitSongs.length ? `<h3 class="sub-h">Songs</h3><div class="list">${hitSongs.map(songRow).join('')}</div>` : ''}
+        <h3 class="sub-h">Verse <span class="faint num">${verses.length}${verses.length === 30 ? '+' : ''}</span></h3>
         <div class="list">${verses.map((v) => {
           const s = songForVerse(v.ch, v.v);
           const txt = escapeHtml(v.text).replace(new RegExp(escapeRe(escapeHtml(q)), 'gi'), (m) => `<mark>${m}</mark>`);
-          return `<a class="verse-hit" href="${s ? `#/song/${s.id}` : `#/chapter/${v.ch}?v=${v.v}`}"><b>Offb ${v.ch},${v.v}</b>${s ? ' <span class="tag">🎵 Song</span>' : ''}<p>${txt}</p></a>`;
+          return `<a class="verse-hit" href="${s ? `#/song/${s.id}` : `#/chapter/${v.ch}?v=${v.v}`}"><b>Offb ${v.ch},${v.v}</b>${s ? ` <span class="tag">Im Song „${escapeHtml(s.title)}“</span>` : ''}<p>${txt}</p></a>`;
         }).join('') || '<p class="muted">Keine Treffer.</p>'}</div>`;
       return;
     }
@@ -59,17 +71,17 @@ export async function libraryScreen(root, params) {
       body.innerHTML = `<div class="chips moods" data-moods>${moods.map((m) => `<button class="chip${m === mood ? ' on' : ''}" data-mood="${escapeHtml(m)}">${escapeHtml(m)}</button>`).join('')}</div>
         <div class="album">
           <div class="album-art">${b.slice(0, 3).map((s) => cover(s)).join('')}</div>
-          <div><small class="muted">Album</small><b>Offenbarung – Afro</b><small class="muted">${b.length} Songs · Elberfelder</small></div>
+          <div><b>Offenbarung – Afro</b><small class="faint">${b.length} Songs · Elberfelder-Text</small></div>
         </div>
-        <div class="list">${b.map(songRow).join('')}</div>`;
+        <div class="song-grid">${b.map(songCard).join('')}</div>`;
     } else if (tab === 'mine') {
       const c = songs.filter((s) => !s.builtin);
-      body.innerHTML = c.length ? `<div class="list">${c.map((s) => `<div class="row-wrap">${songRow(s)}<button class="icon-btn danger" data-del="${s.id}" aria-label="Löschen">🗑</button></div>`).join('')}</div>`
-        : `<div class="empty"><div class="big-ic">🎼</div><p>Noch keine eigenen Songs.</p><p class="muted small">Importiere eine MP3 und füge den Text ein – die App erkennt die Melodie und du tippst das Timing.</p><a class="btn primary" href="#/import">Song importieren</a></div>`;
+      body.innerHTML = c.length ? `<div class="list">${c.map((s) => `<div class="row-wrap">${songRow(s)}<button class="icon-btn danger" data-del="${s.id}" aria-label="Song löschen">${icon('trash', 16)}</button></div>`).join('')}</div>`
+        : `<div class="empty"><p>Noch keine eigenen Songs.</p><p class="muted small">Importiere eine MP3 und füge den Text ein – die App erkennt die Melodie und du tippst das Timing.</p><a class="btn primary" href="#/import">Song importieren</a></div>`;
     } else {
       body.innerHTML = `<div class="chapters">${BIBLE.map((c) => {
         const has = songs.some((s) => s.chapter === c.n);
-        return `<a class="chapter" href="#/chapter/${c.n}"><span class="ch-em">${c.emoji}</span><div><b>Kapitel ${c.n}</b><small>${escapeHtml(c.title)}</small></div><small class="muted">${c.v.length} V.${has ? ' · 🎵' : ''}</small></a>`;
+        return `<a class="chapter" href="#/chapter/${c.n}"><span class="ch-n">${c.n}</span><div><b>${escapeHtml(c.title)}</b><small>${c.v.length} Verse${has ? ' · mit Song' : ''}</small></div></a>`;
       }).join('')}</div>`;
     }
   }
@@ -100,16 +112,17 @@ export function chapterScreen(root, params) {
   let hide = false;
   root.innerHTML = `
   <div class="chapter-view">
-    <header class="page-head"><button class="icon-btn" onclick="history.back()" aria-label="Zurück">‹</button>
-      <div><small class="muted">Offenbarung ${n}</small><h1>${ch.emoji} ${escapeHtml(ch.title)}</h1></div></header>
+    <a class="back-row" href="#/songs?tab=chapters">${icon('back', 16)} Kapitel</a>
+    <header class="page-head"><div><h1>Offenbarung ${n}: ${escapeHtml(ch.title)}</h1><p class="sub">${ch.v.length} Verse · Elberfelder</p></div></header>
     <div class="row gap">
-      <button class="btn small ghost" data-act="hide">🧠 Lernmodus</button>
-      <a class="btn small primary" href="#/import?ch=${n}">🎼 Song daraus erstellen</a>
+      <button class="btn small" data-act="hide">Lernmodus: Verse verbergen</button>
+      <a class="btn small" href="#/import?ch=${n}">${icon('plus', 14)} Song daraus erstellen</a>
     </div>
-    <ol class="verses">${ch.v.map((t, i) => {
+    <div class="ch-layout"><ol class="verses">${ch.v.map((t, i) => {
       const s = songForVerse(n, i + 1);
-      return `<li id="v${i + 1}" class="${s ? 'sung' : ''}"><b>${i + 1}</b> <span class="vt">${escapeHtml(t)}</span>${s && s.v0 === i + 1 ? ` <a class="tag" href="#/song/${s.id}">🎵 ${escapeHtml(s.title)} singen</a>` : ''}</li>`;
+      return `<li id="v${i + 1}" class="${s ? 'sung' : ''}"><b>${i + 1}</b> <span class="vtext">${escapeHtml(t)}</span>${s && s.v0 === i + 1 ? ` <a class="tag" href="#/song/${s.id}">„${escapeHtml(s.title)}“ singen</a>` : ''}</li>`;
     }).join('')}</ol>
+    <aside class="ch-rail" aria-label="Kapitel"><h2>Alle Kapitel</h2>${BIBLE.map((c) => `<a class="ch-link${c.n === n ? ' on' : ''}" href="#/chapter/${c.n}"><span class="num">${c.n}</span>${escapeHtml(c.title)}</a>`).join('')}</aside></div>
   </div>`;
   root.querySelector('[data-act="hide"]').onclick = (e) => {
     hide = !hide;

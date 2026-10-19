@@ -62,7 +62,7 @@ export class LyricsView {
       this.idx = key;
       if (instrumental) {
         const up = idx < 0 ? 0 : idx + 1;
-        this.curEl.innerHTML = '<span class="ly-inst">♪ ♪ ♪</span>';
+        this.curEl.innerHTML = '<span class="ly-inst">Instrumental</span>';
         this.curEl.classList.remove('adlib');
         this.renderLine(this.nextEl, up, false);
         this.wordEls = [];

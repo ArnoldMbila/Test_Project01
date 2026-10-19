@@ -4,6 +4,7 @@ import { BIBLE } from '../core/catalog.js';
 import { decodeFile, extractNotes, textToLines, buildTimedLines } from '../audio/analyze.js';
 import { sfx } from '../audio/synth.js';
 import { go, toast, escapeHtml, fmtTime } from '../ui/dom.js';
+import { icon } from '../ui/icons.js';
 
 const COLORS = ['#ff7a45', '#3fb6ff', '#b06cff', '#3fe0c5', '#ff5fa2', '#ffc53d'];
 
@@ -18,16 +19,17 @@ export function importScreen(root, params) {
   function stepForm() {
     root.innerHTML = `
     <div class="import">
-      <header class="page-head"><button class="icon-btn" onclick="history.back()" aria-label="Zurück">‹</button><h1>Song importieren</h1></header>
+      <a class="back-row" href="#/songs">${icon('back', 16)} Songs</a>
+      <header class="page-head"><div><h1>Song importieren</h1><p class="sub">Audiodatei und Text – die Melodie erkennt die App selbst.</p></div></header>
       <ol class="wizard"><li class="on">Datei & Text</li><li>Analyse</li><li>Timing</li></ol>
       <label class="drop" data-drop><input type="file" accept="audio/*" data-file hidden>
-        <span class="big-ic">🎵</span><b data-fname>${st.file ? escapeHtml(st.file.name) : 'Audiodatei wählen (MP3, M4A, WAV)'}</b><small class="muted">Wird nur lokal auf diesem Gerät gespeichert.</small></label>
+        ${icon('songs', 24)}<b data-fname>${st.file ? escapeHtml(st.file.name) : 'Audiodatei wählen (MP3, M4A, WAV)'}</b><small class="muted">Wird nur lokal auf diesem Gerät gespeichert.</small></label>
       <label class="field">Titel<input type="text" data-title value="${escapeHtml(st.title)}" placeholder="z. B. Offb 21 – Das neue Jerusalem"></label>
       <div class="field">Text aus der Offenbarung übernehmen
         <div class="row gap">
           <select data-ch>${BIBLE.map((c) => `<option value="${c.n}">Kapitel ${c.n} – ${escapeHtml(c.title)}</option>`).join('')}</select>
           <input type="number" min="1" value="1" data-v0 aria-label="Von Vers" class="num"> – <input type="number" min="1" value="5" data-v1 aria-label="Bis Vers" class="num">
-          <button class="btn small ghost" data-act="verses">Einfügen</button>
+          <button class="btn small" data-act="verses">Einfügen</button>
         </div></div>
       <label class="field">Songtext (eine Zeile pro Phrase)<textarea rows="9" data-text placeholder="Text hier einfügen …">${escapeHtml(st.text)}</textarea></label>
       <button class="btn primary big" data-act="next">Weiter: Melodie analysieren</button>
@@ -90,12 +92,12 @@ export function importScreen(root, params) {
       <div class="tap-lines" data-lines></div>
       <div class="row between"><small data-time>0:00</small><small data-count>0/${st.lineWords.length}</small></div>
       <div class="row gap center">
-        <button class="btn ghost" data-act="play">▶ Start</button>
-        <button class="btn ghost" data-act="undo">↶ Zurück</button>
-        <button class="btn ghost" data-act="slow">🐢 75 %</button>
+        <button class="btn" data-act="play">${icon('play', 14)} Start</button>
+        <button class="btn" data-act="undo">${icon('undo', 16)} Zurück</button>
+        <button class="btn" data-act="slow">Tempo 75 %</button>
       </div>
       <button class="tap-btn" data-act="tap">TAP</button>
-      <div class="row gap center"><button class="btn small ghost" data-act="auto">Automatisch verteilen</button>
+      <div class="row gap center"><button class="btn small" data-act="auto">Automatisch verteilen</button>
         <button class="btn primary" data-act="save" disabled>Speichern</button></div>
     </div>`;
     const q = (s) => root.querySelector(s);
@@ -115,7 +117,7 @@ export function importScreen(root, params) {
       renderLines();
     };
     const timer = setInterval(() => { q('[data-time]') && (q('[data-time]').textContent = fmtTime(audio.currentTime)); }, 250);
-    q('[data-act="play"]').onclick = (e) => { if (audio.paused) { audio.play(); e.target.textContent = '❚❚ Pause'; } else { audio.pause(); e.target.textContent = '▶ Weiter'; } };
+    q('[data-act="play"]').onclick = (e) => { const b = e.currentTarget; if (audio.paused) { audio.play(); b.innerHTML = `${icon('pause', 14)} Pause`; } else { audio.pause(); b.innerHTML = `${icon('play', 14)} Weiter`; } };
     q('[data-act="undo"]').onclick = () => { const t = st.starts.pop(); if (t != null) audio.currentTime = Math.max(0, t - 2); renderLines(); };
     q('[data-act="slow"]').onclick = (e) => { audio.playbackRate = audio.playbackRate === 1 ? 0.75 : 1; e.target.classList.toggle('on', audio.playbackRate !== 1); };
     q('[data-act="tap"]').onclick = tap;
@@ -133,13 +135,13 @@ export function importScreen(root, params) {
       const ps = st.notes.map((n) => n[2]);
       const rec = {
         id: 'custom_' + Date.now(), title: st.title, ref: st.ref || '', subtitle: 'Eigener Song', genre: 'Eigener Song',
-        color: COLORS[Math.floor(Math.random() * COLORS.length)], emoji: '🎵', duration: st.duration,
+        color: COLORS[Math.floor(Math.random() * COLORS.length)], duration: st.duration,
         range: ps.length ? [Math.min(...ps), Math.max(...ps)] : [55, 67], lines, notes: st.notes,
         blob: st.file, createdAt: new Date().toISOString(),
       };
       await customSongs.put(rec);
       const a = unlock('own_song');
-      toast(a ? `<b>${a.icon} ${a.name}</b><br>Song gespeichert!` : 'Song gespeichert!');
+      toast(a ? `<b>Erfolg: ${escapeHtml(a.name)}</b><br>Song gespeichert.` : 'Song gespeichert.');
       audio.pause();
       go(`#/song/${rec.id}`);
     };

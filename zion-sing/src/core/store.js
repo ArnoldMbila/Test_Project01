@@ -82,21 +82,21 @@ export function currentStreak() {
 }
 
 export const ACHIEVEMENTS = [
-  { id: 'first_song', icon: '🎤', name: 'Erster Auftritt', desc: 'Singe deinen ersten Song.' },
-  { id: 'three_stars', icon: '⭐', name: 'Drei Sterne', desc: 'Hole 3 Sterne in einem Song.' },
-  { id: 'all_songs', icon: '📀', name: 'Ganzes Album', desc: 'Singe alle drei Offenbarungs-Songs.' },
-  { id: 'range_test', icon: '🎚️', name: 'Stimme vermessen', desc: 'Mache den Stimmumfang-Test.' },
-  { id: 'warmup5', icon: '🔥', name: 'Aufgewärmt', desc: 'Schließe 5 Übungen ab.' },
-  { id: 'streak3', icon: '📅', name: 'Drei Tage am Stück', desc: 'Singe 3 Tage hintereinander.' },
-  { id: 'streak7', icon: '🏆', name: 'Wochen-Serie', desc: 'Singe 7 Tage hintereinander.' },
-  { id: 'combo25', icon: '⚡', name: 'Combo-Meister', desc: '25 Noten in Folge getroffen.' },
-  { id: 'memory', icon: '🧠', name: 'Auswendig!', desc: 'Singe einen Song im Auswendig-Modus mit 70+ Punkten.' },
-  { id: 'own_song', icon: '🎼', name: 'Eigener Song', desc: 'Importiere einen eigenen Song.' },
-  { id: 'ten_sessions', icon: '💪', name: 'Dranbleiben', desc: '10 Sessions gesungen.' },
-  { id: 'hour', icon: '⏱️', name: 'Eine Stunde Gesang', desc: 'Insgesamt 60 Minuten gesungen.' },
-  { id: 'extreme', icon: '💎', name: 'Extrem gut', desc: 'Bestehe eine Song-Stufe „Extreme“.' },
-  { id: 'studio', icon: '🎙️', name: 'Im Studio', desc: 'Speichere deine erste Studio-Aufnahme.' },
-  { id: 'daily3', icon: '☀️', name: 'Morgenroutine', desc: 'Mache das tägliche Warm-up an 3 Tagen.' },
+  { id: 'first_song', name: 'Erster Auftritt', desc: 'Singe deinen ersten Song.' },
+  { id: 'three_stars', name: 'Drei Sterne', desc: 'Hole 3 Sterne in einem Song.' },
+  { id: 'all_songs', name: 'Ganzes Album', desc: 'Singe alle drei Offenbarungs-Songs.' },
+  { id: 'range_test', name: 'Stimme vermessen', desc: 'Mache den Stimmumfang-Test.' },
+  { id: 'warmup5', name: 'Aufgewärmt', desc: 'Schließe 5 Übungen ab.' },
+  { id: 'streak3', name: 'Drei Tage am Stück', desc: 'Singe 3 Tage hintereinander.' },
+  { id: 'streak7', name: 'Wochen-Serie', desc: 'Singe 7 Tage hintereinander.' },
+  { id: 'combo25', name: 'Combo-Meister', desc: '25 Noten in Folge getroffen.' },
+  { id: 'memory', name: 'Auswendig!', desc: 'Singe einen Song im Auswendig-Modus mit 70+ Punkten.' },
+  { id: 'own_song', name: 'Eigener Song', desc: 'Importiere einen eigenen Song.' },
+  { id: 'ten_sessions', name: 'Dranbleiben', desc: '10 Sessions gesungen.' },
+  { id: 'hour', name: 'Eine Stunde Gesang', desc: 'Insgesamt 60 Minuten gesungen.' },
+  { id: 'extreme', name: 'Extrem gut', desc: 'Bestehe eine Song-Stufe „Extreme“.' },
+  { id: 'studio', name: 'Im Studio', desc: 'Speichere deine erste Studio-Aufnahme.' },
+  { id: 'daily3', name: 'Morgenroutine', desc: 'Mache das tägliche Warm-up an 3 Tagen.' },
 ];
 
 /** Erfolg vergeben; gibt das Achievement zurück, falls neu. */

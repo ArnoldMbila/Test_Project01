@@ -95,7 +95,7 @@ export function songPhraseExercise(song, lineFrom, lineTo, base) {
 
 export const COURSE = [
   {
-    unit: 'Grundlagen', icon: '🌱', lessons: [
+    unit: 'Grundlagen', lessons: [
       { id: 'l1', title: 'Atem & Haltung', ex: 'breath', tips: [
         'Stell dich aufrecht hin, Schultern locker, Knie leicht gebeugt.',
         'Atme tief in den Bauch – die Hand auf dem Bauch soll sich nach außen bewegen.',
@@ -109,7 +109,7 @@ export const COURSE = [
     ],
   },
   {
-    unit: 'Tonhöhe', icon: '🎯', lessons: [
+    unit: 'Tonhöhe', lessons: [
       { id: 'l4', title: 'Dreiklang-Arpeggio', ex: 'arpeggio', tips: [
         'Ein Dreiklang springt: Grundton, Terz, Quinte, Oktave.',
         'Stell dir die Töne wie Treppenstufen vor – denk sie vor dem Singen.'] },
@@ -122,7 +122,7 @@ export const COURSE = [
     ],
   },
   {
-    unit: 'Umfang erweitern', icon: '🚀', lessons: [
+    unit: 'Umfang erweitern', lessons: [
       { id: 'l7', title: 'Nach oben', ex: 'high', tips: [
         'Je höher, desto mehr „Kopf“ – denk den Ton nach vorne-oben.',
         'Nicht die Lautstärke steigern, nur die Tonhöhe.'] },
@@ -135,7 +135,7 @@ export const COURSE = [
     ],
   },
   {
-    unit: 'Song-Technik', icon: '🎵', lessons: [
+    unit: 'Song-Technik', lessons: [
       { id: 'l10', title: 'Phrase: Die vier Posaunen', song: 'offb_8_7_13', lines: [0, 1], tips: [
         'Erst hören, dann nachsingen – genau die Melodie aus dem Song.',
         'Achte auf die Einsätze: „Und der erste posaunte …“'] },
@@ -147,16 +147,16 @@ export const COURSE = [
   },
 ];
 
-export const DAILY = { id: 'daily', title: 'Tägliches Warm-up', ex: 'daily', icon: '☀️', min: 5,
+export const DAILY = { id: 'daily', title: 'Tägliches Warm-up', ex: 'daily', min: 5,
   tips: ['5 Minuten für Atem, Tonhöhe und Selbstvertrauen.', 'Erst atmen, dann lange Töne, Sirene, Leiter, Arpeggio und Oktavsprung.', 'Sing locker – Warm-up heißt aufwärmen, nicht anstrengen.'] };
 
 export const WARMUPS = [
-  { id: 'w_sustain', title: 'Lange Töne', ex: 'sustain', icon: '〰️', min: 1 },
-  { id: 'w_scale', title: 'Fünfton-Leiter', ex: 'scale5', icon: '🪜', min: 1 },
-  { id: 'w_siren', title: 'Sirene', ex: 'siren', icon: '🎢', min: 1 },
-  { id: 'w_arp', title: 'Arpeggio', ex: 'arpeggio', icon: '🎹', min: 1 },
-  { id: 'w_oct', title: 'Oktavsprung', ex: 'octave', icon: '↕️', min: 1 },
-  { id: 'w_breath', title: 'Atem-Ausdauer', ex: 'breath', icon: '🌬️', min: 1 },
+  { id: 'w_sustain', title: 'Lange Töne', ex: 'sustain', min: 1 },
+  { id: 'w_scale', title: 'Fünfton-Leiter', ex: 'scale5', min: 1 },
+  { id: 'w_siren', title: 'Sirene', ex: 'siren', min: 1 },
+  { id: 'w_arp', title: 'Arpeggio', ex: 'arpeggio', min: 1 },
+  { id: 'w_oct', title: 'Oktavsprung', ex: 'octave', min: 1 },
+  { id: 'w_breath', title: 'Atem-Ausdauer', ex: 'breath', min: 1 },
 ];
 
 export function findLesson(id) {

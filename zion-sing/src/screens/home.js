@@ -2,9 +2,10 @@
 import { store, levelFor, currentStreak, today } from '../core/store.js';
 import { allSongs, songFit, verseOfTheDay, songForVerse } from '../core/catalog.js';
 import { COURSE, WARMUPS, DAILY, tipOfTheDay } from '../core/lessons.js';
-import { currentStage } from '../core/stages.js';
 import { classifyVoice, noteName } from '../core/notes.js';
+import { currentStage } from '../core/stages.js';
 import { cover, stars, go, escapeHtml } from '../ui/dom.js';
+import { icon, wordmark } from '../ui/icons.js';
 
 function greeting() {
   const h = new Date().getHours();
@@ -14,18 +15,18 @@ function greeting() {
 export function onboardingScreen(root) {
   root.innerHTML = `
   <div class="onboard">
-    <div class="ob-logo">🎤</div>
-    <h1>Zion Sing</h1>
-    <p class="lead">Lerne singen mit den Liedern der Offenbarung – mit Echtzeit-Feedback zu jeder Note.</p>
+    ${wordmark()}
+    <h1>Singen lernen mit den Liedern der Offenbarung</h1>
+    <p class="lead">Du singst zu echten Songs und siehst bei jeder Note, ob du sie triffst.</p>
     <ul class="ob-points">
-      <li><span>🎯</span> Sieh live, ob du den Ton triffst</li>
-      <li><span>🎚️</span> Songs passen sich deiner Stimme an</li>
-      <li><span>🧠</span> Verse ganz nebenbei auswendig lernen</li>
+      <li>${icon('mic', 18)} Live-Tonhöhe auf einer Notenbahn</li>
+      <li>${icon('sliders', 18)} Songs passen sich deiner Stimmlage an</li>
+      <li>${icon('book', 18)} Die Verse lernst du dabei auswendig</li>
     </ul>
     <label class="field">Wie heißt du?<input type="text" data-name placeholder="Dein Name" maxlength="24" value="${escapeHtml(store.profile.name)}"></label>
-    <p class="muted small">🎧 Tipp: Mit Kopfhörern erkennt die App deine Stimme am besten.</p>
+    <p class="muted small">Mit Kopfhörern erkennt die App deine Stimme am besten.</p>
     <button class="btn primary big" data-act="range">Stimmumfang testen (1 Min.)</button>
-    <button class="btn ghost" data-act="skip">Später – direkt loslegen</button>
+    <button class="btn big" data-act="skip">Später – direkt loslegen</button>
   </div>`;
   const done = (to) => {
     store.setProfile({ name: root.querySelector('[data-name]').value.trim(), onboarded: true });
@@ -41,86 +42,83 @@ export async function homeScreen(root) {
   const streak = currentStreak();
   const todaySec = s.daily[today()] || 0;
   const goal = p.dailyGoalMin * 60;
-  const pct = Math.min(1, todaySec / goal);
   const songs = await allSongs();
   const withFit = songs.map((x) => ({ song: x, fit: songFit(x) }))
     .sort((a, b) => (b.fit ? b.fit.fit : 0) - (a.fit ? a.fit.fit : 0));
   const last = s.history.find((h) => h.kind !== 'lesson');
-  const lastSong = last && songs.find((x) => x.id === last.songId);
+  const lastSong = (last && songs.find((x) => x.id === last.songId)) || songs[0];
+  const lastStage = lastSong && currentStage(lastSong.id);
   const nextLesson = COURSE.flatMap((u) => u.lessons).find((l) => !s.lessons[l.id]);
-  const warm = WARMUPS[new Date().getDate() % WARMUPS.length];
   const totalLessons = COURSE.reduce((a, u) => a + u.lessons.length, 0);
-  const doneLessons = Object.keys(s.lessons).filter((k) => k.startsWith('l')).length;
+  const doneLessons = COURSE.flatMap((u) => u.lessons).filter((l) => s.lessons[l.id]).length;
   const vt = p.range ? classifyVoice(p.range[0], p.range[1]) : null;
   const vod = verseOfTheDay();
   const vodSong = vod && songForVerse(vod.ch, vod.v);
+  const warmDone = !!s.warmups[today()];
+  const min = Math.floor(todaySec / 60);
 
   root.innerHTML = `
   <div class="home">
     <header class="home-top">
-      <div><small class="muted">${greeting()}${p.name ? ',' : ''}</small><h1>${p.name ? escapeHtml(p.name) : 'Zion Sing'}</h1></div>
-      <div class="pills">
-        <span class="pill" title="Tagesserie">🔥 ${streak}</span>
-        <span class="pill" title="Level">⭐ ${lv.level}</span>
-      </div>
+      <div><h1>${greeting()}${p.name ? ', ' + escapeHtml(p.name) : ''}</h1>
+        <p class="sub">${min >= p.dailyGoalMin ? 'Tagesziel erreicht.' : `Noch ${Math.max(1, Math.ceil((goal - todaySec) / 60))} Min. bis zum Tagesziel.`}</p></div>
     </header>
 
-    <section class="card goal">
-      <div class="ring" style="--p:${pct}"><svg viewBox="0 0 44 44"><circle cx="22" cy="22" r="19" class="bg"/><circle cx="22" cy="22" r="19" class="fg"/></svg>
-        <span>${Math.floor(todaySec / 60)}<small>/${p.dailyGoalMin}</small></span></div>
-      <div><b>Tagesziel</b><p class="muted small">${pct >= 1 ? 'Geschafft! 🎉 Sing weiter, wenn du Lust hast.' : `Noch ${Math.max(1, Math.ceil((goal - todaySec) / 60))} Min. singen`}</p>
-        <div class="bar thin"><i style="width:${Math.round(lv.progress * 100)}%"></i></div><small class="muted">Level ${lv.level} · ${s.xp} XP</small></div>
+    <section class="kpis" aria-label="Dein Fortschritt">
+      <div class="kpi"><small>Heute gesungen</small><b>${min}<span class="unit">/ ${p.dailyGoalMin} Min.</span></b><div class="bar thin"><i style="width:${Math.round(Math.min(1, todaySec / goal) * 100)}%"></i></div></div>
+      <div class="kpi"><small>Tagesserie</small><b>${streak}<span class="unit">${streak === 1 ? 'Tag' : 'Tage'}</span></b></div>
+      <div class="kpi"><small>Level ${lv.level}</small><b>${s.xp}<span class="unit">XP</span></b><div class="bar thin"><i style="width:${Math.round(lv.progress * 100)}%"></i></div></div>
+      <a class="kpi" href="#/${p.range ? 'profile' : 'range'}"><small>Stimmlage</small><b>${vt ? vt.name : '—'}</b>
+        <small>${vt ? `${noteName(p.range[0], p.notation)} – ${noteName(p.range[1], p.notation)}` : 'Jetzt testen'}</small></a>
     </section>
 
-    ${!p.range ? `<section class="card cta" data-go="#/range">
-      <div class="cta-ic">🎚️</div><div><b>Finde deine Stimmlage</b><p class="muted small">Sing deinen tiefsten und höchsten Ton – danach passen sich die Songs an dich an.</p></div><span class="chev">›</span>
-    </section>` : `<section class="card voice" data-go="#/profile">
-      <div class="cta-ic">🎙️</div><div><b>${vt.name}</b><p class="muted small">${noteName(p.range[0], p.notation)} – ${noteName(p.range[1], p.notation)} · ${p.range[1] - p.range[0]} Halbtöne</p></div><span class="chev">›</span>
-    </section>`}
+    <div class="grid">
+      ${lastSong ? `<section class="card span-4 continue">
+        ${cover(lastSong, 'md')}
+        <div><small>${last ? 'Weiter singen' : 'Dein erster Song'}</small><h2>${escapeHtml(lastSong.title)}</h2>
+          <span class="muted">${escapeHtml(lastSong.ref || '')} · Stufe ${lastStage.label}</span>
+          <div class="row" style="margin-top:6px">${s.best[lastSong.id] ? stars(s.best[lastSong.id].stars) : ''}</div></div>
+        <button class="play-round" data-go="#/sing/${lastSong.id}?stage=${lastStage.id}" aria-label="Stufe ${lastStage.label} singen">${icon('play', 20)}</button>
+      </section>` : ''}
+      <a class="card span-2 link-card" href="#/lesson-intro/${DAILY.id}">
+        <div><h2>${DAILY.title}</h2><p class="muted small">${warmDone ? 'Heute erledigt. Nochmal geht immer.' : `${DAILY.min} Min. Atem, Tonhöhe und Sicherheit`}</p></div>
+        ${warmDone ? `<span class="pill gold">${icon('check', 14)} Erledigt</span>` : `<span class="chev">${icon('chevron', 18)}</span>`}
+      </a>
+    </div>
 
-    <section class="card daily" data-go="#/lesson-intro/${DAILY.id}">
-      <div class="cta-ic">${s.warmups[today()] ? '✅' : DAILY.icon}</div>
-      <div><b>${DAILY.title}</b><p class="muted small">${s.warmups[today()] ? 'Heute erledigt – stark! Nochmal geht immer.' : '5 Min. für Atem, Tonhöhe & Selbstvertrauen'}</p></div>
-      <span class="chev">›</span>
-    </section>
-
-    ${lastSong ? `<section class="continue" data-go="#/song/${lastSong.id}">
-      ${cover(lastSong, 'sm')}<div><small class="muted">Weiter singen</small><b>${escapeHtml(lastSong.title)}</b><small>${escapeHtml(lastSong.ref || '')} · Stufe ${currentStage(lastSong.id).label}</small></div>
-      <button class="btn round primary" data-go="#/sing/${lastSong.id}?stage=${currentStage(lastSong.id).id}" aria-label="Singen">▶</button>
-    </section>` : ''}
-
-    <div class="sec-head"><h2>Songs für dich</h2><a href="#/songs">Alle</a></div>
+    <div class="sec-head"><h2>Songs für deine Stimme</h2><a href="#/songs">Alle Songs</a></div>
     <div class="carousel">
-      ${withFit.map(({ song, fit }) => `<a class="song-tile" href="#/song/${song.id}" style="--c:${song.color || '#7a5cff'}">
+      ${withFit.map(({ song, fit }) => `<a class="song-tile" href="#/song/${song.id}">
         ${cover(song)}<b>${escapeHtml(song.title)}</b><small>${escapeHtml(song.ref || song.subtitle || '')}</small>
-        <div class="row">${s.best[song.id] ? stars(s.best[song.id].stars) : '<span class="muted small">Neu</span>'}
-        ${fit ? `<span class="fit ${fit.fit >= 0.85 ? 'good' : fit.fit >= 0.6 ? 'ok' : 'hard'}">${fit.label}</span>` : ''}</div></a>`).join('')}
-      <a class="song-tile add" href="#/import"><div class="cover cover-gen"><span>＋</span></div><b>Eigener Song</b><small>MP3 + Text importieren</small></a>
+        <div class="row">${s.best[song.id] ? stars(s.best[song.id].stars) : `<span class="tag">Stufe ${currentStage(song.id).label}</span>`}
+        ${fit && fit.fit < 0.6 ? `<span class="fit hard">${fit.label}</span>` : ''}</div></a>`).join('')}
+      <a class="song-tile" href="#/import"><div class="cover cover-gen">${icon('plus', 28)}</div><b>Eigener Song</b><small>MP3 und Text importieren</small></a>
     </div>
 
-    <div class="sec-head"><h2>Training</h2><a href="#/train">Kurs</a></div>
-    <div class="two">
-      <a class="card mini" href="#/lesson/${warm.id}"><span class="big-ic">${warm.icon}</span><b>Warm-up des Tages</b><small class="muted">${warm.title} · ${warm.min} Min.</small></a>
-      ${nextLesson ? `<a class="card mini" href="#/lesson/${nextLesson.id}"><span class="big-ic">🎓</span><b>Nächste Lektion</b><small class="muted">${escapeHtml(nextLesson.title)} · ${doneLessons}/${totalLessons}</small></a>`
-      : '<a class="card mini" href="#/train"><span class="big-ic">🏆</span><b>Kurs abgeschlossen</b><small class="muted">Wiederhole Lektionen für 3 Sterne</small></a>'}
-      <a class="card mini" href="#/studio"><span class="big-ic">🎙️</span><b>Aufnahme-Studio</b><small class="muted">Aufnehmen & anhören</small></a>
-      <a class="card mini" href="#/songs?tab=chapters"><span class="big-ic">📜</span><b>Alle 22 Kapitel</b><small class="muted">405 Verse lesen & lernen</small></a>
+    <div class="sec-head"><h2>Weiterlernen</h2><a href="#/train">Training</a></div>
+    <div class="grid">
+      ${nextLesson ? `<a class="card span-2 link-card" href="#/lesson-intro/${nextLesson.id}"><div><small class="faint">Kurs · ${doneLessons} von ${totalLessons}</small><h2>${escapeHtml(nextLesson.title)}</h2></div><span class="chev">${icon('chevron', 18)}</span></a>`
+      : `<a class="card span-2 link-card" href="#/train"><div><small class="faint">Kurs</small><h2>Alle ${totalLessons} Lektionen geschafft</h2></div><span class="chev">${icon('chevron', 18)}</span></a>`}
+      <a class="card span-2 link-card" href="#/studio"><div><small class="faint">Studio</small><h2>Aufnehmen und anhören</h2></div><span class="chev">${icon('chevron', 18)}</span></a>
+      <a class="card span-2 link-card" href="#/songs?tab=chapters"><div><small class="faint">Offenbarung</small><h2>22 Kapitel, 405 Verse</h2></div><span class="chev">${icon('chevron', 18)}</span></a>
     </div>
 
-    <section class="card tip"><span class="big-ic">💡</span><div><small class="muted">Tipp des Tages</small><p>${escapeHtml(tipOfTheDay())}</p></div></section>
-
-    ${vod ? `<section class="card vod">
-      <small class="muted">Vers des Tages · Offb ${vod.ch},${vod.v}</small>
-      <p>„${escapeHtml(vod.text)}“</p>
-      ${vodSong ? `<a class="btn small primary" href="#/song/${vodSong.id}">🎵 Diesen Vers singen</a>` : `<a class="btn small ghost" href="#/chapter/${vod.ch}">Kapitel ${vod.ch} lesen</a>`}
-    </section>` : ''}
+    <div class="grid" style="margin-top:var(--gap)">
+      ${vod ? `<section class="card span-4">
+        <small class="faint">Vers des Tages · Offb ${vod.ch},${vod.v}</small>
+        <p class="verse">„${escapeHtml(vod.text)}“</p>
+        ${vodSong ? `<a class="btn small primary" href="#/song/${vodSong.id}">${icon('play', 14)} Diesen Vers singen</a>` : `<a class="btn small" href="#/chapter/${vod.ch}?v=${vod.v}">Kapitel ${vod.ch} lesen</a>`}
+      </section>` : ''}
+      <section class="card span-2"><small class="faint">Tipp des Tages</small><p class="verse" style="font-size:15px;line-height:23px">${escapeHtml(tipOfTheDay())}</p></section>
+    </div>
   </div>`;
 
   root.addEventListener('click', (e) => {
     const t = e.target.closest('[data-go]');
     if (!t) return;
     e.preventDefault();
-    e.stopPropagation();
     go(t.dataset.go);
   });
 }
+
+export { WARMUPS };

@@ -6,6 +6,7 @@ import { classifyVoice, noteName } from '../core/notes.js';
 import { BUILTIN, songFit } from '../core/catalog.js';
 import { Lane } from '../ui/lane.js';
 import { keyboardSvg, go, toast, escapeHtml } from '../ui/dom.js';
+import { icon } from '../ui/icons.js';
 
 const HOLD = 0.45; // Sekunden stabil halten, damit ein Ton zählt
 
@@ -19,14 +20,13 @@ export async function rangeScreen(root) {
     if (step === 'intro') {
       root.innerHTML = `
       <div class="range-test">
-        <header class="page-head"><button class="icon-btn" onclick="history.back()" aria-label="Zurück">‹</button><h1>Stimmumfang</h1></header>
-        <div class="rt-hero">🎚️</div>
-        <h2>Finde deine Stimmlage</h2>
+        <header class="page-head"><button class="icon-btn" onclick="history.back()" aria-label="Zurück">${icon('back', 18)}</button><h1>Stimmumfang testen</h1></header>
+        <p class="lead">In drei kurzen Schritten findest du deine Stimmlage. Danach passen sich alle Songs an dich an.</p>
         <ol class="steps"><li><b>Sprich</b> ein paar Sätze ganz normal – so finden wir deine bequeme Lage.</li>
           <li><b>Summe</b> so tief du bequem kannst und halte den Ton kurz.</li>
           <li>Dann <b>ruf oder sing hoch</b> („Hey!“) – so hoch es bequem geht, ohne zu pressen.</li>
           <li>Wir berechnen deine Stimmlage und passen alle Songs an.</li></ol>
-        <p class="muted small">🎧 Ruhige Umgebung hilft. Kopfhörer sind hier nicht nötig.</p>
+        <p class="faint small">Eine ruhige Umgebung hilft. Kopfhörer brauchst du hier nicht.</p>
         <button class="btn primary big" data-act="start">Los geht's</button>
       </div>`;
       root.querySelector('[data-act="start"]').onclick = async () => {
@@ -37,13 +37,13 @@ export async function rangeScreen(root) {
     } else if (step === 'speak') {
       root.innerHTML = `
       <div class="range-test live">
-        <header class="page-head"><button class="icon-btn" data-act="back" aria-label="Zurück">‹</button><h1>1/3 · Sprechstimme</h1></header>
+        <header class="page-head"><button class="icon-btn" data-act="back" aria-label="Zurück">${icon('back', 18)}</button><h1>1/3 · Sprechstimme</h1></header>
         <p class="lead">Lies laut und ganz entspannt vor:</p>
         <blockquote class="speak-text">„Glückselig, der liest und die hören die Worte der Weissagung und bewahren, was in ihr geschrieben ist! Denn die Zeit ist nahe.“<small>Offb 1,3</small></blockquote>
         <canvas class="lane rt-lane"></canvas>
         <div class="hold"><i data-hold></i></div>
         <div class="rt-best">Sprechlage: <b data-best>–</b></div>
-        <div class="row gap center"><button class="btn ghost" data-act="skip">Überspringen</button><button class="btn primary" data-act="next" disabled>Weiter</button></div>
+        <div class="row gap center"><button class="btn" data-act="skip">Überspringen</button><button class="btn primary" data-act="next" disabled>Weiter</button></div>
       </div>`;
       lane = new Lane(root.querySelector('canvas'), { color: '#3fe0c5', notation });
       lane.setRange(42, 66);
@@ -74,14 +74,14 @@ export async function rangeScreen(root) {
       const isLow = step === 'low';
       root.innerHTML = `
       <div class="range-test live">
-        <header class="page-head"><button class="icon-btn" data-act="back" aria-label="Zurück">‹</button><h1>${isLow ? '2/3 · Tiefster Ton' : '3/3 · Höchster Ton'}</h1></header>
+        <header class="page-head"><button class="icon-btn" data-act="back" aria-label="Zurück">${icon('back', 18)}</button><h1>${isLow ? '2/3 · Tiefster Ton' : '3/3 · Höchster Ton'}</h1></header>
         <p class="lead">${isLow ? '<b>Summe</b> und rutsche langsam <b>nach unten</b> – halte den tiefsten Ton.' : 'Jetzt <b>ruf oder sing</b> („Hey!“) langsam <b>nach oben</b> – halte den höchsten bequemen Ton.'}</p>
         <div class="rt-now"><span data-note>–</span><small data-hz>Sing einfach los …</small></div>
         <canvas class="lane rt-lane"></canvas>
         <div class="rt-best">${isLow ? 'Tiefster' : 'Höchster'} gehaltener Ton: <b data-best>–</b></div>
         <div class="hold"><i data-hold></i></div>
         <div class="row gap center">
-          <button class="btn ghost" data-act="ref">🔈 Hilfston</button>
+          <button class="btn" data-act="ref">${icon('volume', 16)} Hilfston</button>
           <button class="btn primary" data-act="next" disabled>${isLow ? 'Weiter' : 'Auswerten'}</button>
         </div>
       </div>`;
@@ -121,7 +121,7 @@ export async function rangeScreen(root) {
       const vt = classifyVoice(low, high);
       store.setProfile({ range: [low, high], voiceType: vt.id, ...(speaking != null ? { speakingNote: speaking } : {}) });
       const a = unlock('range_test');
-      if (a) toast(`<b>${a.icon} Erfolg freigeschaltet</b><br>${a.name}`);
+      if (a) toast(`<b>Erfolg: ${escapeHtml(a.name)}</b>`);
       const fits = BUILTIN.map((s) => ({ s, f: songFit(s) }));
       root.innerHTML = `
       <div class="range-test">
@@ -139,7 +139,7 @@ export async function rangeScreen(root) {
           <p class="muted small">„Auto“-Tonart verschiebt die Songs automatisch in deinen Bereich.</p>
         </section>
         <div class="row gap center">
-          <button class="btn ghost" data-act="again">Nochmal</button>
+          <button class="btn" data-act="again">Nochmal</button>
           <button class="btn primary" data-act="done">Fertig</button>
         </div>
       </div>`;

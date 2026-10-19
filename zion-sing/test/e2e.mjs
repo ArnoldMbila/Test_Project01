@@ -90,7 +90,7 @@ try {
   check('Songs-für-dich-Karussell', (await page.$$('.song-tile')).length >= 4);
   await shot(page, '02-home');
   await page.goto(url('#/songs'));
-  await page.waitForSelector('.song-row');
+  await page.waitForSelector('.song-card');
   await shot(page, '03-library');
   await page.fill('[data-q]', 'Wermut');
   await page.waitForSelector('.verse-hit');
@@ -156,13 +156,13 @@ try {
   await page.waitForSelector('.ladder');
   check('Stufen-Leiter: nur Basic offen', (await page.$$('.rung.open')).length === 1 && (await page.$$('.rung.locked')).length === 4);
   await shot(page, '04b-song-stages');
-  await page.click('.sd-actions [data-stage]');
+  await page.click('.obj-head .acts [data-stage]');
   await page.waitForFunction(() => window.__zs && window.__zs.transport.playing, null, { timeout: 15000 });
   const stCfg = await page.evaluate(() => ({ d: window.__zs.cfg.difficulty, v: window.__zs.cfg.vocal }));
   check('Stufe Basic: Leicht + volle Leitstimme', stCfg.d === 'leicht' && stCfg.v === 1, JSON.stringify(stCfg));
   await page.waitForSelector('.results', { timeout: 60000 });
   await wait(800);
-  const unlockedTxt = await page.textContent('.res-hero');
+  const unlockedTxt = await page.textContent('.results');
   check('Basic bestanden → Easy freigeschaltet', unlockedTxt.includes('Easy freigeschaltet'), unlockedTxt.replace(/\s+/g, ' ').slice(0, 120));
   await shot(page, '06b-stage-result');
   await page.goto(url('#/song/offb_8_7_13'));

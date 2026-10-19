@@ -2,8 +2,8 @@
 import { lastResult } from './session.js';
 import { levelFor, store } from '../core/store.js';
 import { sfx } from '../audio/synth.js';
-import { stars, go, toast, confetti, escapeHtml, fmtTime } from '../ui/dom.js';
-import { LEVELS } from '../core/scoring.js';
+import { stars, go, toast, escapeHtml, fmtTime } from '../ui/dom.js';
+import { icon } from '../ui/icons.js';
 import { stageById, nextStage } from '../core/stages.js';
 import { recordings, unlock } from '../core/store.js';
 
@@ -37,51 +37,61 @@ export function resultsScreen(root) {
   const heat = r.kind === 'song' ? r.lines.map((l, i) => ({ l, i, acc: r.perLine[i] }))
     .filter((x) => x.acc != null && (r.from == null || (x.i >= r.from && x.i <= r.to))) : [];
 
+  const ctx = [r.ref, r.mode === 'practice' ? 'Üben' : '', r.stage ? 'Stufe ' + stageById(r.stage).label : '', r.studio ? 'Studio' : ''].filter(Boolean).join(' · ');
+  const next = r.stage && r.stars >= 2 ? nextStage(r.stage) : null;
   root.innerHTML = `
-  <div class="results" style="--c:${r.color}">
-    <div class="res-hero">
-      ${r.cover ? `<img class="res-bg" src="${r.cover}" alt="">` : ''}
-      <div class="res-title"><small>${escapeHtml(r.ref)}${r.mode === 'practice' ? ' · Üben' : ''}${r.stage ? ' · Stufe ' + stageById(r.stage).label : ''}${r.studio ? ' · Studio' : ''}</small><h2>${escapeHtml(r.title)}</h2></div>
+  <div class="results">
+    <header class="res-head">
+      ${r.cover ? `<div class="cover md"><img src="${r.cover}" alt="Cover: ${escapeHtml(r.title)}"></div>` : ''}
+      <div><small>${escapeHtml(ctx)}</small><h1>${escapeHtml(r.title)}</h1></div>
+    </header>
+
+    <section class="card res-score">
       <div class="score-ring" style="--p:${r.score}">
         <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" class="bg"/><circle cx="60" cy="60" r="52" class="fg"/></svg>
-        <div><b data-count>0</b><small>Punkte</small></div>
+        <div><b data-count>0</b><small>von 100</small></div>
       </div>
-      <div class="res-stars">${stars(r.stars)}</div>
-      ${r.newBest ? '<div class="badge gold">🏅 Neuer Rekord!</div>' : ''}
-      ${r.stageUnlocked && nextStage(r.stageUnlocked) ? `<div class="badge gold">🔓 Stufe ${nextStage(r.stageUnlocked).label} freigeschaltet!</div>` : ''}
-      ${r.stage && r.stars < 2 ? `<p class="muted small">Hol 2 Sterne, um die nächste Stufe freizuschalten.</p>` : ''}
-      <p class="res-msg">${MSG[r.stars]}</p>
-    </div>
-    <div class="res-grid">
-      <div class="stat"><b>${r.notesHit}/${r.notesTotal}</b><small>Noten getroffen</small></div>
-      <div class="stat"><b>${r.bestCombo}×</b><small>beste Combo</small></div>
+      <div class="rs-side">
+        <div class="res-stars">${stars(r.stars)}</div>
+        <p class="res-msg">${MSG[r.stars]}</p>
+        <div class="row">
+          ${r.newBest ? '<span class="pill gold">Neuer Bestwert</span>' : ''}
+          ${r.stageUnlocked && nextStage(r.stageUnlocked) ? `<span class="pill gold">Stufe ${nextStage(r.stageUnlocked).label} freigeschaltet</span>` : ''}
+          ${r.stage && r.stars < 2 ? '<span class="pill">2 Sterne schalten die nächste Stufe frei</span>' : ''}
+        </div>
+      </div>
+    </section>
+
+    <section class="res-grid" aria-label="Auswertung">
+      <div class="stat"><b>${r.notesHit}<span class="faint"> / ${r.notesTotal}</span></b><small>Noten getroffen</small></div>
+      <div class="stat"><b>${r.bestCombo}</b><small>Noten in Folge</small></div>
       <div class="stat"><b>${fmtTime(r.seconds)}</b><small>gesungen</small></div>
-      <div class="stat"><b>+${r.xp}</b><small>XP</small></div>
-    </div>
-    <div class="card lvl">
-      <div class="row between"><b>Level ${lv.level}</b><small class="muted">${lv.toNext} XP bis Level ${lv.level + 1}</small></div>
-      <div class="bar"><i style="width:${Math.round(lv.progress * 100)}%"></i></div>
-      <small class="muted">${LEVELS[r.difficulty] ? 'Schwierigkeit: ' + LEVELS[r.difficulty].label : ''}${r.loops ? ` · ${r.loops} Runden` : ''}</small>
-    </div>
-    ${r.recordingUrl ? `<div class="card">
-      <h3>🎧 Deine Aufnahme</h3>
+      <div class="stat"><b>+${r.xp}</b><small>XP · Level ${lv.level}</small></div>
+    </section>
+
+    ${r.recordingUrl ? `<section class="card">
+      <div class="row between"><h3>Deine Aufnahme</h3>${r.savedId ? '<span class="pill">Im Studio gespeichert</span>' : ''}</div>
       <audio controls src="${r.recordingUrl}" class="rec"></audio>
-      ${r.savedId ? '<p class="muted small">✓ Im Studio gespeichert</p>' : '<button class="btn ghost small" data-act="save">💾 Im Studio speichern</button>'}
-      <a class="btn ghost small" download="ZionSing-${r.id}.${(r.recordingType || '').includes('mp4') ? 'm4a' : 'webm'}" href="${r.recordingUrl}">⬇︎ Herunterladen</a>
-    </div>` : ''}
-    ${heat.length ? `<div class="card">
-      <h3>Zeile für Zeile</h3><p class="muted small">Tippe auf eine Zeile, um sie gezielt zu üben.</p>
+      <div class="row gap">
+        ${r.savedId ? '' : `<button class="btn small" data-act="save">${icon('save', 14)} Im Studio speichern</button>`}
+        <a class="btn small" download="ZionSing-${r.id}.${(r.recordingType || '').includes('mp4') ? 'm4a' : 'webm'}" href="${r.recordingUrl}">${icon('download', 14)} Herunterladen</a>
+      </div>
+    </section>` : ''}
+
+    ${heat.length ? `<section class="card">
+      <div class="row between"><h3>Zeile für Zeile</h3><small class="faint">Zeile antippen zum Üben</small></div>
       <div class="heat">${heat.map((x) => `<button class="heat-row" data-line="${x.i}">
-        <span class="hb" style="--a:${x.acc.toFixed(2)}"></span>
+        <span class="hb${x.acc < 0.4 ? ' low' : ''}"><i style="width:${Math.round(x.acc * 100)}%"></i></span>
         <span class="ht">${escapeHtml(x.l.words.map((w) => w[0]).join(' '))}</span>
         <span class="hp">${Math.round(x.acc * 100)}</span></button>`).join('')}</div>
-    </div>` : ''}
+    </section>` : ''}
+
     <div class="res-actions">
-      ${r.stage && r.stars >= 2 && nextStage(r.stage) ? `<button class="btn primary" data-act="next">▶ Weiter: Stufe ${nextStage(r.stage).label}</button>` : ''}
-      ${r.studio ? '<a class="btn ghost" href="#/studio">🎧 Zum Studio</a>' : ''}
-      ${weak && weak.avg < 0.8 ? `<button class="btn primary" data-act="weak">🎯 Schwache Stelle üben</button>` : ''}
-      <button class="btn ${weak && weak.avg < 0.8 ? 'ghost' : 'primary'}" data-act="again">↻ Nochmal</button>
-      <button class="btn ghost" data-act="done">Fertig</button>
+      ${next ? `<button class="btn primary big" data-act="next">Weiter mit Stufe ${next.label}</button>` : ''}
+      ${!next && weak && weak.avg < 0.8 ? '<button class="btn primary big" data-act="weak">Schwächste Stelle üben</button>' : ''}
+      <button class="btn big ${!next && !(weak && weak.avg < 0.8) ? 'primary' : ''}" data-act="again">${icon('repeat', 16)} Nochmal</button>
+      ${r.studio ? '<a class="btn big" href="#/studio">Zum Studio</a>' : ''}
+      <button class="btn big" data-act="done">Fertig</button>
     </div>
   </div>`;
 
@@ -97,9 +107,8 @@ export function resultsScreen(root) {
   };
   requestAnimationFrame(anim);
   root.querySelectorAll('.res-stars .star.on').forEach((s, i) => later(() => { s.classList.add('pop'); sfx.star(); }, 900 + i * 350));
-  if (r.stars >= 3) later(() => confetti(), 1600);
-  if (lv.level > prevLv.level) later(() => { sfx.level(); toast(`🎉 Level ${lv.level} erreicht!`); }, 2200);
-  r.unlocked.forEach((a, i) => later(() => toast(`<b>${a.icon} Erfolg freigeschaltet</b><br>${escapeHtml(a.name)}`, 3200), 2600 + i * 1200));
+  if (lv.level > prevLv.level) later(() => { sfx.level(); toast(`<b>Level ${lv.level} erreicht</b>`); }, 2200);
+  r.unlocked.forEach((a, i) => later(() => toast(`<b>Erfolg: ${escapeHtml(a.name)}</b><br>${escapeHtml(a.desc)}`, 3200), 2600 + i * 1200));
 
   const base = r.kind === 'song' ? `#/sing/${r.id}` : `#/lesson/${r.id}`;
   root.addEventListener('click', (e) => {
@@ -115,7 +124,7 @@ export function resultsScreen(root) {
       r.savedId = 'rec_' + Date.now();
       recordings.put({ id: r.savedId, songId: r.id, title: r.title, ref: r.ref, score: r.score, stars: r.stars,
         date: new Date().toISOString(), seconds: r.seconds, blob: r.recordingBlob, type: r.recordingType })
-        .then(() => { b.outerHTML = '<p class="muted small">✓ Im Studio gespeichert</p>'; const a = unlock('studio'); if (a) toast(`<b>${a.icon} ${a.name}</b>`); });
+        .then(() => { b.outerHTML = '<span class="pill">Im Studio gespeichert</span>'; const a = unlock('studio'); if (a) toast(`<b>Erfolg: ${escapeHtml(a.name)}</b>`); });
     } else if (b.dataset.act === 'again') {
       const q = r.mode === 'practice' ? `?mode=practice&from=${r.from}&to=${r.to}` : r.stage ? `?stage=${r.stage}` : r.studio ? '?studio=1' : '';
       go(base + q + (q ? '&' : '?') + 'n=' + Date.now());

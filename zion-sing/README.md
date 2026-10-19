@@ -49,6 +49,16 @@ Zeilen-Timing per **TAP** im Takt mittippen (oder automatisch verteilen).
 Leitstimme regelt hier zwischen Original und Karaoke-Filter (Mitten-Auslöschung).
 Alles wird nur lokal (IndexedDB) gespeichert.
 
+## Design
+
+Gestaltet nach den App-Screen-Regeln des [Taste Skill](https://github.com/Leonxlnx/taste-skill)
+(Stil „True-black flat“): echtes Schwarz, Ebenen nur durch Helligkeit (#000 → #111 → #2a2a2a),
+keine Rahmen, Schatten, Verläufe oder Emoji. Eine einzige Datenfarbe – Gold, wie die goldenen
+Leuchter – nur auf deiner Stimme, getroffenen Noten, Sternen und Fortschritt. Primäre Aktionen
+als weiße Pille. Schrift: Inter (lokal eingebettet, funktioniert offline). Desktop mit
+Seitenleiste, Handy mit Leiste unten. Geprüft mit `lint.mjs --app` (0 FAIL) und `inspect.mjs --app`
+(0 FAIL auf allen messbaren Seiten bei 1440/768/390 px).
+
 ## Wie die Song-Daten entstanden sind (`tools/`)
 
 1. **Gesang trennen** – `separate_vocals.py` (UVR-MDX-NET-Voc_FT, ONNX):
