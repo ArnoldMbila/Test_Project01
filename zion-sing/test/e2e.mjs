@@ -151,6 +151,43 @@ try {
   await page.evaluate(() => window.__zs.finish());
   await page.waitForSelector('.results');
 
+  // 6a) Song-Stufe Basic (nur erster Abschnitt, Leicht, laute Leitstimme) → Ergebnis + Freischaltung
+  await page.goto(url('#/song/offb_8_7_13'));
+  await page.waitForSelector('.ladder');
+  check('Stufen-Leiter: nur Basic offen', (await page.$$('.rung.open')).length === 1 && (await page.$$('.rung.locked')).length === 4);
+  await shot(page, '04b-song-stages');
+  await page.click('.sd-actions [data-stage]');
+  await page.waitForFunction(() => window.__zs && window.__zs.transport.playing, null, { timeout: 15000 });
+  const stCfg = await page.evaluate(() => ({ d: window.__zs.cfg.difficulty, v: window.__zs.cfg.vocal }));
+  check('Stufe Basic: Leicht + volle Leitstimme', stCfg.d === 'leicht' && stCfg.v === 1, JSON.stringify(stCfg));
+  await page.waitForSelector('.results', { timeout: 60000 });
+  await wait(800);
+  const unlockedTxt = await page.textContent('.res-hero');
+  check('Basic bestanden → Easy freigeschaltet', unlockedTxt.includes('Easy freigeschaltet'), unlockedTxt.replace(/\s+/g, ' ').slice(0, 120));
+  await shot(page, '06b-stage-result');
+  await page.goto(url('#/song/offb_8_7_13'));
+  await page.waitForSelector('.ladder');
+  check('Stufen-Leiter: jetzt 2 Stufen offen', (await page.$$('.rung.open')).length === 2);
+
+  // 6a2) Studio-Aufnahme
+  await page.goto(url('#/sing/offb_8_7_13?studio=1'));
+  await page.waitForFunction(() => window.__zs && window.__zs.transport.playing, null, { timeout: 15000 });
+  await page.click('[data-act="skip"]');
+  await wait(8000);
+  await shot(page, '05b-studio');
+  await page.evaluate(() => window.__zs.finish());
+  await page.waitForSelector('.results');
+  await page.goto(url('#/studio'));
+  await page.waitForSelector('.studio');
+  check('Studio: Aufnahme gespeichert', (await page.$$('.rec-card')).length === 1);
+  await shot(page, '15-studio');
+
+  // 6a3) Tägliches Warm-up
+  await page.goto(url('#/lesson/daily'));
+  await page.waitForFunction(() => window.__zs && window.__zs.transport.playing, null, { timeout: 15000 });
+  const dd = await page.evaluate(() => window.__zs.transport.duration);
+  check('Tägliches Warm-up ≈ 4–5 Minuten', dd > 230 && dd < 330, `${Math.round(dd)} s`);
+
   // 6b) Tonart +2 (AudioWorklet-Pitch-Shifter)
   await page.goto(url('#/sing/offb_8_7_13?key=2'));
   await page.waitForFunction(() => window.__zs && window.__zs.transport.playing, null, { timeout: 15000 });
@@ -162,7 +199,11 @@ try {
   // 6c) Stimmumfang-Test mit gehaltenen Tönen
   await page.goto(url('#/range'));
   await page.click('[data-act="start"]');
-  await page.waitForSelector('[data-act="next"]');
+  await page.waitForSelector('.speak-text');
+  await page.evaluate(() => { window.__fakeHz = 130; });
+  await page.waitForSelector('[data-act="next"]:not([disabled])', { timeout: 10000 });
+  await page.click('[data-act="next"]');
+  await page.waitForSelector('.rt-now');
   await page.evaluate(() => { window.__fakeHz = 110; });
   await wait(1500);
   await page.click('[data-act="next"]');
@@ -190,7 +231,7 @@ try {
   await page.waitForSelector('.song-detail');
   const id = await page.evaluate(() => location.hash.split('/').pop());
   const imported = await page.evaluate(async (sid) => {
-    const db = await new Promise((r) => { const q = indexedDB.open('zionSingDB', 1); q.onsuccess = () => r(q.result); });
+    const db = await new Promise((r) => { const q = indexedDB.open('zionSingDB'); q.onsuccess = () => r(q.result); });
     return new Promise((r) => { const g = db.transaction('songs').objectStore('songs').get(sid); g.onsuccess = () => r({ notes: g.result.notes.length, lines: g.result.lines.length }); });
   }, id);
   check('Import: Melodie erkannt & Zeilen getimt', imported.notes > 50 && imported.lines > 10, `${imported.notes} Noten, ${imported.lines} Zeilen`);

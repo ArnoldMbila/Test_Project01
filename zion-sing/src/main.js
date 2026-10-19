@@ -10,6 +10,7 @@ import { trainScreen, lessonIntroScreen } from './screens/train.js';
 import { tunerScreen } from './screens/tuner.js';
 import { profileScreen } from './screens/profile.js';
 import { importScreen } from './screens/import.js';
+import { studioScreen } from './screens/studio.js';
 
 const ROUTES = {
   '': { fn: homeScreen, tab: 'home' },
@@ -26,6 +27,7 @@ const ROUTES = {
   tuner: { fn: tunerScreen, tab: 'train' },
   profile: { fn: profileScreen, tab: 'profile' },
   import: { fn: importScreen, tab: 'songs' },
+  studio: { fn: studioScreen, tab: 'profile' },
 };
 
 const view = document.getElementById('view');

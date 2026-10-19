@@ -1,6 +1,7 @@
 // Bibliothek (Songs, eigene Songs, alle Kapitel, Suche) + Kapitel-Ansicht.
 import { store, customSongs } from '../core/store.js';
-import { allSongs, songFit, difficultyOf, BIBLE, searchVerses, songForVerse, rangeLabel } from '../core/catalog.js';
+import { allSongs, songFit, difficultyOf, BIBLE, searchVerses, songForVerse, rangeLabel, moodsOf } from '../core/catalog.js';
+import { currentStage } from '../core/stages.js';
 import { cover, stars, go, escapeHtml, fmtTime, toast } from '../ui/dom.js';
 
 function songRow(song) {
@@ -12,6 +13,7 @@ function songRow(song) {
     <div class="sr-main"><b>${escapeHtml(song.title)}</b>
       <small>${escapeHtml(song.ref || 'Eigener Song')} · ${song.genre || 'Import'} · ${fmtTime(song.duration || 0)}</small>
       <div class="row"><span class="dots" title="Schwierigkeit">${'●'.repeat(diff)}${'○'.repeat(5 - diff)}</span>
+      <span class="tag" title="Aktuelle Stufe">${currentStage(song.id).icon} ${currentStage(song.id).label}</span>
       ${fit ? `<span class="fit ${fit.fit >= 0.85 ? 'good' : fit.fit >= 0.6 ? 'ok' : 'hard'}">${fit.label}</span>` : ''}</div>
     </div>
     <div class="sr-side">${best ? stars(best.stars) + `<small>${best.score}</small>` : '<span class="chev">›</span>'}</div>
@@ -21,6 +23,7 @@ function songRow(song) {
 export async function libraryScreen(root, params) {
   const songs = await allSongs();
   let tab = params.tab || 'songs';
+  let mood = 'Alle';
   root.innerHTML = `
   <div class="library">
     <header class="page-head"><h1>Songs</h1><a class="btn small ghost" href="#/import">＋ Import</a></header>
@@ -50,8 +53,11 @@ export async function libraryScreen(root, params) {
       return;
     }
     if (tab === 'songs') {
-      const b = songs.filter((s) => s.builtin);
-      body.innerHTML = `<div class="album">
+      const all = songs.filter((s) => s.builtin);
+      const moods = ['Alle', ...new Set(all.flatMap(moodsOf))];
+      const b = mood === 'Alle' ? all : all.filter((s) => moodsOf(s).includes(mood));
+      body.innerHTML = `<div class="chips moods" data-moods>${moods.map((m) => `<button class="chip${m === mood ? ' on' : ''}" data-mood="${escapeHtml(m)}">${escapeHtml(m)}</button>`).join('')}</div>
+        <div class="album">
           <div class="album-art">${b.slice(0, 3).map((s) => cover(s)).join('')}</div>
           <div><small class="muted">Album</small><b>Offenbarung – Afro</b><small class="muted">${b.length} Songs · Elberfelder</small></div>
         </div>
@@ -70,6 +76,8 @@ export async function libraryScreen(root, params) {
   root.querySelector('.tabs').addEventListener('click', (e) => { const b = e.target.closest('[data-tab]'); if (b) { tab = b.dataset.tab; qIn.value = ''; render(); } });
   qIn.addEventListener('input', render);
   body.addEventListener('click', async (e) => {
+    const m = e.target.closest('[data-mood]');
+    if (m) { mood = m.dataset.mood; render(); return; }
     const d = e.target.closest('[data-del]');
     if (!d) return;
     e.preventDefault();

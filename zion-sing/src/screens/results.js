@@ -4,6 +4,8 @@ import { levelFor, store } from '../core/store.js';
 import { sfx } from '../audio/synth.js';
 import { stars, go, toast, confetti, escapeHtml, fmtTime } from '../ui/dom.js';
 import { LEVELS } from '../core/scoring.js';
+import { stageById, nextStage } from '../core/stages.js';
+import { recordings, unlock } from '../core/store.js';
 
 const MSG = [
   'Guter Anfang – jede Runde macht dich sicherer!',
@@ -39,13 +41,15 @@ export function resultsScreen(root) {
   <div class="results" style="--c:${r.color}">
     <div class="res-hero">
       ${r.cover ? `<img class="res-bg" src="${r.cover}" alt="">` : ''}
-      <div class="res-title"><small>${escapeHtml(r.ref)}${r.mode === 'practice' ? ' · Üben' : ''}</small><h2>${escapeHtml(r.title)}</h2></div>
+      <div class="res-title"><small>${escapeHtml(r.ref)}${r.mode === 'practice' ? ' · Üben' : ''}${r.stage ? ' · Stufe ' + stageById(r.stage).label : ''}${r.studio ? ' · Studio' : ''}</small><h2>${escapeHtml(r.title)}</h2></div>
       <div class="score-ring" style="--p:${r.score}">
         <svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" class="bg"/><circle cx="60" cy="60" r="52" class="fg"/></svg>
         <div><b data-count>0</b><small>Punkte</small></div>
       </div>
       <div class="res-stars">${stars(r.stars)}</div>
       ${r.newBest ? '<div class="badge gold">🏅 Neuer Rekord!</div>' : ''}
+      ${r.stageUnlocked && nextStage(r.stageUnlocked) ? `<div class="badge gold">🔓 Stufe ${nextStage(r.stageUnlocked).label} freigeschaltet!</div>` : ''}
+      ${r.stage && r.stars < 2 ? `<p class="muted small">Hol 2 Sterne, um die nächste Stufe freizuschalten.</p>` : ''}
       <p class="res-msg">${MSG[r.stars]}</p>
     </div>
     <div class="res-grid">
@@ -62,6 +66,7 @@ export function resultsScreen(root) {
     ${r.recordingUrl ? `<div class="card">
       <h3>🎧 Deine Aufnahme</h3>
       <audio controls src="${r.recordingUrl}" class="rec"></audio>
+      ${r.savedId ? '<p class="muted small">✓ Im Studio gespeichert</p>' : '<button class="btn ghost small" data-act="save">💾 Im Studio speichern</button>'}
       <a class="btn ghost small" download="ZionSing-${r.id}.${(r.recordingType || '').includes('mp4') ? 'm4a' : 'webm'}" href="${r.recordingUrl}">⬇︎ Herunterladen</a>
     </div>` : ''}
     ${heat.length ? `<div class="card">
@@ -72,6 +77,8 @@ export function resultsScreen(root) {
         <span class="hp">${Math.round(x.acc * 100)}</span></button>`).join('')}</div>
     </div>` : ''}
     <div class="res-actions">
+      ${r.stage && r.stars >= 2 && nextStage(r.stage) ? `<button class="btn primary" data-act="next">▶ Weiter: Stufe ${nextStage(r.stage).label}</button>` : ''}
+      ${r.studio ? '<a class="btn ghost" href="#/studio">🎧 Zum Studio</a>' : ''}
       ${weak && weak.avg < 0.8 ? `<button class="btn primary" data-act="weak">🎯 Schwache Stelle üben</button>` : ''}
       <button class="btn ${weak && weak.avg < 0.8 ? 'ghost' : 'primary'}" data-act="again">↻ Nochmal</button>
       <button class="btn ghost" data-act="done">Fertig</button>
@@ -102,8 +109,15 @@ export function resultsScreen(root) {
       const i = +b.dataset.line;
       go(`#/sing/${r.id}?mode=practice&from=${Math.max(0, i)}&to=${i}`);
     } else if (b.dataset.act === 'weak') go(`#/sing/${r.id}?mode=practice&from=${weak.from}&to=${weak.to}`);
-    else if (b.dataset.act === 'again') {
-      const q = r.mode === 'practice' ? `?mode=practice&from=${r.from}&to=${r.to}` : '';
+    else if (b.dataset.act === 'next') go(`#/sing/${r.id}?stage=${nextStage(r.stage).id}`);
+    else if (b.dataset.act === 'save') {
+      b.disabled = true;
+      r.savedId = 'rec_' + Date.now();
+      recordings.put({ id: r.savedId, songId: r.id, title: r.title, ref: r.ref, score: r.score, stars: r.stars,
+        date: new Date().toISOString(), seconds: r.seconds, blob: r.recordingBlob, type: r.recordingType })
+        .then(() => { b.outerHTML = '<p class="muted small">✓ Im Studio gespeichert</p>'; const a = unlock('studio'); if (a) toast(`<b>${a.icon} ${a.name}</b>`); });
+    } else if (b.dataset.act === 'again') {
+      const q = r.mode === 'practice' ? `?mode=practice&from=${r.from}&to=${r.to}` : r.stage ? `?stage=${r.stage}` : r.studio ? '?studio=1' : '';
       go(base + q + (q ? '&' : '?') + 'n=' + Date.now());
     } else if (b.dataset.act === 'done') go(r.kind === 'song' ? `#/song/${r.id}` : '#/train');
   });

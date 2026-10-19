@@ -3,10 +3,14 @@
 // dann nachsingen (bewertete Noten). Notenformat: [start, dauer, midi, flag?]
 
 export function baseNote(profile) {
+  const speak = profile && profile.speakingNote;
   if (profile && profile.range) {
     const [lo, hi] = profile.range;
-    return Math.round(lo + (hi - lo) * 0.35);
+    const fromRange = lo + (hi - lo) * 0.35;
+    // Sprechstimme ist ein guter Anker für die bequeme Lage (wie im Simply-Sing-Stimmtest)
+    return Math.round(speak ? (fromRange + speak + 2) / 2 : fromRange);
   }
+  if (speak) return Math.round(speak + 2);
   return 55;
 }
 
@@ -42,7 +46,40 @@ export const EXERCISES = {
   low: (b) => echo([0, -2, -4, -5].map((k) => seq([0, -2, -4, -2, 0].map((s) => s + k), 0.55)), b),
   octave: (b) => echo([0, 1, 2, 3].map((k) => [[0, 0.9, k], [1, 1.3, k + 12], [2.4, 0.9, k]]), b - 4),
   breath: (b) => echo([[[0, 4, 0]], [[0, 5, 0]], [[0, 6, 0]]], b, { listen: false, gap: 1.6 }),
+  /** Tägliches Warm-up (~5 Min.): Atem → lange Töne → Sirene → Leiter → Intervalle → Arpeggio → Höhe → Oktave */
+  daily: (b) => chain(['breath', 'sustain', 'siren', 'scale5', 'intervals', 'arpeggio', 'high', 'octave'].map((k) => EXERCISES[k](b))),
 };
+
+/** Hängt mehrere Übungen zeitlich hintereinander. */
+export function chain(list, pause = 1.5) {
+  const notes = [];
+  let off = 0;
+  for (const ex of list) {
+    ex.notes.forEach((n) => notes.push([n[0] + off, n[1], n[2], n[3]].filter((x) => x !== undefined)));
+    off += ex.duration + pause;
+  }
+  return { notes, duration: off };
+}
+
+/** Tipp des Tages (rotiert täglich). */
+export const TIPS = [
+  'Trink vor dem Singen ein Glas lauwarmes Wasser – keine eiskalten Getränke.',
+  'Atme in den Bauch, nicht in die Schultern. Die Schultern bleiben unten.',
+  'Lächle leicht beim Singen – das hebt den Gaumen und macht den Klang heller.',
+  'Hohe Töne nicht lauter, sondern leichter singen.',
+  'Hör erst genau hin: Wer die Melodie innerlich hört, trifft sie leichter.',
+  'Kurze tägliche Übung bringt mehr als eine lange pro Woche.',
+  'Konsonanten deutlich, Vokale lang – so versteht man jedes Wort.',
+  'Wenn es kratzt: Pause. Singen darf nie wehtun.',
+  'Summen ist das sanfteste Warm-up für die Stimmbänder.',
+  'Nimm dich auf und hör zu – du hörst dich von außen anders als von innen.',
+  'Steh beim Singen – das gibt dem Atem mehr Raum als Sitzen.',
+  'Lerne den Text zuerst rhythmisch zu sprechen, dann zu singen.',
+];
+
+export function tipOfTheDay(d = new Date()) {
+  return TIPS[(d.getFullYear() * 372 + d.getMonth() * 31 + d.getDate()) % TIPS.length];
+}
 
 /** Kurze Phrase aus einem Song als Nachsing-Übung (Noten relativ zum Grundton). */
 export function songPhraseExercise(song, lineFrom, lineTo, base) {
@@ -110,6 +147,9 @@ export const COURSE = [
   },
 ];
 
+export const DAILY = { id: 'daily', title: 'Tägliches Warm-up', ex: 'daily', icon: '☀️', min: 5,
+  tips: ['5 Minuten für Atem, Tonhöhe und Selbstvertrauen.', 'Erst atmen, dann lange Töne, Sirene, Leiter, Arpeggio und Oktavsprung.', 'Sing locker – Warm-up heißt aufwärmen, nicht anstrengen.'] };
+
 export const WARMUPS = [
   { id: 'w_sustain', title: 'Lange Töne', ex: 'sustain', icon: '〰️', min: 1 },
   { id: 'w_scale', title: 'Fünfton-Leiter', ex: 'scale5', icon: '🪜', min: 1 },
@@ -121,6 +161,7 @@ export const WARMUPS = [
 
 export function findLesson(id) {
   for (const u of COURSE) for (const l of u.lessons) if (l.id === id) return { ...l, unit: u.unit };
+  if (id === DAILY.id) return { ...DAILY, unit: 'Warm-up' };
   const w = WARMUPS.find((x) => x.id === id);
   return w ? { ...w, tips: ['Kurzes Warm-up: erst hören, dann nachsingen.'] } : null;
 }

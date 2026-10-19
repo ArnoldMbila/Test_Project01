@@ -25,6 +25,8 @@ const DEFAULTS = {
     history: [],          // { songId, title, score, stars, date, mode, seconds }
     best: {},             // songId → { score, stars }
     lessons: {},          // lessonId → { stars, date }
+    stages: {},           // songId → { basic: {score, stars}, easy: …, … }
+    warmups: {},          // 'YYYY-MM-DD' → true (tägliches 5-Minuten-Warm-up erledigt)
     achievements: {},     // id → Datum
   },
 };
@@ -92,6 +94,9 @@ export const ACHIEVEMENTS = [
   { id: 'own_song', icon: '🎼', name: 'Eigener Song', desc: 'Importiere einen eigenen Song.' },
   { id: 'ten_sessions', icon: '💪', name: 'Dranbleiben', desc: '10 Sessions gesungen.' },
   { id: 'hour', icon: '⏱️', name: 'Eine Stunde Gesang', desc: 'Insgesamt 60 Minuten gesungen.' },
+  { id: 'extreme', icon: '💎', name: 'Extrem gut', desc: 'Bestehe eine Song-Stufe „Extreme“.' },
+  { id: 'studio', icon: '🎙️', name: 'Im Studio', desc: 'Speichere deine erste Studio-Aufnahme.' },
+  { id: 'daily3', icon: '☀️', name: 'Morgenroutine', desc: 'Mache das tägliche Warm-up an 3 Tagen.' },
 ];
 
 /** Erfolg vergeben; gibt das Achievement zurück, falls neu. */
@@ -116,12 +121,21 @@ export function recordSession(entry) {
   const xp = Math.round(10 + entry.score * Math.min(3, entry.seconds / 60) * 0.6 + entry.stars * 15);
   s.xp += xp;
   let newBest = false;
+  let stageUnlocked = null;
   if (entry.kind === 'lesson') {
     const prev = s.lessons[entry.songId];
     if (!prev || prev.stars < entry.stars) s.lessons[entry.songId] = { stars: entry.stars, date: t };
+    if (entry.songId === 'daily') s.warmups[t] = true;
   } else {
+    if (entry.stage) {
+      const st = (s.stages[entry.songId] = s.stages[entry.songId] || {});
+      const before = st[entry.stage];
+      if (!before || entry.score > before.score) st[entry.stage] = { score: entry.score, stars: entry.stars };
+      if (entry.stars >= 2 && (!before || before.stars < 2)) stageUnlocked = entry.stage;
+    }
     const prev = s.best[entry.songId];
-    if (entry.mode === 'full' && (!prev || entry.score > prev.score)) {
+    const wholeSong = !entry.stage || ['medium', 'hard', 'extreme'].includes(entry.stage);
+    if (entry.mode === 'full' && wholeSong && (!prev || entry.score > prev.score)) {
       s.best[entry.songId] = { score: entry.score, stars: entry.stars };
       newBest = true;
     }
@@ -143,31 +157,42 @@ export function recordSession(entry) {
   tryU(entry.lyricsMode === 'memory' && entry.score >= 70, 'memory');
   tryU(s.sessions >= 10, 'ten_sessions');
   tryU(s.seconds >= 3600, 'hour');
-  return { xp, newBest, unlocked };
+  tryU(entry.stage === 'extreme' && entry.stars >= 2, 'extreme');
+  tryU(Object.keys(s.warmups).length >= 3, 'daily3');
+  return { xp, newBest, unlocked, stageUnlocked };
 }
 
-// ---------- IndexedDB: importierte Songs (Audio-Blob + Analyse) ----------
+// ---------- IndexedDB: eigene Songs + Studio-Aufnahmen (Audio-Blobs) ----------
 const DB = 'zionSingDB';
 function db() {
   return new Promise((res, rej) => {
-    const r = indexedDB.open(DB, 1);
-    r.onupgradeneeded = () => r.result.createObjectStore('songs', { keyPath: 'id' });
+    const r = indexedDB.open(DB, 2);
+    r.onupgradeneeded = () => {
+      for (const name of ['songs', 'recordings']) {
+        if (!r.result.objectStoreNames.contains(name)) r.result.createObjectStore(name, { keyPath: 'id' });
+      }
+    };
     r.onsuccess = () => res(r.result);
     r.onerror = () => rej(r.error);
   });
 }
-async function tx(mode, fn) {
+async function tx(storeName, mode, fn) {
   const d = await db();
   return new Promise((res, rej) => {
-    const t = d.transaction('songs', mode);
-    const out = fn(t.objectStore('songs'));
+    const t = d.transaction(storeName, mode);
+    const out = fn(t.objectStore(storeName));
     t.oncomplete = () => res(out && 'result' in out ? out.result : undefined);
     t.onerror = () => rej(t.error);
   });
 }
-export const customSongs = {
-  async all() { try { return (await tx('readonly', (s) => s.getAll())) || []; } catch (_) { return []; } },
-  async get(id) { return tx('readonly', (s) => s.get(id)); },
-  async put(song) { return tx('readwrite', (s) => s.put(song)); },
-  async remove(id) { return tx('readwrite', (s) => s.delete(id)); },
-};
+function objectStore(name) {
+  return {
+    async all() { try { return (await tx(name, 'readonly', (s) => s.getAll())) || []; } catch (_) { return []; } },
+    async get(id) { return tx(name, 'readonly', (s) => s.get(id)); },
+    async put(rec) { return tx(name, 'readwrite', (s) => s.put(rec)); },
+    async remove(id) { return tx(name, 'readwrite', (s) => s.delete(id)); },
+  };
+}
+export const customSongs = objectStore('songs');
+/** Studio-Aufnahmen: { id, songId, title, ref, score, stars, date, seconds, blob } */
+export const recordings = objectStore('recordings');

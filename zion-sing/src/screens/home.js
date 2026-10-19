@@ -1,7 +1,8 @@
 // Startseite (+ Willkommens-Screen beim ersten Start).
 import { store, levelFor, currentStreak, today } from '../core/store.js';
 import { allSongs, songFit, verseOfTheDay, songForVerse } from '../core/catalog.js';
-import { COURSE, WARMUPS } from '../core/lessons.js';
+import { COURSE, WARMUPS, DAILY, tipOfTheDay } from '../core/lessons.js';
+import { currentStage } from '../core/stages.js';
 import { classifyVoice, noteName } from '../core/notes.js';
 import { cover, stars, go, escapeHtml } from '../ui/dom.js';
 
@@ -77,9 +78,15 @@ export async function homeScreen(root) {
       <div class="cta-ic">🎙️</div><div><b>${vt.name}</b><p class="muted small">${noteName(p.range[0], p.notation)} – ${noteName(p.range[1], p.notation)} · ${p.range[1] - p.range[0]} Halbtöne</p></div><span class="chev">›</span>
     </section>`}
 
+    <section class="card daily" data-go="#/lesson-intro/${DAILY.id}">
+      <div class="cta-ic">${s.warmups[today()] ? '✅' : DAILY.icon}</div>
+      <div><b>${DAILY.title}</b><p class="muted small">${s.warmups[today()] ? 'Heute erledigt – stark! Nochmal geht immer.' : '5 Min. für Atem, Tonhöhe & Selbstvertrauen'}</p></div>
+      <span class="chev">›</span>
+    </section>
+
     ${lastSong ? `<section class="continue" data-go="#/song/${lastSong.id}">
-      ${cover(lastSong, 'sm')}<div><small class="muted">Weiter singen</small><b>${escapeHtml(lastSong.title)}</b><small>${escapeHtml(lastSong.ref || '')}</small></div>
-      <button class="btn round primary" data-go="#/sing/${lastSong.id}" aria-label="Singen">▶</button>
+      ${cover(lastSong, 'sm')}<div><small class="muted">Weiter singen</small><b>${escapeHtml(lastSong.title)}</b><small>${escapeHtml(lastSong.ref || '')} · Stufe ${currentStage(lastSong.id).label}</small></div>
+      <button class="btn round primary" data-go="#/sing/${lastSong.id}?stage=${currentStage(lastSong.id).id}" aria-label="Singen">▶</button>
     </section>` : ''}
 
     <div class="sec-head"><h2>Songs für dich</h2><a href="#/songs">Alle</a></div>
@@ -96,9 +103,11 @@ export async function homeScreen(root) {
       <a class="card mini" href="#/lesson/${warm.id}"><span class="big-ic">${warm.icon}</span><b>Warm-up des Tages</b><small class="muted">${warm.title} · ${warm.min} Min.</small></a>
       ${nextLesson ? `<a class="card mini" href="#/lesson/${nextLesson.id}"><span class="big-ic">🎓</span><b>Nächste Lektion</b><small class="muted">${escapeHtml(nextLesson.title)} · ${doneLessons}/${totalLessons}</small></a>`
       : '<a class="card mini" href="#/train"><span class="big-ic">🏆</span><b>Kurs abgeschlossen</b><small class="muted">Wiederhole Lektionen für 3 Sterne</small></a>'}
-      <a class="card mini" href="#/tuner"><span class="big-ic">🎯</span><b>Stimmgerät</b><small class="muted">Live-Tonhöhe sehen</small></a>
+      <a class="card mini" href="#/studio"><span class="big-ic">🎙️</span><b>Aufnahme-Studio</b><small class="muted">Aufnehmen & anhören</small></a>
       <a class="card mini" href="#/songs?tab=chapters"><span class="big-ic">📜</span><b>Alle 22 Kapitel</b><small class="muted">405 Verse lesen & lernen</small></a>
     </div>
+
+    <section class="card tip"><span class="big-ic">💡</span><div><small class="muted">Tipp des Tages</small><p>${escapeHtml(tipOfTheDay())}</p></div></section>
 
     ${vod ? `<section class="card vod">
       <small class="muted">Vers des Tages · Offb ${vod.ch},${vod.v}</small>

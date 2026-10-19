@@ -35,6 +35,7 @@ export function profileScreen(root) {
       <div class="stat"><b>${s.sessions}</b><small>Sessions</small></div>
       <div class="stat"><b>${avg}</b><small>Ø Punkte</small></div>
     </div>
+    <a class="card studio-card" href="#/studio"><div><h3>🎙️ Aufnahme-Studio</h3><p class="muted small">Deine gespeicherten Performances</p></div><span class="chev">›</span></a>
     <section class="card"><h3>Diese Woche</h3>${weekBars()}</section>
     <section class="card">
       <div class="row between"><h3>Stimmumfang</h3><a class="btn small ghost" href="#/range">${vt ? 'Neu testen' : 'Testen'}</a></div>

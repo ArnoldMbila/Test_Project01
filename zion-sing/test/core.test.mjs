@@ -147,3 +147,27 @@ test('Song-Phrasen-Übung aus echten Song-Daten', async () => {
   const ex = songPhraseExercise(song, 0, 1, 55);
   assert.ok(ex.notes.filter((n) => n[3] !== 'L').length >= 5);
 });
+
+test('Song-Stufen: Abschnitte und Freischalt-Reihenfolge', async () => {
+  globalThis.window = globalThis.window || {};
+  globalThis.localStorage = { getItem: () => null, setItem: () => {} };
+  await import('../data/songs.js');
+  const { STAGES, stagePart, nextStage } = await import('../src/core/stages.js');
+  assert.deepEqual(STAGES.map((s) => s.id), ['basic', 'easy', 'medium', 'hard', 'extreme']);
+  for (const song of window.ZS_SONGS) {
+    const b = stagePart(song, 'basic'), e = stagePart(song, 'easy');
+    assert.ok(!song.lines[b.from].adlib, song.id);
+    assert.ok(b.to - b.from + 1 >= 3 && b.to < e.to, song.id);
+    assert.equal(stagePart(song, 'medium'), null);
+  }
+  assert.equal(nextStage('hard').id, 'extreme');
+  assert.equal(nextStage('extreme'), null);
+});
+
+test('Tägliches Warm-up verkettet Übungen (~5 Min.)', async () => {
+  const { EXERCISES, chain } = await import('../src/core/lessons.js');
+  const d = EXERCISES.daily(55);
+  assert.ok(d.duration > 230 && d.duration < 330);
+  for (let i = 1; i < d.notes.length; i++) assert.ok(d.notes[i][0] >= d.notes[i - 1][0]);
+  assert.equal(chain([{ notes: [[0, 1, 60]], duration: 2 }, { notes: [[0, 1, 62, 'L']], duration: 2 }], 1).notes[1][0], 3);
+});

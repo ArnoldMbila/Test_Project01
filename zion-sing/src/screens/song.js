@@ -3,17 +3,10 @@ import { store } from '../core/store.js';
 import { getSong, songFit, difficultyOf, rangeLabel } from '../core/catalog.js';
 import { LEVELS } from '../core/scoring.js';
 import { cover, stars, chips, bindChips, go, escapeHtml, fmtTime } from '../ui/dom.js';
+import { sections, stageStatus, currentStage } from '../core/stages.js';
+import { moodsOf } from '../core/catalog.js';
 
-/** Zeilen nach Vers gruppieren → Abschnitte. */
-export function sections(song) {
-  const out = [];
-  song.lines.forEach((l, i) => {
-    const last = out[out.length - 1];
-    if (last && last.v === l.v) last.to = i;
-    else out.push({ v: l.v, from: i, to: i });
-  });
-  return out;
-}
+export { sections };
 
 export async function songScreen(root, params) {
   const song = await getSong(params.id);
@@ -24,6 +17,8 @@ export async function songScreen(root, params) {
   const hist = store.stats.history.filter((h) => h.songId === song.id).slice(0, 5);
   const secs = sections(song);
   const cfg = { difficulty: p.difficulty, rate: 1, lyrics: p.lyricsMode, key: 'auto' };
+  const ladder = stageStatus(song.id);
+  const cur = currentStage(song.id);
 
   root.innerHTML = `
   <div class="song-detail" style="--c:${song.color || '#7a5cff'}">
@@ -42,14 +37,27 @@ export async function songScreen(root, params) {
       ${best ? `<div class="sd-best">${stars(best.stars)} <b>${best.score}</b> <small class="muted">Bestwert</small></div>` : ''}
       ${fit ? `<div class="fit ${fit.fit >= 0.85 ? 'good' : fit.fit >= 0.6 ? 'ok' : 'hard'}">${fit.label} · ${Math.round(fit.fit * 100)} % in deinem Umfang</div>`
         : `<a class="fit ok" href="#/range">Stimmumfang testen → Song an deine Stimme anpassen</a>`}
+      <div class="sd-tags">${moodsOf(song).map((m) => `<span class="tag">${escapeHtml(m)}</span>`).join('')}</div>
       <div class="sd-actions">
-        <button class="btn primary big" data-act="sing">▶ Singen</button>
+        <button class="btn primary big" data-stage="${cur.id}">▶ Stufe ${cur.label} singen</button>
         <button class="btn ghost big" data-act="listen">🎧 Anhören</button>
       </div>
     </div>
 
     <section class="card">
-      <h3>Einstellungen</h3>
+      <div class="row between"><h3>Stufen</h3><small class="muted">2 Sterne schalten die nächste frei</small></div>
+      <div class="ladder">${ladder.map((s) => `<button class="rung ${s.unlocked ? 'open' : 'locked'} ${s.id === cur.id ? 'cur' : ''}" data-stage="${s.id}" ${s.unlocked ? '' : 'disabled'}>
+        <span class="ri">${s.unlocked ? s.icon : '🔒'}</span><span class="rl"><b>${s.label}</b><small>${s.desc}</small></span>
+        <span class="rs">${s.best ? stars(s.best.stars) + `<small>${s.best.score}</small>` : s.unlocked ? '<small class="muted">neu</small>' : ''}</span></button>`).join('')}</div>
+    </section>
+
+    <section class="card studio-card">
+      <div><h3>🎙️ Aufnahme-Studio</h3><p class="muted small">Sing den Song zum Playback (ohne Leitstimme) und speichere deine Aufnahme.</p></div>
+      <button class="btn ghost" data-act="studio">● Aufnehmen</button>
+    </section>
+
+    <section class="card">
+      <div class="row between"><h3>Freies Singen</h3><button class="btn small primary" data-act="sing">▶ Singen</button></div>
       <div class="field">Schwierigkeit ${chips('diff', Object.values(LEVELS).map((l) => [l.id, l.label]), cfg.difficulty)}
         <small class="muted" data-diffdesc>${LEVELS[cfg.difficulty].desc}</small></div>
       <div class="field">Tonart ${chips('key', [['auto', 'Auto'], [-3, '−3'], [-2, '−2'], [-1, '−1'], [0, 'Original'], [1, '+1'], [2, '+2'], [3, '+3']], cfg.key)}</div>
@@ -79,8 +87,10 @@ export async function songScreen(root, params) {
   bindChips(root, 'key', (v) => { cfg.key = v; });
   bindChips(root, 'lyr', (v) => { cfg.lyrics = v; store.setProfile({ lyricsMode: v }); });
   root.addEventListener('click', (e) => {
-    const b = e.target.closest('[data-act],[data-from]');
+    const b = e.target.closest('[data-act],[data-from],[data-stage]');
     if (!b) return;
+    if (b.dataset.stage) return go(`#/sing/${song.id}?stage=${b.dataset.stage}&key=${cfg.key}`);
+    if (b.dataset.act === 'studio') return go(`#/sing/${song.id}?studio=1&key=${cfg.key}`);
     if (b.dataset.from != null) return go(`#/sing/${song.id}?mode=practice&from=${b.dataset.from}&to=${b.dataset.to}&${q()}`);
     if (b.dataset.act === 'sing') go(`#/sing/${song.id}?${q()}`);
     if (b.dataset.act === 'listen') go(`#/sing/${song.id}?${q()}&vocal=1`);

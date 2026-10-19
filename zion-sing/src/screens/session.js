@@ -9,6 +9,8 @@ import { foldOctave, fitToRange } from '../core/notes.js';
 import { store, recordSession } from '../core/store.js';
 import { getSong, songFit } from '../core/catalog.js';
 import { EXERCISES, baseNote, findLesson, songPhraseExercise } from '../core/lessons.js';
+import { stageById, stagePart } from '../core/stages.js';
+import { recordings, unlock } from '../core/store.js';
 import { Lane } from '../ui/lane.js';
 import { LyricsView } from '../ui/lyrics.js';
 import { sheet, chips, bindChips, go, toast, fmtTime, escapeHtml } from '../ui/dom.js';
@@ -45,6 +47,8 @@ class SynthTransport {
 export async function sessionScreen(root, params) {
   const kind = params.kind || 'song';
   const prof = store.profile;
+  const stage = kind === 'song' ? stageById(params.stage) : null;
+  const studio = kind === 'song' && params.studio === '1';
   const cfg = {
     difficulty: params.difficulty || prof.difficulty,
     key: params.key ?? 'auto',
@@ -54,6 +58,8 @@ export async function sessionScreen(root, params) {
     lyricsMode: params.lyrics || prof.lyricsMode,
     guide: true,
   };
+  if (stage) Object.assign(cfg, { difficulty: stage.difficulty, vocal: stage.vocal, lyricsMode: stage.lyrics, key: params.key ?? 'auto', rate: 1 });
+  if (studio) Object.assign(cfg, { vocal: params.vocal != null ? +params.vocal : 0, rate: 1 });
   let song = null, lesson = null, ex = null;
   if (kind === 'song') {
     song = await getSong(params.id);
@@ -70,17 +76,19 @@ export async function sessionScreen(root, params) {
   const color = song ? song.color : '#3fe0c5';
   const mode = kind === 'song' ? (params.mode || 'full') : 'lesson';
   const lines = song ? song.lines : [];
-  const lf = params.from != null ? +params.from : null, lt = params.to != null ? +params.to : null;
+  const part = stage && song ? stagePart(song, stage) : null;
+  const lf = params.from != null ? +params.from : part ? part.from : null;
+  const lt = params.to != null ? +params.to : part ? part.to : null;
   const sectionFrom = song && lf != null ? lines[lf].t0 - 0.3 : 0;
   const sectionTo = song && lt != null ? lines[lt].t1 + 0.5 : Infinity;
   const leadIn = song && lf != null ? Math.max(0, sectionFrom - 2.2) : 0;
 
   root.innerHTML = `
-  <div class="session" style="--c:${color}">
+  <div class="session${studio ? ' studio' : ''}" style="--c:${color}">
     <header class="ses-top">
       <button class="icon-btn" data-act="close" aria-label="Beenden">✕</button>
       <div class="ses-title"><b>${escapeHtml(song ? song.title : lesson.title)}</b>
-        <small>${escapeHtml(song ? song.ref : lesson.unit || 'Warm-up')} · ${mode === 'practice' ? 'Üben' : mode === 'lesson' ? 'Übung' : LEVELS[cfg.difficulty].label}</small></div>
+        <small>${escapeHtml(song ? song.ref : lesson.unit || 'Warm-up')} · ${studio ? '🎙️ Studio' : stage ? `Stufe ${stage.label}` : mode === 'practice' ? 'Üben' : mode === 'lesson' ? 'Übung' : LEVELS[cfg.difficulty].label}</small></div>
       <div class="ses-score"><span data-score>0</span><small>Punkte</small></div>
       <button class="icon-btn" data-act="settings" aria-label="Einstellungen">⚙︎</button>
     </header>
@@ -93,6 +101,7 @@ export async function sessionScreen(root, params) {
       <div class="ses-cue"></div>
       <div class="ses-count"></div>
       <div class="ses-banner" hidden></div>
+      ${studio ? '<div class="rec-dot">● REC</div>' : ''}
     </div>
     <div class="ses-lyrics ${kind === 'lesson' ? 'lesson' : ''}"></div>
     <footer class="ses-controls">
@@ -315,13 +324,22 @@ export async function sessionScreen(root, params) {
     const res = recordSession({
       songId: song ? song.id : lesson.id, title, score: sum.score, stars: sum.stars,
       mode, seconds: sungSeconds, bestCombo: sum.bestCombo, lyricsMode: cfg.lyricsMode,
-      kind: kind === 'song' ? 'song' : 'lesson',
+      kind: kind === 'song' ? 'song' : 'lesson', stage: stage && stage.id,
     });
+    let savedId = null;
+    if (studio && blob) {
+      savedId = 'rec_' + Date.now();
+      await recordings.put({ id: savedId, songId: song.id, title, ref: song.ref, score: sum.score, stars: sum.stars,
+        date: new Date().toISOString(), seconds: sungSeconds, blob, type: blob.type });
+      const a = unlock('studio');
+      if (a) res.unlocked.push(a);
+    }
     lastResult = {
       kind, id: song ? song.id : lesson.id, title, ref: song ? song.ref : lesson.unit || 'Warm-up',
       color, cover: song && song.audio.cover, ...sum, lines, seconds: sungSeconds, mode, loops,
       from: lf, to: lt, difficulty: cfg.difficulty, lyricsMode: cfg.lyricsMode, ...res,
       recordingUrl: blob ? URL.createObjectURL(blob) : null, recordingType: blob ? blob.type : null,
+      recordingBlob: blob, stage: stage && stage.id, studio, savedId,
     };
     cleanup();
     go('#/results');

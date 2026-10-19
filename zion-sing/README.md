@@ -26,16 +26,18 @@ npm start            # → http://localhost:8080
 
 | Simply Sing | Zion Sing |
 |---|---|
-| Song-Bibliothek | 3 Songs (Offb 2,12-29 · 8,7-13 · 13,10-18) + eigene Songs + alle 22 Kapitel, Volltextsuche über Songs & 405 Verse |
+| Song-Bibliothek, Sammlungen nach Genre/Stimmung | 3 Songs (Offb 2,12-29 · 8,7-13 · 13,10-18) + eigene Songs + alle 22 Kapitel, Filter nach Genre/Stimmung, Volltextsuche über Songs & 405 Verse |
+| Song-Stufen Basic → Easy → Medium → Hard → Extreme | jede Stufe macht den Song schwerer (länger, strengere Bewertung, leisere Leitstimme, Text-Lücken bis auswendig); 2 Sterne schalten die nächste frei |
 | Echtzeit-Tonhöhen-Feedback | Notenbahn: Ziel-Noten laufen zur Spiellinie, deine Stimme als leuchtende Spur; „Perfekt!/Super!/Gut!“, „↑ höher / ↓ tiefer“, Combo-Zähler |
 | Karaoke-Lyrics | Wort-für-Wort-Füllung, nächste Zeile als Vorschau, Vers-Anzeige, Instrumental-Hinweis |
-| Stimmumfang-Test | tiefsten/höchsten gehaltenen Ton messen → Stimmlage (Bass … Sopran), Klaviatur-Anzeige |
+| Stimmumfang-Test | 3 Schritte wie im Original: sprechen (bequeme Lage) → tief summen → hoch rufen/singen → Stimmlage (Bass … Sopran), Klaviatur-Anzeige |
 | Songs passen sich deiner Stimme an | „Auto“-Tonart: Oktave + Halbtöne so verschoben, dass der Song in deinen Umfang passt (echte Transposition per AudioWorklet), manuell −5…+5 |
 | Leitstimme an/aus | Gesang und Instrumental sind getrennte Spuren → Leitstimme stufenlos 0–100 % |
 | Üben / Abschnitte | jeder Vers einzeln in Dauerschleife, 60–100 % Tempo (tonhöhenerhaltend), „Zeile wiederholen“, „5 s zurück“, Intro überspringen |
 | Schwierigkeitsstufen | Leicht (±2 HT, Oktave egal) · Mittel (±1 HT) · Profi (±½ HT, exakte Oktave) |
 | Ergebnis & Sterne | Punkte 0–100, 1–3 Sterne, Noten getroffen, beste Combo, Zeile-für-Zeile-Heatmap → Tippen übt genau diese Zeile, „Schwache Stelle üben“ |
-| Aufnahme anhören | Stimme + Musik werden aufgenommen (latenzkorrigiert), abspielen & herunterladen |
+| Aufnahme-Studio | Studio-Modus: Song zum Playback singen (ohne Notenbahn/Leitstimme, ● REC), Aufnahmen (Stimme + Musik, latenzkorrigiert) gespeichert, anhören, herunterladen, löschen |
+| Tägliches Warm-up & Tipps | 5-Minuten-Warm-up (Atem, Tonhöhe, Selbstvertrauen) mit Tages-Haken + Tipp des Tages |
 | Lektionen & Warm-ups | Kurs mit 4 Einheiten / 12 Lektionen (Atem, Töne treffen, Leiter, Arpeggio, Intervalle, Sirene, Höhe, Tiefe, Oktave, Song-Phrasen) + 6 Warm-ups; Prinzip „👂 hören → 🎤 nachsingen“, Tipps mit Vorlesefunktion |
 | Fortschritt | XP & Level, Tagesserie, Tagesziel-Ring, Wochen-Diagramm, Verlauf, Bestwerte, 12 Erfolge |
 | Extras | Stimmgerät (Note, Cent-Nadel, Referenztöne), Lyrics-Lernmodus („Lern-Modus“/„Auswendig“ blenden Wörter aus, bis sie gesungen werden), Kapitel-Lesemodus mit Ausblenden, Vers des Tages, Latenz-Klatsch-Test, Notennamen C-D-E-H / B / Do-Re-Mi |
@@ -81,9 +83,9 @@ data/        songs.js (Lyrics, Noten), offenbarung.js (405 Verse)
 audio/       <song>_inst.mp3, <song>_vocals.mp3, Cover
 src/audio/   yin.js (Tonhöhe), engine.js (Mikro), player.js (Spuren, Tempo, Transposition),
              synth.js, recorder.js, analyze.js (Import-Analyse)
-src/core/    notes.js, scoring.js, store.js, catalog.js, lessons.js
+src/core/    notes.js, scoring.js, store.js, catalog.js, lessons.js, stages.js
 src/ui/      lane.js (Notenbahn), lyrics.js (Karaoke), dom.js
-src/screens/ home, library, song, session, results, range, train, tuner, profile, import
+src/screens/ home, library, song, session, results, range, train, tuner, profile, import, studio
 ```
 
 „Simply Sing“ ist eine Marke von Simply Ltd. Zion Sing ist ein unabhängiger

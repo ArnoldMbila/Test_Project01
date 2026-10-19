@@ -1,6 +1,6 @@
 // Training: Kurs mit Lektionen (Pfad), Warm-ups und Lektions-Intro.
-import { store } from '../core/store.js';
-import { COURSE, WARMUPS, findLesson } from '../core/lessons.js';
+import { store, today } from '../core/store.js';
+import { COURSE, WARMUPS, DAILY, findLesson } from '../core/lessons.js';
 import { stars, go, escapeHtml } from '../ui/dom.js';
 
 export function trainScreen(root) {
@@ -9,7 +9,9 @@ export function trainScreen(root) {
   root.innerHTML = `
   <div class="train">
     <header class="page-head"><h1>Training</h1><a class="btn small ghost" href="#/tuner">🎯 Stimmgerät</a></header>
-    <div class="sec-head"><h2>Warm-ups</h2><small class="muted">je ~1 Minute</small></div>
+    <a class="card daily" href="#/lesson-intro/${DAILY.id}"><div class="cta-ic">${store.stats.warmups[today()] ? '✅' : DAILY.icon}</div>
+      <div><b>${DAILY.title}</b><p class="muted small">~5 Min. · Atem, lange Töne, Sirene, Leiter, Intervalle, Arpeggio, Höhe, Oktave</p></div><span class="chev">›</span></a>
+    <div class="sec-head"><h2>Einzelne Warm-ups</h2><small class="muted">je ~1 Minute</small></div>
     <div class="warmups">${WARMUPS.map((w) => `<a class="warm" href="#/lesson/${w.id}"><span>${w.icon}</span><b>${w.title}</b>${done[w.id] ? stars(done[w.id].stars) : ''}</a>`).join('')}</div>
     <div class="sec-head"><h2>Gesangskurs</h2><small class="muted">Schritt für Schritt</small></div>
     <div class="path">${COURSE.map((u) => `

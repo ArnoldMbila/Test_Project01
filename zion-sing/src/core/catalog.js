@@ -37,6 +37,16 @@ export function songFit(song) {
   return { ...f, shift, label };
 }
 
+/** Sammlungen nach Genre & Stimmung (wie die Song-Kategorien bei Simply Sing). */
+const MOODS = {
+  offb_2_12_29: ['Rhythmisch', 'Sendschreiben', 'Ermutigend'],
+  offb_8_7_13: ['Kraftvoll', 'Posaunen & Siegel', 'Dramatisch'],
+  offb_13_10_18: ['Ruhig', 'Prophetie', 'Ernst'],
+};
+export function moodsOf(song) {
+  return [song.genre || 'Eigener Song', ...(MOODS[song.id] || song.moods || [])];
+}
+
 export function difficultyOf(song) {
   if (!song.notes || !song.notes.length) return 1;
   const span = song.range ? song.range[1] - song.range[0] : 12;
